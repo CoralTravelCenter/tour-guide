@@ -5,5 +5,5 @@ createApp({
     components: {
         TourGuide
     },
-    template: '<h2>Tour Guide</h2><TourGuide/>'
+    template: '<TourGuide/>'
 }).mount('#tour-guide-app');
