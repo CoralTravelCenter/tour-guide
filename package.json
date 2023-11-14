@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "vue": "^3.3.8"
+    },
+    "alias": {
+        "vue": {
+            "global": "Vue"
+        }
+    }
+}
