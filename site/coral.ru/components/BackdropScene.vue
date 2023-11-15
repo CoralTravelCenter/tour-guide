@@ -1,14 +1,29 @@
 <script setup>
 
-import { inject } from "vue";
+import { computed, inject } from "vue";
 
-const { backdropSolidFill } = inject('backdrop');
+const { backdropSolidFill, backdropStack } = inject('backdrop');
+
+function backdropVisualStyle(idx, collection) {
+    const visible_region_percent = 55;
+    const css = {
+        backgroundImage: `url(${ backdropStack[idx] })`
+    };
+    if (collection.length > 1) {
+        const reduce_by = visible_region_percent / collection.length;
+        css.width = `${ 100 - reduce_by * (collection.length - 1) }%`;
+        css.left = `${ reduce_by * idx }%`;
+    }
+    return css;
+}
 
 </script>
 
 <template>
     <div class="backdrop-scene">
-        <div class="contenu"></div>
+        <div class="visuals-stack">
+            <div class="visual" v-for="(visual, idx) in backdropStack" :style="backdropVisualStyle(idx, backdropStack)"></div>
+        </div>
     </div>
 </template>
 
@@ -22,5 +37,19 @@ const { backdropSolidFill } = inject('backdrop');
     border-radius: 1em;
     overflow: hidden;
     .transit(background, .25s);
+}
+.visuals-stack {
+    .visual {
+        .abs100x100();
+        background-repeat: no-repeat;
+        background-size: auto 100%;
+        background-position: 50% 50%;
+        .transit(all, .25s);
+        &:nth-child(n+2) {
+            border-radius: 1em;
+            box-shadow: -.5em 0 32px fade(black, 20%);
+        }
+
+    }
 }
 </style>

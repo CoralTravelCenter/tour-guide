@@ -1,18 +1,24 @@
 <script setup>
 import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
-import { provide, ref } from "vue";
+import { provide, reactive, ref } from "vue";
+import { findKey } from "lodash";
 
-const backdropSolidFill = ref('black');
+import tourGuideConfig from '../config/decision-tree.yaml'
 
-provide('backdrop', { backdropSolidFill });
+const currentStepConfig = tourGuideConfig.steps[findKey(tourGuideConfig.steps, 'root')];
+
+const backdropSolidFill = ref('transparent');
+const backdropStack = reactive([]);
+
+provide('backdrop', { backdropSolidFill, backdropStack });
 
 </script>
 
 <template>
     <div class="tour-guide-module">
         <BackdropScene/>
-        <ControlPane/>
+        <ControlPane :step-config="currentStepConfig"/>
     </div>
 </template>
 

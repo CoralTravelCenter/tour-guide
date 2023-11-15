@@ -1,0 +1,20 @@
+steps:
+    intro:
+        root: yes
+        instance: StepIntro
+        setBackdrop: '/site/coral.ru/assets/backdrop-intro-desktop.jpg'
+        choices:
+            - label: Поехали!
+              step: where-are-you-going-to
+    where-are-you-going-to:
+        instance: StepSimpleChoice
+        progress: show
+        h2: "Начнем!"
+        h3: "Вы уже знаете куда хотите отправиться?"
+        setBackdrop: ''
+        setSolidFill: '#FCDC61'
+        choices:
+            - label: Знаю
+              step:
+            - label: Не знаю
+              step:

@@ -1,9 +1,10 @@
 import { createApp } from "vue";
 import TourGuide from "../components/TourGuide.vue";
+import StepIntro from "../components/StepIntro.vue";
 
 createApp({
-    components: {
-        TourGuide
-    },
+    components: { TourGuide },
     template: '<TourGuide/>'
-}).mount('#tour-guide-app');
+})
+    .component('StepIntro', StepIntro)
+    .mount('#tour-guide-app');
