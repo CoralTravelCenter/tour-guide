@@ -8,11 +8,15 @@ defineProps(['stepConfig']);
 <template>
     <div class="control-pane">
         <Component :is="stepConfig.instance" :config="stepConfig"/>
-        <ProgressNavigation v-if="stepConfig.progress"/>
+        <Transition name="slide">
+            <ProgressNavigation v-if="stepConfig.progress"/>
+        </Transition>
     </div>
 </template>
 
 <style scoped lang="less">
+@import "../common/css/coral-colors";
+@import "../common/css/layout";
 .control-pane {
     display: flex;
     flex-direction: column;
@@ -20,6 +24,10 @@ defineProps(['stepConfig']);
     grid-area: 1 / 2 / span 3 / span 2;
     filter: drop-shadow(0 8px 16px fade(black, 20%));
     border-radius: 1em;
+    @media screen and (max-width: @mobile-breakpoint) {
+        grid-area: 2 / 1 / span 2 / span 1;
+        background-color: @coral-tourguide-blue-lite;
+    }
     >* {
         width: 100%;
         &:first-child {

@@ -2,9 +2,11 @@ steps:
     intro:
         root: yes
         instance: StepIntro
-        setBackdrop: '/site/coral.ru/assets/backdrop-intro-desktop.jpg'
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-intro-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-intro-mobile.jpg'
         choices:
-            - label: Поехали!
+            - label: "Поехали!"
               step: where-are-you-going-to
     where-are-you-going-to:
         instance: StepSimpleChoice

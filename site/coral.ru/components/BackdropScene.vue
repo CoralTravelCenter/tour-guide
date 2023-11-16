@@ -1,13 +1,15 @@
 <script setup>
 
-import { computed, inject } from "vue";
+import { inject } from "vue";
 
 const { backdropSolidFill, backdropStack } = inject('backdrop');
+const layoutMode = inject('layout-mode');
 
 function backdropVisualStyle(idx, collection) {
     const visible_region_percent = 55;
+    const backdrop_url = typeof backdropStack[idx] === 'object' ? backdropStack[idx][layoutMode.value] : backdropStack[idx];
     const css = {
-        backgroundImage: `url(${ backdropStack[idx] })`
+        backgroundImage: `url(${ backdrop_url })`
     };
     if (collection.length > 1) {
         const reduce_by = visible_region_percent / collection.length;
@@ -37,6 +39,10 @@ function backdropVisualStyle(idx, collection) {
     border-radius: 1em;
     overflow: hidden;
     .transit(background, .25s);
+    @media screen and (max-width: @mobile-breakpoint) {
+        .proportional(750/926);
+        grid-area: 1 / 1 / span 2 / span 1;
+    }
 }
 .visuals-stack {
     .visual {
