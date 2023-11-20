@@ -2,9 +2,7 @@
 import ChoiceGrid from "./ChoiceGrid.vue";
 import { useStepBehaviour } from "./step-behaviour";
 
-const props = defineProps({ config: Object });
-
-useStepBehaviour(props);
+const config = useStepBehaviour();
 
 </script>
 
@@ -12,7 +10,7 @@ useStepBehaviour(props);
     <div class="step-simple-choice">
         <h2 v-if="config.h2">{{ config.h2 }}</h2>
         <h3 v-if="config.h3">{{ config.h3 }}</h3>
-        <ChoiceGrid :choices="config.choices" trait="ramp-hover"/>
+        <ChoiceGrid trait="ramp-hover"/>
     </div>
 </template>
 

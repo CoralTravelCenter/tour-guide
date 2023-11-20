@@ -1,10 +1,14 @@
 <script setup>
 
+import { inject } from "vue";
+
+const { stepBack } = inject('flow-control');
+
 </script>
 
 <template>
     <div class="progress-navigation">
-        <button class="back">Назад</button>
+        <button class="back" @click="stepBack">Назад</button>
         <div class="progress-bar"><div class="filler"></div></div>
         <button class="skip-proceed">Продолжить</button>
     </div>
@@ -27,6 +31,9 @@
     &.slide-enter-from, &.slide-leave-to {
         margin-top: 0;
         height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        opacity: 0;
     }
     >button {
         .interactive();

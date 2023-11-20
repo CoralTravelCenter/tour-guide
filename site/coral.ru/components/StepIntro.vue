@@ -2,9 +2,7 @@
 import ChoiceGrid from "./ChoiceGrid.vue";
 import { useStepBehaviour } from "./step-behaviour";
 
-const props = defineProps({ config: Object });
-
-useStepBehaviour(props);
+const config = useStepBehaviour();
 
 </script>
 
@@ -12,7 +10,7 @@ useStepBehaviour(props);
     <div class="step-intro">
         <h2>Получите персональную подборку туров прямо на сайте</h2>
         <p>ответив на простые вопросы о предпочтениях на отдыхе</p>
-        <ChoiceGrid :choices="config.choices" trait="accented"/>
+        <ChoiceGrid trait="accented"/>
     </div>
 </template>
 

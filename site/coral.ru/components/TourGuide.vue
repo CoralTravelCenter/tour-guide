@@ -2,11 +2,13 @@
 import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
 import { onMounted, provide, reactive, ref } from "vue";
-import { findKey } from "lodash";
 
 import tourGuideConfig from '../config/decision-tree.yaml'
 
-const currentStepConfig = ref(tourGuideConfig.steps[findKey(tourGuideConfig.steps, 'root')]);
+const tourGuideSteps = reactive(tourGuideConfig.steps);
+
+const currentStepConfig = ref(Object.values(tourGuideSteps).find(step => !!step.root));
+provide('current-step-config', currentStepConfig);
 const breadcrumbs = [currentStepConfig.value];
 
 const backdropSolidFill = ref('transparent');
@@ -17,7 +19,7 @@ const layoutMode = ref('');
 provide('layout-mode', layoutMode);
 
 function stepByKey(key) {
-    const step_config = tourGuideConfig.steps[key];
+    const step_config = tourGuideSteps[key];
     if (step_config) {
         currentStepConfig.value = step_config;
         breadcrumbs.push(step_config);
@@ -26,7 +28,8 @@ function stepByKey(key) {
 
 function stepBack() {
     if (breadcrumbs.length > 1) {
-        currentStepConfig.value = breadcrumbs.pop();
+        breadcrumbs.pop();
+        currentStepConfig.value = breadcrumbs.at(-1);
     }
 }
 provide('flow-control', { stepByKey, stepBack });
@@ -42,7 +45,7 @@ onMounted(() => {
 <template>
     <div class="tour-guide-module">
         <BackdropScene/>
-        <ControlPane :step-config="currentStepConfig"/>
+        <ControlPane/>
     </div>
 </template>
 

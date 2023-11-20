@@ -1,13 +1,14 @@
 <script setup>
 import ProgressNavigation from "./ProgressNavigation.vue";
+import { inject } from "vue";
 
-defineProps(['stepConfig']);
+const stepConfig = inject('current-step-config');
 
 </script>
 
 <template>
     <div class="control-pane">
-        <Component :is="stepConfig.instance" :config="stepConfig"/>
+        <Component :is="stepConfig.instance"/>
         <Transition name="slide">
             <ProgressNavigation v-if="stepConfig.progress"/>
         </Transition>

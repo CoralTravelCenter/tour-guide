@@ -1,11 +1,23 @@
 <script setup>
 import { inject } from "vue";
 
-const props = defineProps(['choices', 'behaviour', 'trait']);
+const props = defineProps(['behaviour', 'trait']);
 
 const { stepByKey } = inject('flow-control');
+const stepConfig = inject('current-step-config');
 
-function handleChoice(choice) {
+function handleChoiceHover(choice) {
+    if (stepConfig.value.behaviour?.selectOnHover) {
+        choice.selected = true;
+        if (stepConfig.value.behaviour.singleChoice) {
+            for (const c of stepConfig.value.choices) {
+                if (c !== choice) c.selected = false;
+            }
+        }
+    }
+}
+function handleChoiceClick(choice) {
+    choice.selected = true;
     if (choice.action) {
 
     }
@@ -18,9 +30,10 @@ function handleChoice(choice) {
 
 <template>
     <div class="choice-grid">
-        <button v-for="choice in choices"
-                :class="{ [trait]: true }"
-                @click="handleChoice(choice)">{{ choice.label }}</button>
+        <button v-for="choice in stepConfig.choices"
+                :class="{ [trait]: true, selected: choice.selected }"
+                @mouseenter="handleChoiceHover(choice)"
+                @click="handleChoiceClick(choice)">{{ choice.label }}</button>
     </div>
 </template>
 
@@ -48,16 +61,17 @@ function handleChoice(choice) {
         padding: 0 1.5em;
         border-radius: .5em;
         cursor: pointer;
+        .transit(background);
         &.accented {
             background-color: @coral-main-yellow;
             color: white;
             font-weight: bold;
         }
         &.ramp-hover {
-            background-color: transparent;
+            background: linear-gradient(0deg, transparent, transparent);
             box-shadow: inset 0 0 0 2px currentColor;
             .transit(background);
-            &:hover {
+            &:hover, &.selected {
                 background: @coral-ramp-bg;
                 color: white;
                 box-shadow: none;

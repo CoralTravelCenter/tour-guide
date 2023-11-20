@@ -17,6 +17,10 @@ steps:
         setSolidFill: '#FCDC61'
         choices:
             - label: Знаю
+              selected: true
               step:
             - label: Не знаю
               step:
+        behaviour:
+            singleChoice: true
+            selectOnHover: true
