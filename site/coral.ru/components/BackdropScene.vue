@@ -1,6 +1,7 @@
 <script setup>
 
 import { inject } from "vue";
+import ForegroundStack from "./ForegroundStack.vue";
 
 const { backdropSolidFill, backdropStack } = inject('backdrop');
 const layoutMode = inject('layout-mode');
@@ -25,6 +26,9 @@ function backdropVisualStyle(idx, collection) {
     <div class="backdrop-scene">
         <div class="visuals-stack">
             <div class="visual" v-for="(visual, idx) in backdropStack" :style="backdropVisualStyle(idx, backdropStack)"></div>
+        </div>
+        <div class="foreground">
+            <ForegroundStack/>
         </div>
     </div>
 </template>
@@ -58,4 +62,5 @@ function backdropVisualStyle(idx, collection) {
 
     }
 }
+
 </style>

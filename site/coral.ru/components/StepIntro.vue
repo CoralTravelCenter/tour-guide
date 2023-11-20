@@ -15,6 +15,7 @@ const config = useStepBehaviour();
 </template>
 
 <style scoped lang="less">
+@import "../common/css/layout";
 .step-intro {
     background-color: white;
     border-radius: 1em;
@@ -25,5 +26,8 @@ const config = useStepBehaviour();
     align-items: center;
     text-align: center;
     padding: 1em 3em;
+    @media screen and (max-width: @mobile-breakpoint) {
+        padding: 2em 3em;
+    }
 }
 </style>

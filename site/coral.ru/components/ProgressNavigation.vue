@@ -1,8 +1,12 @@
 <script setup>
 
-import { inject } from "vue";
+import { computed, inject } from "vue";
 
 const { stepBack } = inject('flow-control');
+const stepConfig = inject('current-step-config');
+const anyChoiceSelected = computed(() => {
+    return stepConfig.value.choices.some(choice => choice.selected);
+});
 
 </script>
 
@@ -10,11 +14,12 @@ const { stepBack } = inject('flow-control');
     <div class="progress-navigation">
         <button class="back" @click="stepBack">Назад</button>
         <div class="progress-bar"><div class="filler"></div></div>
-        <button class="skip-proceed">Продолжить</button>
+        <button class="skip-proceed" :class="{ [anyChoiceSelected ? 'proceed' : 'skip']: true }">{{ anyChoiceSelected ? 'Продолжить' : 'Пропустить' }}</button>
     </div>
 </template>
 
 <style scoped lang="less">
+@import "../common/css/coral-colors";
 @import "../common/css/layout";
 .progress-navigation {
     overflow: hidden;
@@ -26,8 +31,11 @@ const { stepBack } = inject('flow-control');
     border-radius: 1em;
     height: (66/20em);
     margin-top: 1em;
-    padding: .5em;
+    padding: .5em .7em;
     .transit(all);
+    @media screen and (max-width: @mobile-breakpoint) {
+        padding: 1.7em .7em;
+    }
     &.slide-enter-from, &.slide-leave-to {
         margin-top: 0;
         height: 0;
@@ -65,6 +73,14 @@ const { stepBack } = inject('flow-control');
             &:after {
                 content: 'keyboard_arrow_right';
                 margin-left: .2em;
+            }
+            &.skip {
+                color: white;
+                background: @coral-ramp-bg;
+            }
+            &.proceed {
+                color: white;
+                background: linear-gradient(46deg, #6BDCFF, #13A0F0);
             }
         }
     }

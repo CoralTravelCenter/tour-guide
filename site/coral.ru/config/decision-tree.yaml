@@ -1,5 +1,6 @@
 steps:
     intro:
+        key: intro
         root: yes
         instance: StepIntro
         setBackdrop:
@@ -9,6 +10,7 @@ steps:
             - label: "Поехали!"
               step: where-are-you-going-to
     where-are-you-going-to:
+        key: where-are-you-going-to
         instance: StepSimpleChoice
         progress: show
         h2: "Начнем!"
@@ -16,11 +18,30 @@ steps:
         setBackdrop: ''
         setSolidFill: '#FCDC61'
         choices:
-            - label: Знаю
+            - label: 'Знаю'
               selected: true
-              step:
-            - label: Не знаю
+              foreground:
+                  - '/site/coral.ru/assets/backdrop-where2-know-desktop.png'
+              step: know-where-timeframe
+            - label: 'Не знаю'
+              foreground:
+                  - '/site/coral.ru/assets/backdrop-where2-dontknow-desktop.png'
               step:
         behaviour:
             singleChoice: true
             selectOnHover: true
+    know-where-timeframe:
+        key: know-where-timeframe
+        instance: StepSimpleChoice
+        progress: show
+        h3: "Тогда определимся с датой вылета"
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-timeframe-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-timeframe-mobile.jpg'
+        choices:
+            - label: "Как можно скорее"
+            - label: "Через 2 месяца"
+            - label: "Выберу дату"
+        behaviour:
+            skippable: true
+            singleChoice: true

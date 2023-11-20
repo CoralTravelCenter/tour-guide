@@ -1,7 +1,7 @@
 <script setup>
 import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
-import { onMounted, provide, reactive, ref } from "vue";
+import { computed, onMounted, provide, reactive, ref } from "vue";
 
 import tourGuideConfig from '../config/decision-tree.yaml'
 
@@ -13,7 +13,12 @@ const breadcrumbs = [currentStepConfig.value];
 
 const backdropSolidFill = ref('transparent');
 const backdropStack = reactive([]);
-provide('backdrop', { backdropSolidFill, backdropStack });
+const foregroundStack = computed(() => {
+    return currentStepConfig.value.choices
+        .filter(choice => choice.selected && choice.foreground)
+        .map(choice => choice.foreground);
+});
+provide('backdrop', { backdropSolidFill, backdropStack, foregroundStack });
 
 const layoutMode = ref('');
 provide('layout-mode', layoutMode);
@@ -34,6 +39,9 @@ function stepBack() {
 }
 provide('flow-control', { stepByKey, stepBack });
 
+const h2MobilePlaceholder = ref(null);
+provide('h2-mobile-placeholder', h2MobilePlaceholder);
+
 onMounted(() => {
     const layout = matchMedia('(max-width:768px)');
     layout.addEventListener('change', e => layoutMode.value = e.matches ? 'mobile' : 'desktop');
@@ -44,6 +52,7 @@ onMounted(() => {
 
 <template>
     <div class="tour-guide-module">
+        <div ref="h2MobilePlaceholder" class="h2-mobile-placeholder"></div>
         <BackdropScene/>
         <ControlPane/>
     </div>
@@ -84,6 +93,19 @@ onMounted(() => {
         font-size: (24/20em);
         font-weight: 700;
         margin: unset;
+    }
+
+    .h2-mobile-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 2.5em 2em;
+        grid-area: 1 / 1 / span 1 / span 1;
+        z-index: 1;
+        :deep(h2) {
+            font-size: 2em;
+        }
     }
 
 }

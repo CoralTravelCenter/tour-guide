@@ -8,7 +8,7 @@ const stepConfig = inject('current-step-config');
 
 <template>
     <div class="control-pane">
-        <Component :is="stepConfig.instance"/>
+        <Component :is="stepConfig.instance" :key="stepConfig.key"/>
         <Transition name="slide">
             <ProgressNavigation v-if="stepConfig.progress"/>
         </Transition>
