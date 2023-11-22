@@ -1,5 +1,6 @@
 <script setup>
 import { inject } from "vue";
+import ChoiceItem from "./ChoiceItem.vue";
 
 const props = defineProps(['behaviour', 'trait']);
 
@@ -9,15 +10,20 @@ const stepConfig = inject('current-step-config');
 function handleChoiceHover(choice) {
     if (stepConfig.value.behaviour?.selectOnHover) {
         choice.selected = true;
-        if (stepConfig.value.behaviour.singleChoice) {
+        if (stepConfig.value.behaviour?.singleChoice) {
             for (const c of stepConfig.value.choices) {
                 if (c !== choice) c.selected = false;
             }
         }
     }
 }
-function handleChoiceClick(choice) {
+function handleChoiceSelect(choice) {
     choice.selected = true;
+    if (stepConfig.value.behaviour?.singleChoice) {
+        for (const c of stepConfig.value.choices) {
+            if (c !== choice) c.selected = false;
+        }
+    }
     if (choice.action) {
 
     }
@@ -30,10 +36,11 @@ function handleChoiceClick(choice) {
 
 <template>
     <div class="choice-grid">
-        <button v-for="choice in stepConfig.choices"
+        <ChoiceItem v-for="choice in stepConfig.choices"
+                :config="choice"
                 :class="{ [trait]: true, selected: choice.selected }"
                 @mouseenter="handleChoiceHover(choice)"
-                @click="handleChoiceClick(choice)">{{ choice.label }}</button>
+                @selected="handleChoiceSelect(choice)">{{ choice.label }}</ChoiceItem>
     </div>
 </template>
 
@@ -46,7 +53,10 @@ function handleChoiceClick(choice) {
     gap: 1em;
     flex-direction: column;
     align-items: stretch;
-    >button {
+    > * {
+        height: (48/20em);
+    }
+    > button {
         .interactive();
         outline: none;
         border: 0;
@@ -57,7 +67,6 @@ function handleChoiceClick(choice) {
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        height: (48/20em);
         padding: 0 1.5em;
         border-radius: .5em;
         cursor: pointer;

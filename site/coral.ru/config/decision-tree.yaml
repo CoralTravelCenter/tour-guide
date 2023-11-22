@@ -41,7 +41,7 @@ steps:
         choices:
             - label: "Как можно скорее"
             - label: "Через 2 месяца"
-            - label: "Выберу дату"
+            - timeframePicker: true
         behaviour:
             skippable: true
             singleChoice: true
