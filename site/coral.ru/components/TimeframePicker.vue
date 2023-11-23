@@ -1,24 +1,98 @@
 <script setup>
+import VueDatePicker from '@vuepic/vue-datepicker';
+import { computed, reactive, ref, watch } from "vue";
 
-import { ref } from "vue";
+const monthName = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+const tomorrow = moment().add({ d: 1});
+const maxDate = moment(tomorrow).add({ y: 1});
 
+const $el = ref();
+const datePicker = ref();
 const open = ref(false);
+const emit = defineEmits(['selected']);
+
+function listenClicks(e) {
+    if (!$el.value.contains(e.target)) {
+        selectedTimeframe.startMoment = selectedTimeframe.endMoment = null;
+        datePicker.value.updateInternalModelValue(null);
+        open.value = false;
+    }
+}
+
+watch(open, (newValue) => {
+    if (newValue) {
+        document.addEventListener('click', listenClicks);
+    } else {
+        document.removeEventListener('click', listenClicks);
+    }
+});
+
+const selectedTimeframe = reactive({ startMoment: null, endMoment: null });
+const cantChoose = computed(() => {
+    return selectedTimeframe.startMoment === null;
+});
+
+const labelFeedback = computed(() => {
+    let feedback = 'Выберу даты';
+    if (selectedTimeframe.startMoment) {
+        if (selectedTimeframe.startMoment.month() !== selectedTimeframe.endMoment.month()) {
+            return `${ selectedTimeframe.startMoment.date() } ${ monthName[selectedTimeframe.startMoment.month()] } &mdash; ${ selectedTimeframe.endMoment.date() } ${ monthName[selectedTimeframe.endMoment.month()] }`;
+        } else if (selectedTimeframe.startMoment.date() !== selectedTimeframe.endMoment.date()) {
+            return `${ selectedTimeframe.startMoment.date() } &mdash; ${ selectedTimeframe.endMoment.date() } ${ monthName[selectedTimeframe.endMoment.month()] }`;
+        } else {
+            return `${ selectedTimeframe.startMoment.date() } ${ monthName[selectedTimeframe.startMoment.month()] }`;
+        }
+    }
+    return feedback;
+});
+
+function updateTimeframe(timeframe) {
+    const [frameStartDate, frameEndDate] = timeframe ?? [];
+    if (frameStartDate) {
+        selectedTimeframe.startMoment = moment(frameStartDate);
+        if (frameEndDate) {
+            selectedTimeframe.endMoment = moment(frameEndDate);
+        } else {
+            selectedTimeframe.endMoment = moment(frameStartDate);
+        }
+        // emit('selected');
+    } else {
+        selectedTimeframe.startMoment = selectedTimeframe.endMoment = null;
+    }
+}
 
 </script>
 
 <template>
-    <div class="timeframe-picker" :class="{ open }">
+    <div ref="$el" class="timeframe-picker" :class="{ open }">
         <div class="toggler" @click="open = !open">
             <span class="icon">calendar_month</span>
-            <span class="label">Выберу дату</span>
+            <span class="label" v-html="labelFeedback"></span>
         </div>
-        <div class="drawer"></div>
+        <div class="drawer">
+            <VueDatePicker ref="datePicker"
+                           inline locale="ru" range
+                           :enable-time-picker="false"
+                           month-name-format="long"
+                           :min-date="tomorrow.toDate()"
+                           :max-date="maxDate.toDate()"
+                           :prevent-min-max-navigation="true"
+                           max-range="6"
+                           select-text="Выбрать"
+                           @internal-model-change="updateTimeframe">
+                <template #action-preview></template>
+                <template #action-buttons>
+                    <button class="do-choose" :disabled="cantChoose">Выбрать</button>
+                </template>
+            </VueDatePicker>
+        </div>
     </div>
 </template>
 
 <style scoped lang="less">
 @import "../common/css/coral-colors";
 @import "../common/css/layout";
+@import "../common/css/mixins";
 .timeframe-picker {
     position: relative;
     display: flex;
@@ -37,7 +111,7 @@ const open = ref(false);
             box-shadow: none;
         }
         .drawer {
-            height: 12em;
+            max-height: 20em;
         }
     }
     .toggler {
@@ -55,7 +129,7 @@ const open = ref(false);
         padding: 0 1.5em;
         border-radius: .5em;
         cursor: pointer;
-        background: linear-gradient(0deg, transparent, transparent);
+        background: linear-gradient(0deg, white, white);
         box-shadow: inset 0 0 0 2px currentColor;
         .transit(background);
         .transit(border-radius);
@@ -79,10 +153,50 @@ const open = ref(false);
         box-shadow: none;
     }
     .drawer {
-        height: 0;
+        max-height: 0;
         overflow: hidden;
         background: white;
-        .transit(height);
+        border-radius: 0 0 .5em .5em;
+        .transit(max-height);
+
+        --dp-font-family: inherit;
+        --dp-font-size: .7em;
+        --dp-cell-size: 2em;
+        @media screen and (max-width: @narrow-breakpoint) {
+            --dp-font-size: 1.0em;
+        }
+        :deep(.dp__theme_light) {
+            --dp-menu-border-color: transparent;
+            --dp-text-color: black;
+            //--dp-hover-color: #f3f3f3;
+            --dp-hover-color: @coral-main-blue;
+            --dp-hover-text-color: white;
+            //--dp-primary-color: #1976d2;
+            --dp-primary-color: @coral-main-blue-accent;
+            //--dp-primary-text-color: #f8f5f5;
+            --dp-primary-text-color: white;
+            //--dp-secondary-color: #c0c4cc;
+            //--dp-highlight-color: rgb(25 118 210 / 10%);
+            //--dp-range-between-dates-background-color: var(--dp-hover-color, #f3f3f3);
+            --dp-range-between-dates-background-color: fade(@coral-main-blue, 10%);
+            //--dp-range-between-dates-text-color: var(--dp-hover-text-color, #212121);
+            --dp-range-between-dates-text-color: black;
+            //--dp-range-between-border-color: var(--dp-hover-color, #f3f3f3);
+            --dp-range-between-border-color: var(--dp-range-between-dates-background-color);
+        }
+        :deep(button) {
+            outline: none;
+        }
+        :deep(button[aria-disabled]) {
+            visibility: hidden;
+        }
+        :deep(.dp__action_buttons) {
+            flex: 1;
+        }
+        :deep(.do-choose) {
+            .button-like();
+            flex: 1;
+        }
     }
 }
 </style>

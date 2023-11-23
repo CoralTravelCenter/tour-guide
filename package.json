@@ -1,11 +1,15 @@
 {
     "dependencies": {
+        "@vuepic/vue-datepicker": "^7.2.2",
         "lodash": "^4.17.21",
         "vue": "^3.3.8"
     },
     "alias": {
         "vue": {
             "global": "Vue"
+        },
+        "@vuepic/vue-datepicker": {
+            "global": "VueDatePicker"
         }
     }
 }
