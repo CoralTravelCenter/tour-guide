@@ -1,11 +1,18 @@
 <script setup>
 import { inject } from "vue";
 import ChoiceItem from "./ChoiceItem.vue";
+import { asapTimeframe, in2monthsTimeframe } from "./predefined-actions";
 
 const props = defineProps(['behaviour', 'trait']);
 
 const { stepByKey } = inject('flow-control');
 const stepConfig = inject('current-step-config');
+
+if (stepConfig.value.behaviour?.resetSelection) {
+    stepConfig.value.choices.forEach(choice => choice.selected = false);
+}
+
+const preferredSearchParams = inject('preferred-search-params');
 
 function handleChoiceHover(choice) {
     if (stepConfig.value.behaviour?.selectOnHover) {
@@ -24,8 +31,16 @@ function handleChoiceSelect(choice) {
             if (c !== choice) c.selected = false;
         }
     }
-    if (choice.action) {
-
+    for (const action of choice.actions ?? []) {
+        switch (action.what) {
+            case 'setPreferredTimeframe':
+                if (action.predefined === 'asap') {
+                    Object.assign(preferredSearchParams.timeframe, asapTimeframe());
+                } else if (action.predefined === 'in2months') {
+                    Object.assign(preferredSearchParams.timeframe, in2monthsTimeframe());
+                }
+                break;
+        }
     }
     if (choice.step) {
         stepByKey(choice.step);

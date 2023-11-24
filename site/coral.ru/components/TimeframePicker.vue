@@ -1,6 +1,6 @@
 <script setup>
 import VueDatePicker from '@vuepic/vue-datepicker';
-import { computed, reactive, ref, watch } from "vue";
+import { computed, inject, onUnmounted, reactive, ref, watch } from "vue";
 
 const monthName = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 const tomorrow = moment().add({ d: 1});
@@ -55,11 +55,22 @@ function updateTimeframe(timeframe) {
         } else {
             selectedTimeframe.endMoment = moment(frameStartDate);
         }
-        // emit('selected');
     } else {
         selectedTimeframe.startMoment = selectedTimeframe.endMoment = null;
     }
 }
+
+const preferredSearchParams = inject('preferred-search-params');
+function doChoose() {
+    preferredSearchParams.timeframe.startMoment = moment(selectedTimeframe.startMoment);
+    preferredSearchParams.timeframe.endMoment = moment(selectedTimeframe.endMoment);
+    preferredSearchParams.timeframe.selectedMoment = moment(selectedTimeframe.startMoment);
+    emit('selected');
+}
+
+onUnmounted(() => {
+    document.removeEventListener('click', listenClicks);
+});
 
 </script>
 
@@ -82,7 +93,7 @@ function updateTimeframe(timeframe) {
                            @internal-model-change="updateTimeframe">
                 <template #action-preview></template>
                 <template #action-buttons>
-                    <button class="do-choose" :disabled="cantChoose">Выбрать</button>
+                    <button @click="doChoose" class="do-choose" :disabled="cantChoose">Выбрать</button>
                 </template>
             </VueDatePicker>
         </div>

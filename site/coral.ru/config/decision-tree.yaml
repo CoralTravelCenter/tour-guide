@@ -12,7 +12,7 @@ steps:
     where-are-you-going-to:
         key: where-are-you-going-to
         instance: StepSimpleChoice
-        progress: show
+        progress: true
         h2: "Начнем!"
         h3: "Вы уже знаете куда хотите отправиться?"
         setBackdrop: ''
@@ -33,15 +33,41 @@ steps:
     know-where-timeframe:
         key: know-where-timeframe
         instance: StepSimpleChoice
-        progress: show
+        progress: true
         h3: "Тогда определимся с датой вылета"
         setBackdrop:
             - desktop: '/site/coral.ru/assets/backdrop-timeframe-desktop.jpg'
               mobile: '/site/coral.ru/assets/backdrop-timeframe-mobile.jpg'
         choices:
             - label: "Как можно скорее"
+              actions:
+                  - what: setPreferredTimeframe
+                    predefined: asap
+              step: know-where-budget
             - label: "Через 2 месяца"
+              actions:
+                  - what: setPreferredTimeframe
+                    predefined: in2months
+              step: know-where-budget
             - timeframePicker: true
+              step: know-where-budget
+        behaviour:
+            resetSelection: true
+            skippable: true
+            singleChoice: true
+    know-where-budget:
+        key: know-where-budget
+        instance: StepSimpleChoice
+        progress: true
+        h3: "Ваш комфортный бюджет на поездку"
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-budget-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-budget-mobile.jpg'
+        choices:
+            - label: "до 100 000 ₽"
+            - label: "от 100 000 до 200 000 ₽"
+            - label: "от 200 000 ₽"
         behaviour:
             skippable: true
             singleChoice: true
+

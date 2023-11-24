@@ -4,8 +4,16 @@ import ControlPane from "./ControlPane.vue";
 import { computed, onMounted, provide, reactive, ref } from "vue";
 
 import tourGuideConfig from '../config/decision-tree.yaml'
-
 const tourGuideSteps = reactive(tourGuideConfig.steps);
+
+const preferredSearchParams = reactive({
+    timeframe: {
+        startMoment: null,
+        endMoment: null,
+        selectedMoment: null
+    }
+});
+provide('preferred-search-params', preferredSearchParams);
 
 const currentStepConfig = ref(Object.values(tourGuideSteps).find(step => !!step.root));
 provide('current-step-config', currentStepConfig);
