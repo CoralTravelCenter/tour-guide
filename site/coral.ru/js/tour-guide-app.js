@@ -5,7 +5,7 @@ import StepSimpleChoice from "../components/StepSimpleChoice.vue";
 
 createApp({
     components: { TourGuide },
-    template: '<TourGuide/>'
+    template: '<Suspense><TourGuide/></Suspense>'
 })
     .component('StepIntro', StepIntro)
     .component('StepSimpleChoice', StepSimpleChoice)

@@ -64,10 +64,14 @@ steps:
             - desktop: '/site/coral.ru/assets/backdrop-budget-desktop.jpg'
               mobile: '/site/coral.ru/assets/backdrop-budget-mobile.jpg'
         choices:
-            - label: "до 100 000 ₽"
-            - label: "от 100 000 до 200 000 ₽"
-            - label: "от 200 000 ₽"
+            - label:
+                predefined: lowBudgetLabel
+            - label:
+                predefined: mediumBudgetLabel
+            - label:
+                predefined: highBudgetLabel
         behaviour:
+            resetSelection: true
             skippable: true
             singleChoice: true
 

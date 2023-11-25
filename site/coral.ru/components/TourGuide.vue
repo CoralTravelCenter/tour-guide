@@ -1,9 +1,11 @@
-<script setup>
+<script setup async>
 import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
 import { computed, onMounted, provide, reactive, ref } from "vue";
 
 import tourGuideConfig from '../config/decision-tree.yaml'
+import { highBudgetLabel, lowBudgetLabel, mediumBudgetLabel } from "./predefined-actions.js";
+
 const tourGuideSteps = reactive(tourGuideConfig.steps);
 
 const preferredSearchParams = reactive({
@@ -49,6 +51,10 @@ provide('flow-control', { stepByKey, stepBack });
 
 const h2MobilePlaceholder = ref(null);
 provide('h2-mobile-placeholder', h2MobilePlaceholder);
+
+provide('lowBudgetLabel', await lowBudgetLabel());
+provide('mediumBudgetLabel', await mediumBudgetLabel());
+provide('highBudgetLabel', await highBudgetLabel());
 
 onMounted(() => {
     const layout = matchMedia('(max-width:768px)');
