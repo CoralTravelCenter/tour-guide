@@ -15,20 +15,6 @@ export function in2monthsTimeframe() {
     };
 }
 
-export async function lowBudgetLabel() {
-    const { code, symbol, rate } = await currency();
-    return `low ${ symbol }`;
-}
-export async function mediumBudgetLabel() {
-    const { code, symbol, rate } = await currency();
-    return `medium ${ symbol }`;
-}
-export async function highBudgetLabel() {
-    const { code, symbol, rate } = await currency();
-    return `high ${ symbol }`;
-}
-
-
 function currencyFromDOM() {
     return {
         name:  document.querySelector('.headerCurrency .currency-list .selected .currency-name').textContent,
@@ -46,7 +32,7 @@ async function getActiveCurrency() {
         }
     });
 }
-export async function currency() {
+export async function currencyBudget() {
     const { name: code } = await getActiveCurrency();
     let rate = 1.0;
     let symbol = '₽';
@@ -59,5 +45,34 @@ export async function currency() {
         rate = eur_rate;
         symbol = '€';
     }
-    return { code, symbol, rate };
+    const budget = {
+        low: {
+            labelMarkup: {
+                RUB: 'до 100 000 <span style="font-family: \'Material Icons\'; margin-left: .1em;">currency_ruble</span>',
+                EUR: 'до €1,000',
+                USD: 'до $1,000'
+            }[code],
+            min: null,
+            max: { RUB: 100000, EUR: 1000, USD: 1000 }[code]
+        },
+        medium: {
+            labelMarkup: {
+                RUB: 'от 100 000 <span style="font-family: \'Material Icons\'; margin-left: .1em;">currency_ruble</span> до 200 000 <span style="font-family: \'Material Icons\'; margin-left: .1em;">currency_ruble</span>',
+                EUR: 'от €1,000 до €2,000',
+                USD: 'от $1,000 до $2,000',
+            }[code],
+            min: { RUB: 100000, EUR: 1000, USD: 1000 }[code],
+            max: { RUB: 200000, EUR: 2000, USD: 2000 }[code]
+        },
+        high: {
+            labelMarkup: {
+                RUB: 'от 200 000 <span style="font-family: \'Material Icons\'; margin-left: .1em;">currency_ruble</span>',
+                EUR: 'от €2,000',
+                USD: 'от $2,000'
+            }[code],
+            min: { RUB: 200000, EUR: 2000, USD: 2000 }[code],
+            max: null
+        },
+    };
+    return { code, symbol, rate, budget };
 }

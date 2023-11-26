@@ -4,15 +4,21 @@ import ControlPane from "./ControlPane.vue";
 import { computed, onMounted, provide, reactive, ref } from "vue";
 
 import tourGuideConfig from '../config/decision-tree.yaml'
-import { highBudgetLabel, lowBudgetLabel, mediumBudgetLabel } from "./predefined-actions.js";
+import { currencyBudget } from "./predefined-actions.js";
 
 const tourGuideSteps = reactive(tourGuideConfig.steps);
 
 const preferredSearchParams = reactive({
     timeframe: {
-        startMoment: null,
-        endMoment: null,
+        startMoment:    null,
+        endMoment:      null,
         selectedMoment: null
+    },
+    budget: {
+        currencyCode: '',
+        currencySymbol: '',
+        min: null,
+        max: null
     }
 });
 provide('preferred-search-params', preferredSearchParams);
@@ -52,9 +58,15 @@ provide('flow-control', { stepByKey, stepBack });
 const h2MobilePlaceholder = ref(null);
 provide('h2-mobile-placeholder', h2MobilePlaceholder);
 
-provide('lowBudgetLabel', await lowBudgetLabel());
-provide('mediumBudgetLabel', await mediumBudgetLabel());
-provide('highBudgetLabel', await highBudgetLabel());
+const { budget, code: currencyCode, symbol: currencySymbol } = await currencyBudget();
+// preferredSearchParams.budget.currencyCode = currencyCode;
+// preferredSearchParams.budget.currencySymbol = currencySymbol;
+provide('lowBudgetLabelMarkup', budget.low.labelMarkup);
+provide('lowBudgetRange', { currencyCode, currencySymbol, min: budget.low.min, max: budget.low.max });
+provide('mediumBudgetLabelMarkup', budget.medium.labelMarkup);
+provide('mediumBudgetRange', { currencyCode, currencySymbol, min: budget.medium.min, max: budget.medium.max });
+provide('highBudgetLabelMarkup', budget.high.labelMarkup);
+provide('highBudgetRange', { currencyCode, currencySymbol, min: budget.high.min, max: budget.high.max });
 
 onMounted(() => {
     const layout = matchMedia('(max-width:768px)');

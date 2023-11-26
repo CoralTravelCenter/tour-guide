@@ -13,6 +13,9 @@ if (stepConfig.value.behaviour?.resetSelection) {
 }
 
 const preferredSearchParams = inject('preferred-search-params');
+const lowBudgetRange = inject('lowBudgetRange');
+const mediumBudgetRange = inject('mediumBudgetRange');
+const highBudgetRange = inject('highBudgetRange');
 
 function handleChoiceHover(choice) {
     if (stepConfig.value.behaviour?.selectOnHover) {
@@ -39,6 +42,10 @@ function handleChoiceSelect(choice) {
                 } else if (action.predefined === 'in2months') {
                     Object.assign(preferredSearchParams.timeframe, in2monthsTimeframe());
                 }
+                break;
+            case 'setPreferredBudget':
+                debugger;
+                Object.assign(preferredSearchParams.budget, this[action.predefined]);
                 break;
         }
     }

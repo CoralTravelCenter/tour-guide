@@ -65,11 +65,20 @@ steps:
               mobile: '/site/coral.ru/assets/backdrop-budget-mobile.jpg'
         choices:
             - label:
-                predefined: lowBudgetLabel
+                predefined: lowBudgetLabelMarkup
+              actions:
+                  - what: setPreferredBudget
+                    predefined: lowBudgetRange
             - label:
-                predefined: mediumBudgetLabel
+                predefined: mediumBudgetLabelMarkup
+              actions:
+                  - what: setPreferredBudget
+                    predefined: mediumBudgetRange
             - label:
-                predefined: highBudgetLabel
+                predefined: highBudgetLabelMarkup
+              actions:
+                  - what: setPreferredBudget
+                    predefined: highBudgetRange
         behaviour:
             resetSelection: true
             skippable: true
