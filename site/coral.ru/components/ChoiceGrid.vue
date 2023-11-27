@@ -44,7 +44,6 @@ function handleChoiceSelect(choice) {
                 }
                 break;
             case 'setPreferredBudget':
-                debugger;
                 Object.assign(preferredSearchParams.budget, this[action.predefined]);
                 break;
         }

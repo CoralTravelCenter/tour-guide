@@ -3,8 +3,17 @@ import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
 import { computed, onMounted, provide, reactive, ref } from "vue";
 
-import tourGuideConfig from '../config/decision-tree.yaml'
+import tourGuideConfig from '../config/tour-guide.js'
 import { currencyBudget } from "./predefined-actions.js";
+
+const predefinedActions = {
+    resetPreferredTimeframe() {
+        Object.assign(preferredSearchParams.timeframe, { startMoment: null, endMoment: null, selectedMoment: null });
+    },
+    resetPreferredBudget() {
+        Object.assign(preferredSearchParams.budget, { currencyCode: '', currencySymbol: '', min: null, max: null });
+    },
+}
 
 const tourGuideSteps = reactive(tourGuideConfig.steps);
 
@@ -46,14 +55,20 @@ function stepByKey(key) {
         breadcrumbs.push(step_config);
     }
 }
-
 function stepBack() {
     if (breadcrumbs.length > 1) {
         breadcrumbs.pop();
         currentStepConfig.value = breadcrumbs.at(-1);
     }
 }
-provide('flow-control', { stepByKey, stepBack });
+
+function skip(key) {
+    if (typeof predefinedActions[currentStepConfig.value.behaviour?.resetSelection] === 'function') {
+        predefinedActions[currentStepConfig.value.behaviour?.resetSelection]();
+    }
+    stepByKey(key);
+}
+provide('flow-control', { stepByKey, stepBack, skip });
 
 const h2MobilePlaceholder = ref(null);
 provide('h2-mobile-placeholder', h2MobilePlaceholder);

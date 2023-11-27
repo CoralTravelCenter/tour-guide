@@ -26,7 +26,7 @@ steps:
             - label: 'Не знаю'
               foreground:
                   - '/site/coral.ru/assets/backdrop-where2-dontknow-desktop.png'
-              step:
+              step: dont-know-where-budget
         behaviour:
             singleChoice: true
             selectOnHover: true
@@ -52,8 +52,34 @@ steps:
             - timeframePicker: true
               step: know-where-budget
         behaviour:
-            resetSelection: true
-            skippable: true
+            resetSelection: resetPreferredTimeframe
+            skip: know-where-budget
+            singleChoice: true
+    dont-know-where-timeframe:
+        key: dont-know-where-timeframe
+        instance: StepSimpleChoice
+        progress: true
+        h2: "Хорошо!"
+        h3: "Теперь определимся с датой вылета"
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-timeframe-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-timeframe-mobile.jpg'
+        choices:
+            - label: "Как можно скорее"
+              actions:
+                  - what: setPreferredTimeframe
+                    predefined: asap
+              step: dont-know-where-kind
+            - label: "Через 2 месяца"
+              actions:
+                  - what: setPreferredTimeframe
+                    predefined: in2months
+              step: dont-know-where-kind
+            - timeframePicker: true
+              step: dont-know-where-kind
+        behaviour:
+            resetSelection: resetPreferredTimeframe
+            skip: dont-know-where-kind
             singleChoice: true
     know-where-budget:
         key: know-where-budget
@@ -80,7 +106,71 @@ steps:
                   - what: setPreferredBudget
                     predefined: highBudgetRange
         behaviour:
-            resetSelection: true
-            skippable: true
+            resetSelection: resetPreferredBudget
+            skip: destination
             singleChoice: true
-
+    dont-know-where-budget:
+        key: dont-know-where-budget
+        instance: StepSimpleChoice
+        progress: true
+        h2: "Хорошо!"
+        h3: "Выберите рамки вашего бюджета"
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-budget-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-budget-mobile.jpg'
+        choices:
+            - label:
+                predefined: lowBudgetLabelMarkup
+              actions:
+                  - what: setPreferredBudget
+                    predefined: lowBudgetRange
+              step: dont-know-where-flight
+            - label:
+                predefined: mediumBudgetLabelMarkup
+              actions:
+                  - what: setPreferredBudget
+                    predefined: mediumBudgetRange
+              step: dont-know-where-flight
+            - label:
+                predefined: highBudgetLabelMarkup
+              actions:
+                  - what: setPreferredBudget
+                    predefined: highBudgetRange
+              step: dont-know-where-flight
+        behaviour:
+            resetSelection: resetPreferredBudget
+            skip: dont-know-where-flight
+            singleChoice: true
+    dont-know-where-flight:
+        key: dont-know-where-flight
+        instance: StepSimpleChoice
+        progress: true
+        h2: "Отлично!"
+        h3: "Выберите приемлемое для вас время перелета"
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-flight-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-flight-mobile.jpg'
+        choices:
+            - label: "до 6 часов"
+              step: dont-know-where-timeframe
+            - label: "до 12 часов"
+              step: dont-know-where-timeframe
+            - label: "неважно"
+              step: dont-know-where-timeframe
+        behaviour:
+            resetSelection: resetPreferredBudget
+            skip: dont-know-where-timeframe
+            singleChoice: true
+    dont-know-where-kind:
+        key: dont-know-where-kind
+        instance: StepMultipleChoice
+        progress: true
+        h2: 'Замечательно!'
+        h3: 'А какой тип отдыха вам интересен?'
+        hint: 'можно выбрать несколько вариантов'
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-kind-beach-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-kind-beach-mobile.jpg'
+        behaviour:
+            skip:
+        choices: leasureKindChoices

@@ -2,11 +2,21 @@
 
 import { computed, inject } from "vue";
 
-const { stepBack } = inject('flow-control');
+const { stepBack, skip, stepByKey } = inject('flow-control');
 const stepConfig = inject('current-step-config');
 const anyChoiceSelected = computed(() => {
     return stepConfig.value.choices.some(choice => choice.selected);
 });
+
+function skipProceedHandler() {
+    if (anyChoiceSelected.value) {
+
+    } else {
+        if (stepConfig.value.behaviour?.skip) {
+            skip(stepConfig.value.behaviour?.skip);
+        }
+    }
+}
 
 </script>
 
@@ -14,7 +24,9 @@ const anyChoiceSelected = computed(() => {
     <div class="progress-navigation">
         <button class="back" @click="stepBack">Назад</button>
         <div class="progress-bar"><div class="filler"></div></div>
-        <button class="skip-proceed" :class="{ [anyChoiceSelected ? 'proceed' : 'skip']: true }">{{ anyChoiceSelected ? 'Продолжить' : 'Пропустить' }}</button>
+        <button class="skip-proceed"
+                :class="{ [anyChoiceSelected ? 'proceed' : 'skip']: true }"
+                @click="skipProceedHandler">{{ anyChoiceSelected ? 'Продолжить' : 'Пропустить' }}</button>
     </div>
 </template>
 
