@@ -13,6 +13,9 @@ const predefinedActions = {
     resetPreferredBudget() {
         Object.assign(preferredSearchParams.budget, { currencyCode: '', currencySymbol: '', min: null, max: null });
     },
+    resetMaxFlightDuration() {
+        preferredSearchParams.maxFlightDuration = Infinity;
+    },
 }
 
 const tourGuideSteps = reactive(tourGuideConfig.steps);
@@ -24,11 +27,12 @@ const preferredSearchParams = reactive({
         selectedMoment: null
     },
     budget: {
-        currencyCode: '',
+        currencyCode:   '',
         currencySymbol: '',
-        min: null,
-        max: null
-    }
+        min:            null,
+        max:            null
+    },
+    maxFlightDuration: Infinity
 });
 provide('preferred-search-params', preferredSearchParams);
 

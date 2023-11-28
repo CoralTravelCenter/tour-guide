@@ -1,35 +1,42 @@
-- id: beach
-  label: "Пляжный отдых"
-  backdropVisual:
-      - desktop: '/site/coral.ru/assets/backdrop-kind-beach-desktop.jpg'
-        mobile: '/site/coral.ru/assets/backdrop-kind-beach-mobile.jpg'
-- id: sightseeing
-  label: "Экскурсии и города"
-  backdropVisual:
-      - desktop: "/site/coral.ru/assets/backdrop-kind-sightseeing-desktop.jpg"
-        mobile: "/site/coral.ru/assets/backdrop-kind-sightseeing-mobile.jpg"
-- id: shopping
-  label: "Шопинг"
-  backdropVisual:
-      - desktop: "/site/coral.ru/assets/backdrop-kind-shopping-desktop.jpg"
-        mobile: "/site/coral.ru/assets/backdrop-kind-shopping-mobile.jpg"
-- id: party
-  label: "Тусовки и веселье"
-  backdropVisual:
-      - desktop: "/site/coral.ru/assets/backdrop-kind-party-desktop.jpg"
-        mobile: "/site/coral.ru/assets/backdrop-kind-party-mobile.jpg"
-- id: spa
-  label: "Спа и массажи"
-  backdropVisual:
-      - desktop: "/site/coral.ru/assets/backdrop-kind-spa-desktop.jpg"
-        mobile: "/site/coral.ru/assets/backdrop-kind-spa-mobile.jpg"
-- id: exotic
-  label: "Экзотика"
-  backdropVisual:
-      - desktop: "/site/coral.ru/assets/backdrop-kind-exotic-desktop.jpg"
-        mobile: "/site/coral.ru/assets/backdrop-kind-exotic-mobile.jpg"
-- id: deluxe
-  label: "Deluxe, приватность, эксклюзив"
-  backdropVisual:
-      - desktop: "/site/coral.ru/assets/backdrop-kind-deluxe-desktop.jpg"
-        mobile: "/site/coral.ru/assets/backdrop-kind-deluxe-mobile.jpg"
+-   id:    beach
+    label: "Пляжный отдых"
+    backdropVisual:
+        key: beach
+        desktop: '/site/coral.ru/assets/backdrop-kind-beach-desktop.jpg'
+        mobile:  '/site/coral.ru/assets/backdrop-kind-beach-mobile.jpg'
+-   id:    sightseeing
+    label: "Экскурсии и города"
+    backdropVisual:
+        key: sightseeing
+        desktop: "/site/coral.ru/assets/backdrop-kind-sightseeing-desktop.jpg"
+        mobile:  "/site/coral.ru/assets/backdrop-kind-sightseeing-mobile.jpg"
+-   id:    shopping
+    label: "Шопинг"
+    backdropVisual:
+        key: shopping
+        desktop: "/site/coral.ru/assets/backdrop-kind-shopping-desktop.jpg"
+        mobile:  "/site/coral.ru/assets/backdrop-kind-shopping-mobile.jpg"
+-   id:    party
+    label: "Тусовки и веселье"
+    backdropVisual:
+        key: party
+        desktop: "/site/coral.ru/assets/backdrop-kind-party-desktop.jpg"
+        mobile:  "/site/coral.ru/assets/backdrop-kind-party-mobile.jpg"
+-   id:    spa
+    label: "Спа и массажи"
+    backdropVisual:
+        key: spa
+        desktop: "/site/coral.ru/assets/backdrop-kind-spa-desktop.jpg"
+        mobile:  "/site/coral.ru/assets/backdrop-kind-spa-mobile.jpg"
+-   id:    exotic
+    label: "Экзотика"
+    backdropVisual:
+        key: exotic
+        desktop: "/site/coral.ru/assets/backdrop-kind-exotic-desktop.jpg"
+        mobile:  "/site/coral.ru/assets/backdrop-kind-exotic-mobile.jpg"
+-   id:    deluxe
+    label: "Deluxe, приватность, эксклюзив"
+    backdropVisual:
+        key: deluxe
+        desktop: "/site/coral.ru/assets/backdrop-kind-deluxe-desktop.jpg"
+        mobile:  "/site/coral.ru/assets/backdrop-kind-deluxe-mobile.jpg"

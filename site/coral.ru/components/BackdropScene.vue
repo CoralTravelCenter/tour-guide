@@ -57,7 +57,7 @@ function backdropVisualStyle(idx, collection) {
         .transit(all, .25s);
         &:nth-child(n+2) {
             border-radius: 1em;
-            box-shadow: -.5em 0 32px fade(black, 20%);
+            box-shadow: -.5em 0 32px fade(black, 30%);
         }
 
     }

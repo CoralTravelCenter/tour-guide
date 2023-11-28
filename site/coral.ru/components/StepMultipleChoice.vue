@@ -12,20 +12,20 @@ const isDesktopLayout = computed(() => layoutMode.value === 'desktop');
 </script>
 
 <template>
-    <div class="step-simple-choice">
+    <div class="step-multiple-choice">
         <Teleport :to="h2MobilePlaceholder" :disabled="isDesktopLayout">
             <h2 v-if="config.h2">{{ config.h2 }}</h2>
         </Teleport>
         <h3 v-if="config.h3">{{ config.h3 }}</h3>
         <div v-if="config.hint" class="hint">{{ config.hint }}</div>
-        <ChoiceGrid trait="ramp-hover"/>
+        <ChoiceGrid trait="ramp-hover" layout="kind-grid"/>
     </div>
 </template>
 
 <style scoped lang="less">
 @import "../common/css/coral-colors";
 @import "../common/css/layout";
-.step-simple-choice {
+.step-multiple-choice {
     background-color: white;
     border-radius: 1em;
     display: flex;
@@ -33,13 +33,16 @@ const isDesktopLayout = computed(() => layoutMode.value === 'desktop');
     justify-content: space-evenly;
     align-items: center;
     text-align: center;
-    padding: 1em 3em;
+    padding: 1em 1.5em;
     @media screen and (max-width: @mobile-breakpoint) {
         gap: 1em;
         padding: 2em 3em;
     }
     h2 {
         color: @coral-main-yellow;
+    }
+    .hint {
+        font-size: (14/20em);
     }
 }
 </style>

@@ -150,15 +150,25 @@ steps:
         setBackdrop:
             - desktop: '/site/coral.ru/assets/backdrop-flight-desktop.jpg'
               mobile: '/site/coral.ru/assets/backdrop-flight-mobile.jpg'
+        setSolidFill: 'transparent'
         choices:
             - label: "до 6 часов"
+              actions:
+                  - what: setMaxFlightDuration
+                    predefined: 6
               step: dont-know-where-timeframe
             - label: "до 12 часов"
+              actions:
+                  - what: setMaxFlightDuration
+                    predefined: 12
               step: dont-know-where-timeframe
             - label: "неважно"
+              actions:
+                  - what: setMaxFlightDuration
+                    predefined: 1000000
               step: dont-know-where-timeframe
         behaviour:
-            resetSelection: resetPreferredBudget
+            resetSelection: resetMaxFlightDuration
             skip: dont-know-where-timeframe
             singleChoice: true
     dont-know-where-kind:
@@ -169,8 +179,10 @@ steps:
         h3: 'А какой тип отдыха вам интересен?'
         hint: 'можно выбрать несколько вариантов'
         setBackdrop:
-            - desktop: '/site/coral.ru/assets/backdrop-kind-beach-desktop.jpg'
+            - key: beach
+              desktop: '/site/coral.ru/assets/backdrop-kind-beach-desktop.jpg'
               mobile: '/site/coral.ru/assets/backdrop-kind-beach-mobile.jpg'
         behaviour:
+            toggle: true
             skip:
         choices: leasureKindChoices
