@@ -148,7 +148,10 @@ function handleChoiceSelect(choice) {
             background: linear-gradient(0deg, transparent, transparent);
             box-shadow: inset 0 0 0 2px currentColor;
             .transit(background);
-            &:hover, &.selected {
+            @media screen and (max-width: @narrow-breakpoint) {
+                box-shadow: inset 0 0 1px 1px currentColor;
+            }
+            &:hover:not(:active):not(:focus), &.selected {
                 background: @coral-ramp-bg;
                 color: white;
                 box-shadow: none;

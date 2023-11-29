@@ -122,7 +122,7 @@ onUnmounted(() => {
             box-shadow: none;
         }
         .drawer {
-            max-height: 20em;
+            max-height: 22em;
         }
     }
     .toggler {
@@ -144,6 +144,9 @@ onUnmounted(() => {
         box-shadow: inset 0 0 0 2px currentColor;
         .transit(background);
         .transit(border-radius);
+        @media screen and (max-width: @narrow-breakpoint) {
+            box-shadow: inset 0 0 1px 1px currentColor;
+        }
         .icon {
             position: absolute;
             left: 0;

@@ -1,0 +1,8 @@
+
+https://worldtimeapi.org/
+
+https://worldtimeapi.org/api/timezone/Turkey
+https://worldtimeapi.org/api/timezone/Asia/Yekaterinburg
+
+List of time zones:
+https://data.iana.org/time-zones/tzdb-2021a/zone1970.tab

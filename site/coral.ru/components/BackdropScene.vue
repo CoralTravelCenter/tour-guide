@@ -59,7 +59,12 @@ function backdropVisualStyle(idx, collection) {
             border-radius: 1em;
             box-shadow: -.5em 0 32px fade(black, 30%);
         }
-
+        @media screen and (max-width: @mobile-breakpoint) {
+            &:last-child {
+                width: 100%!important;
+                left: 0!important;
+            }
+        }
     }
 }
 

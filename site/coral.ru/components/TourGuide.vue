@@ -1,7 +1,7 @@
 <script setup async>
 import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
-import { computed, onMounted, provide, reactive, ref } from "vue";
+import { computed, onMounted, provide, reactive, ref, watch } from "vue";
 
 import tourGuideConfig from '../config/tour-guide.js'
 import { currencyBudget } from "./predefined-actions.js";
@@ -47,6 +47,11 @@ const foregroundStack = computed(() => {
         .filter(choice => choice.selected && choice.foreground)
         .map(choice => choice.foreground);
 });
+watch(backdropStack, (newStack) => {
+    if (newStack.length) {
+        h2MobileColor.value = newStack.at(-1)?.h2MobileColor;
+    }
+});
 provide('backdrop', { backdropSolidFill, backdropStack, foregroundStack });
 
 const layoutMode = ref('');
@@ -76,6 +81,7 @@ provide('flow-control', { stepByKey, stepBack, skip });
 
 const h2MobilePlaceholder = ref(null);
 provide('h2-mobile-placeholder', h2MobilePlaceholder);
+const h2MobileColor = ref('inherit');
 
 const { budget, code: currencyCode, symbol: currencySymbol } = await currencyBudget();
 // preferredSearchParams.budget.currencyCode = currencyCode;
@@ -97,7 +103,7 @@ onMounted(() => {
 
 <template>
     <div class="tour-guide-module">
-        <div ref="h2MobilePlaceholder" class="h2-mobile-placeholder"></div>
+        <div ref="h2MobilePlaceholder" class="h2-mobile-placeholder" :style="{ color: h2MobileColor }"></div>
         <BackdropScene/>
         <ControlPane/>
     </div>
@@ -150,6 +156,8 @@ onMounted(() => {
         z-index: 1;
         :deep(h2) {
             font-size: 2em;
+            color: inherit;
+            .transit(color);
         }
     }
 

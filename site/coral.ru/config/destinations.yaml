@@ -1,36 +1,114 @@
-- id: turkey
-  name: "Турция"
-  flightDuration: 4
-- id: egypt
-  name: "Египет"
-  flightDuration: 5
-- id: uae
-  name: "ОАЭ"
-  flightDuration: 5
-- id: bahrain
-  name: "Бахрейн"
-  flightDuration: 5
-- id: thailand
-  name: "Таиланд"
-  flightDuration: 9
-- id: maldives
-  name: "Мальдивы"
-  flightDuration: 15
-- id: cuba
-  name: "Куба"
-  flightDuration: 13
-- id: russia
-  name: "Россия"
-  flightDuration: 6
-- id: az
-  name: "Азербайджан"
-  flightDuration: 3
-- id: uz
-  name: "Узбекистан"
-  flightDuration: 4
-- id: belarus
-  name: "Беларусь"
-  flightDuration: 3
-- id: armenia
-  name: "Армения"
-  flightDuration: 4
+-   id: turkey
+    name: "Турция"
+    IANA: 'Turkey'
+    flightDuration: 4
+    avgTemperature: [ 14, 15, 17, 21, 27, 33, 35, 38, 32, 27, 17, 15 ]
+    leasureKinds: [ 'beach','sightseeing','shopping','party','spa','deluxe' ]
+    marker:
+        text: 'Фетхие, Олюдениз'
+        color: white
+
+-   id: egypt
+    name: "Египет"
+    IANA: 'Egypt'
+    flightDuration: 5
+    avgTemperature: [ 21, 22, 24, 26, 29, 30, 33, 33, 31, 29, 26, 21 ]
+    leasureKinds: [ 'beach' ]
+    marker:
+        text: 'Шарм-эш-Шейх'
+        color: white
+
+-   id: uae
+    name: "ОАЭ"
+    IANA: 'Asia/Dubai'
+    flightDuration: 5
+    avgTemperature: [ 19.8, 21.2, 24.3, 28.4, 32.1, 34.6, 35.4, 35.2, 33.3, 30.4, 26.1, 22.1 ]
+    leasureKinds: [ 'beach','sightseeing','shopping','party','spa' ]
+    marker:
+        text: 'Пальм Джумейра'
+        color: white
+
+-   id: bahrain
+    name: "Бахрейн"
+    IANA: 'Asia/Bahrain'
+    flightDuration: 5
+    avgTemperature: [ 17.8, 19.0, 22.6, 26.8, 31.5, 34.6, 35.7, 35.7, 34.1, 30.6, 25.4, 20.2 ]
+    leasureKinds: [ 'beach','exotic' ]
+    marker:
+        text: 'Манама, Форт Арад'
+        color: '#033870'
+
+-   id: thailand
+    name: "Таиланд"
+    IANA: 'Asia/Bangkok'
+    flightDuration: 9
+    avgTemperature: [ 25.9, 26.9, 28.8, 29.4, 29.9, 29, 28.4, 28.1, 27.7, 27.4, 27.2, 26.2 ]
+    leasureKinds: [ 'beach','spa','exotic' ]
+    marker:
+        text: 'Краби, пляж «Рейли»'
+        color: '#033870'
+
+-   id: maldives
+    name: "Мальдивы"
+    flightDuration: 15
+    IANA: 'Indian/Maldives'
+    avgTemperature: [ 28.3, 28.7, 29.3, 29.8, 29.6, 29.5, 28.7, 28.5, 28.5, 28.3, 28.1, 28.2 ]
+    leasureKinds: [ 'beach','exotic','deluxe' ]
+    marker:
+        text: 'Южный Мале Атолл'
+        color: '#033870'
+
+-   id: cuba
+    name: "Куба"
+    flightDuration: 13
+    IANA: 'America/Havana'
+    avgTemperature: [ 23, 23.7, 24.3, 25.9, 26.2, 27.4, 28.1, 27.6, 27.6, 26.8, 25.4, 24.1 ]
+    leasureKinds: [ 'beach' ]
+    marker:
+        text: 'Варадеро'
+        color: white
+
+-   id: russia
+    name: "Россия"
+    flightDuration: 6
+    leasureKinds: []
+
+-   id: az
+    name: "Азербайджан"
+    flightDuration: 3
+    IANA: 'Asia/Baku'
+    avgTemperature: [ 4, 5, 8, 13, 19, 25, 27, 27, 22, 16, 9, 6 ]
+    leasureKinds: [ 'sightseeing' ]
+    marker:
+        text: 'Баку, «Старый город»'
+        color: white
+
+-   id: uz
+    name: "Узбекистан"
+    flightDuration: 4
+    IANA: 'Asia/Tashkent'
+    avgTemperature: [ 1.7, 3.6, 10.3, 16.7, 23.4, 28.1, 30, 26.8, 21.6, 13.5, 5.7, 2.4 ]
+    leasureKinds: [ 'sightseeing' ]
+    marker:
+        text: 'Шахрисабз, Мечеть Кок Гумбаз'
+        color: white
+
+-   id: belarus
+    name: "Беларусь"
+    flightDuration: 3
+    IANA: 'Europe/Minsk'
+    avgTemperature: [ −4, −1.6, 2.5, 7.6, 13.3, 18.4, 19.1, 18.7, 12.9, 7.4, 2.8, −0.8 ]
+    leasureKinds: [ 'sightseeing' ]
+    marker:
+        text: 'Замковый комплекс «Мир»'
+        color: white
+
+-   id: armenia
+    name: "Армения"
+    flightDuration: 4
+    IANA: 'Asia/Yerevan'
+    avgTemperature: [ −4.7, −1.2, 3.7, 9.5, 13.8, 19.7, 22.5, 22.1, 17.6, 10.8, 3.4, −1.8 ]
+    leasureKinds: [ 'sightseeing' ]
+    marker:
+        text: 'Татевский монастырь'
+        color: white

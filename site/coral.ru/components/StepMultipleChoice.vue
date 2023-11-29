@@ -36,7 +36,7 @@ const isDesktopLayout = computed(() => layoutMode.value === 'desktop');
     padding: 1em 1.5em;
     @media screen and (max-width: @mobile-breakpoint) {
         gap: 1em;
-        padding: 2em 3em;
+        padding: 2em 1.5em;
     }
     h2 {
         color: @coral-main-yellow;

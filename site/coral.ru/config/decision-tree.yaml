@@ -150,6 +150,7 @@ steps:
         setBackdrop:
             - desktop: '/site/coral.ru/assets/backdrop-flight-desktop.jpg'
               mobile: '/site/coral.ru/assets/backdrop-flight-mobile.jpg'
+              h2MobileColor: 'white'
         setSolidFill: 'transparent'
         choices:
             - label: "до 6 часов"
@@ -180,6 +181,7 @@ steps:
         hint: 'можно выбрать несколько вариантов'
         setBackdrop:
             - key: beach
+              h2MobileColor: '#033870'
               desktop: '/site/coral.ru/assets/backdrop-kind-beach-desktop.jpg'
               mobile: '/site/coral.ru/assets/backdrop-kind-beach-mobile.jpg'
         behaviour:
