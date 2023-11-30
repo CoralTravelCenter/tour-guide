@@ -11,5 +11,11 @@
         "@vuepic/vue-datepicker": {
             "global": "VueDatePicker"
         }
+    },
+    "devDependencies": {
+        "local-cors-proxy": "^1.1.0"
+    },
+    "scripts": {
+        "api-proxy": "lcp --proxyUrl https://www.coral.ru"
     }
 }

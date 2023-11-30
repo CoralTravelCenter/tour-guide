@@ -2,6 +2,7 @@
 https://worldtimeapi.org/
 
 https://worldtimeapi.org/api/timezone/Turkey
+https://worldtimeapi.org/api/timezone/Asia/Kolkata
 https://worldtimeapi.org/api/timezone/Asia/Yekaterinburg
 
 List of time zones:

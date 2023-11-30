@@ -2,13 +2,16 @@
 
 import { inject } from "vue";
 import ForegroundStack from "./ForegroundStack.vue";
+import VimeoBackground from "./VimeoBackground.vue";
 
 const { backdropSolidFill, backdropStack } = inject('backdrop');
 const layoutMode = inject('layout-mode');
 
 function backdropVisualStyle(idx, collection) {
+    const visual = collection.at(idx);
     const visible_region_percent = 55;
-    const backdrop_url = typeof backdropStack[idx] === 'object' ? backdropStack[idx][layoutMode.value] : backdropStack[idx];
+    const picture_url = typeof visual[layoutMode.value] === 'object' ? visual[layoutMode.value].posterFrame : visual[layoutMode.value];
+    const backdrop_url = typeof visual === 'object' ? picture_url : visual;
     const css = {
         backgroundImage: `url(${ backdrop_url })`
     };
@@ -25,7 +28,10 @@ function backdropVisualStyle(idx, collection) {
 <template>
     <div class="backdrop-scene">
         <div class="visuals-stack">
-            <div class="visual" v-for="(visual, idx) in backdropStack" :style="backdropVisualStyle(idx, backdropStack)"></div>
+            <div class="visual" v-for="(visual, idx) in backdropStack" :style="backdropVisualStyle(idx, backdropStack)">
+                <VimeoBackground v-if="layoutMode === 'desktop' && visual.desktop?.vimeoId" :vimeo-id="visual.desktop?.vimeoId"/>
+                <VimeoBackground v-if="layoutMode === 'mobile' && visual.mobile?.vimeoId" :vimeo-id="visual.mobile?.vimeoId"/>
+            </div>
         </div>
         <div class="foreground">
             <ForegroundStack/>
@@ -60,10 +66,8 @@ function backdropVisualStyle(idx, collection) {
             box-shadow: -.5em 0 32px fade(black, 30%);
         }
         @media screen and (max-width: @mobile-breakpoint) {
-            &:last-child {
-                width: 100%!important;
-                left: 0!important;
-            }
+            width: 100%!important;
+            left: 0!important;
         }
     }
 }
