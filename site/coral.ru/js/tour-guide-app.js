@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import ElementPlus from 'element-plus';
 import TourGuide from "../components/TourGuide.vue";
 import StepIntro from "../components/StepIntro.vue";
 import StepSimpleChoice from "../components/StepSimpleChoice.vue";
@@ -13,4 +14,5 @@ createApp({
     .component('StepSimpleChoice', StepSimpleChoice)
     .component('StepMultipleChoice', StepMultipleChoice)
     .component('DestinationSelector', DestinationSelector)
+    .use(ElementPlus)
     .mount('#tour-guide-app');

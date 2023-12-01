@@ -1,7 +1,7 @@
-import tourGuideConfig from '../config/decision-tree.yaml'
+import decisionTree from '../config/decision-tree.yaml'
 import leasureKinds from '../config/leasure-kind-reference.yaml';
 
-tourGuideConfig.steps['dont-know-where-kind'].choices = leasureKinds.map(kind => {
+decisionTree.steps['dont-know-where-kind'].choices = leasureKinds.map(kind => {
     return {
         label: kind.label,
         actions: [{
@@ -11,4 +11,4 @@ tourGuideConfig.steps['dont-know-where-kind'].choices = leasureKinds.map(kind =>
     };
 });
 
-export default tourGuideConfig;
+export const tourGuideConfig = decisionTree;

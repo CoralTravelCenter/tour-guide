@@ -1,6 +1,7 @@
 {
     "dependencies": {
         "@vuepic/vue-datepicker": "^7.2.2",
+        "element-plus": "^2.4.3",
         "lodash": "^4.17.21",
         "vue": "^3.3.8"
     },
@@ -10,6 +11,10 @@
         },
         "@vuepic/vue-datepicker": {
             "global": "VueDatePicker"
+        },
+        "process": false,
+        "element-plus": {
+            "global": "ElementPlus"
         }
     },
     "devDependencies": {

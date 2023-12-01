@@ -3,7 +3,7 @@ import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
 import { computed, onMounted, provide, reactive, ref, watch } from "vue";
 
-import tourGuideConfig from '../config/tour-guide.js'
+import { tourGuideConfig } from '../config/tour-guide.js'
 import { currencyBudget } from "./predefined-actions.js";
 
 const predefinedActions = {
@@ -92,6 +92,9 @@ provide('mediumBudgetLabelMarkup', budget.medium.labelMarkup);
 provide('mediumBudgetRange', { currencyCode, currencySymbol, min: budget.medium.min, max: budget.medium.max });
 provide('highBudgetLabelMarkup', budget.high.labelMarkup);
 provide('highBudgetRange', { currencyCode, currencySymbol, min: budget.high.min, max: budget.high.max });
+
+const destinationSelectorMode = ref('list');
+provide('destination-selector', { destinationSelectorMode });
 
 onMounted(() => {
     const layout = matchMedia('(max-width:768px)');

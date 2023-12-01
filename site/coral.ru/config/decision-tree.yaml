@@ -196,3 +196,6 @@ steps:
         h3: 'Выберите куда вы хотите полететь'
         setBackdrop: ''
         choices: []
+        behaviour:
+            singleChoice:  true
+            selectOnHover: true
