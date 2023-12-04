@@ -27,9 +27,10 @@ function handleChoiceHover(choice) {
                 if (c !== choice) c.selected = false;
             }
         }
+        handleChoiceSelect(choice, 'dont-step');
     }
 }
-function handleChoiceSelect(choice) {
+function handleChoiceSelect(choice, dont_step) {
     choice.selected = stepConfig.value.behaviour?.toggle ? !choice.selected : true;
     if (stepConfig.value.behaviour?.singleChoice) {
         for (const c of stepConfig.value.choices) {
@@ -52,6 +53,9 @@ function handleChoiceSelect(choice) {
                 case 'setMaxFlightDuration':
                     preferredSearchParams.maxFlightDuration = action.predefined;
                     break;
+                case 'setBackdrop':
+                    backdropStack.splice(0, backdropStack.length, action.predefined);
+                    break;
                 case 'toggleBackdrop':
                     let idx = backdropStack.indexOf(backdropStack.find(backdrop => backdrop.key === action.predefined.key));
                     if (idx < 0) {
@@ -73,7 +77,7 @@ function handleChoiceSelect(choice) {
             }
         }
     }
-    if (choice.step) {
+    if (choice.step && !dont_step) {
         stepByKey(choice.step);
     }
 }
@@ -84,7 +88,11 @@ function handleChoiceSelect(choice) {
     <div class="choice-grid" :class="{ [layout]: true }">
         <ChoiceItem v-for="choice in stepConfig.choices"
                 :config="choice"
-                :class="{ [trait]: true, selected: choice.selected }"
+                :class="{
+                    [trait]: true,
+                    selected: choice.selected,
+                    disabled: choice.disabled
+                }"
                 @mouseenter="handleChoiceHover(choice)"
                 @selected="handleChoiceSelect(choice)">{{ choice.label }}</ChoiceItem>
     </div>
@@ -124,6 +132,24 @@ function handleChoiceSelect(choice) {
             }
         }
     }
+    &.destinations-grid {
+        align-self: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        font-size: (13/20em);
+        gap: unset;
+        padding: 0 1.7em;
+        > button {
+            flex: 1 1 (20%);
+            padding: 0 1em;
+            &:nth-child(4n+2), &:nth-child(4n+3), &:nth-child(4n+4) {
+                margin-left: 1em;
+            }
+            &:nth-child(n+5) {
+                margin-top: 1em;
+            }
+        }
+    }
     > button {
         .interactive();
         outline: none;
@@ -156,6 +182,10 @@ function handleChoiceSelect(choice) {
                 color: white;
                 box-shadow: none;
             }
+        }
+        &.disabled {
+            pointer-events: none;
+            color: @coral-page-bg;
         }
     }
 }

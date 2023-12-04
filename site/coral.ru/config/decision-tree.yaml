@@ -92,22 +92,25 @@ steps:
         choices:
             - label:
                 predefined: lowBudgetLabelMarkup
+              step: destination-selector
               actions:
                   - what: setPreferredBudget
                     predefined: lowBudgetRange
             - label:
                 predefined: mediumBudgetLabelMarkup
+              step: destination-selector
               actions:
                   - what: setPreferredBudget
                     predefined: mediumBudgetRange
             - label:
                 predefined: highBudgetLabelMarkup
+              step: destination-selector
               actions:
                   - what: setPreferredBudget
                     predefined: highBudgetRange
         behaviour:
             resetSelection: resetPreferredBudget
-            skip: destination
+            skip: destination-selector
             singleChoice: true
     dont-know-where-budget:
         key: dont-know-where-budget
@@ -186,15 +189,18 @@ steps:
               mobile: '/site/coral.ru/assets/backdrop-kind-beach-mobile.jpg'
         behaviour:
             toggle: true
-            skip: destination-selector
-        choices: leasureKindChoices
+            skip: dont-know-where-destination-selector
+            step: dont-know-where-destination-selector
+            proceedWithActions: setPreferredLeisureKindsFromCurrentStep
+        choices: []
 
-    destination-selector:
-        key: destination-selector
+    dont-know-where-destination-selector:
+        key: dont-know-where-destination-selector
         instance: DestinationSelector
         progress: true
         h3: 'Выберите куда вы хотите полететь'
         setBackdrop: ''
+        setSolidFill: 'transparent'
         choices: []
         behaviour:
             singleChoice:  true

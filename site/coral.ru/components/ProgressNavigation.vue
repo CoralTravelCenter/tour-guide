@@ -10,7 +10,8 @@ const anyChoiceSelected = computed(() => {
 
 function skipProceedHandler() {
     if (anyChoiceSelected.value) {
-        stepByKey(stepConfig.value.choices.find(choice => choice.selected).step);
+        const choiceStep = stepConfig.value.choices.find(choice => choice.selected).step;
+        choiceStep ? stepByKey(choiceStep) : stepByKey(stepConfig.value.behaviour?.step);
     } else {
         if (stepConfig.value.behaviour?.skip) {
             skip(stepConfig.value.behaviour?.skip);

@@ -1,9 +1,9 @@
 <script setup async>
 import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
-import { computed, onMounted, provide, reactive, ref, watch } from "vue";
+import { computed, onMounted, provide, reactive, ref, watch, watchEffect } from "vue";
 
-import { tourGuideConfig } from '../config/tour-guide.js'
+import { tourGuideConfig, destinations } from '../config/tour-guide.js'
 import { currencyBudget } from "./predefined-actions.js";
 
 const predefinedActions = {
@@ -15,6 +15,9 @@ const predefinedActions = {
     },
     resetMaxFlightDuration() {
         preferredSearchParams.maxFlightDuration = Infinity;
+    },
+    setPreferredLeisureKindsFromCurrentStep() {
+        preferredSearchParams.leisureKinds = currentStepConfig.value.choices.filter(choice => choice.selected).map(choice => choice.key);
     },
 }
 
@@ -32,7 +35,8 @@ const preferredSearchParams = reactive({
         min:            null,
         max:            null
     },
-    maxFlightDuration: Infinity
+    maxFlightDuration: Infinity,
+    leisureKinds: []
 });
 provide('preferred-search-params', preferredSearchParams);
 
@@ -57,9 +61,20 @@ provide('backdrop', { backdropSolidFill, backdropStack, foregroundStack });
 const layoutMode = ref('');
 provide('layout-mode', layoutMode);
 
+function performActionsForStep(step_config) {
+    if (step_config.behaviour?.proceedWithActions) {
+        const actions = Array.isArray(step_config.behaviour?.proceedWithActions)
+                        ? step_config.behaviour?.proceedWithActions
+                        : [step_config.behaviour?.proceedWithActions];
+        for (const action of actions) {
+            predefinedActions[action] && predefinedActions[action]();
+        }
+    }
+}
 function stepByKey(key) {
     const step_config = tourGuideSteps[key];
     if (step_config) {
+        performActionsForStep(breadcrumbs.at(-1));
         currentStepConfig.value = step_config;
         breadcrumbs.push(step_config);
     }
@@ -95,6 +110,21 @@ provide('highBudgetRange', { currencyCode, currencySymbol, min: budget.high.min,
 
 const destinationSelectorMode = ref('list');
 provide('destination-selector', { destinationSelectorMode });
+
+// tourGuideSteps['destination-selector'].setBackdrop = [destinations.find(d => d.selected).backdropVisual];
+
+watchEffect(() => {
+    tourGuideSteps['dont-know-where-destination-selector'].choices = destinations.map(dest => {
+        const all_kinds = [].concat(dest.leisureKinds, preferredSearchParams.leisureKinds);
+        const disabled = (preferredSearchParams.leisureKinds.length > 0) && (all_kinds.length === new Set(all_kinds).size);
+        return {
+            label: dest.name,
+            selected: dest.selected,
+            disabled,
+            actions: [{ what: 'setBackdrop', predefined: dest.backdropVisual }]
+        };
+    });
+});
 
 onMounted(() => {
     const layout = matchMedia('(max-width:768px)');

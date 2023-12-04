@@ -1,8 +1,8 @@
 <script setup>
 import ChoiceGrid from "./ChoiceGrid.vue";
+import ModeSwitch from "./ModeSwitch.vue";
 import { useStepBehaviour } from "./step-behaviour";
 import { computed, inject, ref } from "vue";
-import ModeSwitch from "./ModeSwitch.vue";
 import DestinationInfoSheet from "./DestinationInfoSheet.vue";
 
 const config = useStepBehaviour();
@@ -39,6 +39,7 @@ const paneBackground = computed(() => destinationSelectorMode.value === 'list' ?
             <Transition>
                 <div v-if="destinationSelectorMode === 'list'" class="list-view">
                     <h3 v-if="config.h3">{{ config.h3 }}</h3>
+                    <ChoiceGrid trait="ramp-hover" layout="destinations-grid"/>
                     <DestinationInfoSheet/>
                 </div>
                 <div v-else class="map-view">MAP</div>
@@ -74,7 +75,9 @@ const paneBackground = computed(() => destinationSelectorMode.value === 'list' ?
     }
     .list-view {
         display: grid;
+        height: 100%;
         grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
         justify-content: center;
         h3 {
             text-align: center;
