@@ -1,7 +1,8 @@
 <script setup>
 import { inject } from "vue";
 import ChoiceItem from "./ChoiceItem.vue";
-import { asapTimeframe, in2monthsTimeframe } from "./predefined-actions";
+import { asapTimeframe, choiceLeadsToDeadEnd, in2monthsTimeframe } from "./predefined-actions";
+import { destinations } from "../config/tour-guide";
 
 const props = defineProps(['behaviour', 'trait', 'layout']);
 
@@ -90,8 +91,8 @@ function handleChoiceSelect(choice, dont_step) {
                 :config="choice"
                 :class="{
                     [trait]: true,
-                    selected: choice.selected,
-                    disabled: choice.disabled
+                    selected: choice.selected && !(choice.disabled || choiceLeadsToDeadEnd(choice, destinations, preferredSearchParams)),
+                    disabled: choice.disabled || choiceLeadsToDeadEnd(choice, destinations, preferredSearchParams)
                 }"
                 @mouseenter="handleChoiceHover(choice)"
                 @selected="handleChoiceSelect(choice)">{{ choice.label }}</ChoiceItem>

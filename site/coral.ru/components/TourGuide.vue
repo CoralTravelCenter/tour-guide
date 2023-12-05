@@ -17,7 +17,10 @@ const predefinedActions = {
         preferredSearchParams.maxFlightDuration = Infinity;
     },
     setPreferredLeisureKindsFromCurrentStep() {
-        preferredSearchParams.leisureKinds = currentStepConfig.value.choices.filter(choice => choice.selected).map(choice => choice.key);
+        preferredSearchParams.leisureKinds = currentStepConfig.value.choices.filter(choice => choice.selected).map(choice => choice.kindKey);
+    },
+    preserveBackdropFromCurrentStep() {
+        currentStepConfig.value.setBackdrop.splice(0, currentStepConfig.value.setBackdrop.length, ...backdropStack);
     },
 }
 
@@ -80,6 +83,7 @@ function stepByKey(key) {
     }
 }
 function stepBack() {
+    performActionsForStep(breadcrumbs.at(-1));
     if (breadcrumbs.length > 1) {
         breadcrumbs.pop();
         currentStepConfig.value = breadcrumbs.at(-1);
@@ -116,11 +120,13 @@ provide('destination-selector', { destinationSelectorMode });
 watchEffect(() => {
     tourGuideSteps['dont-know-where-destination-selector'].choices = destinations.map(dest => {
         const all_kinds = [].concat(dest.leisureKinds, preferredSearchParams.leisureKinds);
-        const disabled = (preferredSearchParams.leisureKinds.length > 0) && (all_kinds.length === new Set(all_kinds).size);
+        const exclude_by_flight_duration = !!dest.flightDuration && dest.flightDuration > preferredSearchParams.maxFlightDuration;
+        const exclude_by_budget = dest.budgetLevelRUB && preferredSearchParams.budget.max && (dest.budgetLevelRUB > preferredSearchParams.budget.max);
+        const exclude_by_kind = (preferredSearchParams.leisureKinds.length > 0) && (all_kinds.length === new Set(all_kinds).size);
         return {
             label: dest.name,
             selected: dest.selected,
-            disabled,
+            disabled: exclude_by_kind || exclude_by_flight_duration || exclude_by_budget,
             actions: [{ what: 'setBackdrop', predefined: dest.backdropVisual }]
         };
     });

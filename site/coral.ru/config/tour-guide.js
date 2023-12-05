@@ -5,7 +5,7 @@ import destinationDefs from '../config/destinations.yaml';
 decisionTree.steps['dont-know-where-kind'].choices = leisureKinds.map(kind => {
     return {
         label: kind.label,
-        key: kind.id,
+        kindKey: kind.id,
         actions: [{
             what: 'toggleBackdrop',
             predefined: kind.backdropVisual

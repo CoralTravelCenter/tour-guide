@@ -3,6 +3,7 @@
     name: "Турция"
     IANA: 'Turkey'
     flightDuration: 4
+    budgetLevelRUB: 80000
     avgTemperature: [ 14, 15, 17, 21, 27, 33, 35, 38, 32, 27, 17, 15 ]
     leisureKinds: [ 'beach','sightseeing','shopping','party','spa','deluxe' ]
     backdropVisual:
@@ -16,6 +17,7 @@
     name: "Египет"
     IANA: 'Egypt'
     flightDuration: 5
+    budgetLevelRUB: 80000
     avgTemperature: [ 21, 22, 24, 26, 29, 30, 33, 33, 31, 29, 26, 21 ]
     leisureKinds: [ 'beach' ]
     backdropVisual:
@@ -29,6 +31,7 @@
     name: "ОАЭ"
     IANA: 'Asia/Dubai'
     flightDuration: 5
+    budgetLevelRUB: 80000
     avgTemperature: [ 19.8, 21.2, 24.3, 28.4, 32.1, 34.6, 35.4, 35.2, 33.3, 30.4, 26.1, 22.1 ]
     leisureKinds: [ 'beach','sightseeing','shopping','party','spa' ]
     backdropVisual:
@@ -55,6 +58,7 @@
     name: 'Шри-Ланка'
     IANA: 'Asia/Kolkata'
     flightDuration: 12
+    budgetLevelRUB: 220000
     avgTemperature: [25.7, 26.3, 27.7, 28.3, 28.3, 28.1, 27.6, 27.2, 27.2, 26.8, 26.1, 25.9]
     leisureKinds: [ 'beach','exotic' ]
     backdropVisual:
@@ -68,6 +72,7 @@
     name: "Таиланд"
     IANA: 'Asia/Bangkok'
     flightDuration: 9
+    budgetLevelRUB: 220000
     avgTemperature: [ 25.9, 26.9, 28.8, 29.4, 29.9, 29, 28.4, 28.1, 27.7, 27.4, 27.2, 26.2 ]
     leisureKinds: [ 'beach','spa','exotic' ]
     backdropVisual:
@@ -79,8 +84,9 @@
 
 -   id: maldives
     name: "Мальдивы"
-    flightDuration: 15
     IANA: 'Indian/Maldives'
+    flightDuration: 15
+    budgetLevelRUB: 220000
     avgTemperature: [ 28.3, 28.7, 29.3, 29.8, 29.6, 29.5, 28.7, 28.5, 28.5, 28.3, 28.1, 28.2 ]
     leisureKinds: [ 'beach','exotic','deluxe' ]
     backdropVisual:
@@ -92,8 +98,9 @@
 
 -   id: cuba
     name: "Куба"
-    flightDuration: 13
     IANA: 'America/Havana'
+    flightDuration: 13
+    budgetLevelRUB: 300000
     avgTemperature: [ 23, 23.7, 24.3, 25.9, 26.2, 27.4, 28.1, 27.6, 27.6, 26.8, 25.4, 24.1 ]
     leisureKinds: [ 'beach' ]
     backdropVisual:

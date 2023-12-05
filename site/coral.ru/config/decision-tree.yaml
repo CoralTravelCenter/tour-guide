@@ -191,7 +191,9 @@ steps:
             toggle: true
             skip: dont-know-where-destination-selector
             step: dont-know-where-destination-selector
-            proceedWithActions: setPreferredLeisureKindsFromCurrentStep
+            proceedWithActions:
+                - setPreferredLeisureKindsFromCurrentStep
+                - preserveBackdropFromCurrentStep
         choices: []
 
     dont-know-where-destination-selector:
