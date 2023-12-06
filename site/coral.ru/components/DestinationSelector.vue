@@ -16,6 +16,27 @@ const paneBackground = computed(() => destinationSelectorMode.value === 'list' ?
 
 const { departures, selectedDeparture } = inject('departures');
 
+const matchedDepartures = computed(() => {
+    return departures.filter(dep => {
+        const pattern_input = departureInputPattern.value?.trim();
+        if (pattern_input) {
+            const words_uc = pattern_input.toUpperCase().split(/\s+/);
+            const dep_name_words_uc = (dep.correctName || dep.name).toUpperCase().split(/\s+/);
+            return words_uc.reduce((matched, word) => {
+                if (!matched) return false;
+                const idx = dep_name_words_uc.findIndex(dep_word => dep_word.indexOf(word) === 0);
+                if (~idx) {
+                    dep_name_words_uc.splice(idx, 1);
+                    return true;
+                }
+                return false;
+            }, true);
+        }
+        return true;
+    });
+});
+
+const departureInputPattern = ref();
 
 </script>
 
@@ -23,9 +44,10 @@ const { departures, selectedDeparture } = inject('departures');
     <div ref="$el" class="destination-selector">
         <div class="switchers">
             <div class="controls">
-                <el-select v-model="selectedDeparture" value-key="eeID" filterable>
+                <el-select v-model="selectedDeparture" value-key="eeID" filterable :filter-method="input => departureInputPattern = input">
+
                     <template #header>Город вылета</template>
-                    <el-option v-for="departure in departures"
+                    <el-option v-for="departure in matchedDepartures"
                                :key="departure.eeID"
                                :label="`из ${ departure.fromForm }`"
                                :value="departure">

@@ -162,6 +162,8 @@ onMounted(() => {
 .el-select-dropdown {
     font-family: museosans;
     font-weight: 400;
+    --el-color-primary: @coral-main-blue;
+    //--el-text-color-regular: black;
 }
 
 </style>
