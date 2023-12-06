@@ -106,7 +106,6 @@ export function choiceLeadsToDeadEnd(choice, destinations, preferredSearchParams
     }
     return !destinations.some(dest => {
         return dest.flightDuration <= tmpSearchParams.maxFlightDuration
-            && (!tmpSearchParams.leisureKinds.length || intersects(dest.leisureKinds, tmpSearchParams.leisureKinds))
-            && (!dest.budgetLevelRUB || !tmpSearchParams.budget.currencyCode || (dest.budgetLevelRUB <= tmpSearchParams.budget.max));
+            && (!tmpSearchParams.leisureKinds.length || intersects(dest.leisureKinds, tmpSearchParams.leisureKinds));
     });
 }

@@ -1,45 +1,48 @@
 -   id: turkey
+    eeID: 1
     selected: true
     name: "Турция"
     IANA: 'Turkey'
     flightDuration: 4
-    budgetLevelRUB: 80000
+    budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
     avgTemperature: [ 14, 15, 17, 21, 27, 33, 35, 38, 32, 27, 17, 15 ]
     leisureKinds: [ 'beach','sightseeing','shopping','party','spa','deluxe' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-turkey-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-turkey-mobile.jpg"
-    marker:
-        text: 'Фетхие, Олюдениз'
-        color: white
+        marker:
+            text: 'Фетхие, Олюдениз'
+            color: white
 
 -   id: egypt
+    eeID: 12
     name: "Египет"
     IANA: 'Egypt'
     flightDuration: 5
-    budgetLevelRUB: 80000
+    budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
     avgTemperature: [ 21, 22, 24, 26, 29, 30, 33, 33, 31, 29, 26, 21 ]
     leisureKinds: [ 'beach' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-egypt-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-egypt-mobile.jpg"
-    marker:
-        text: 'Шарм-эш-Шейх'
-        color: white
+        marker:
+            text: 'Шарм-эш-Шейх'
+            color: white
 
 -   id: uae
+    eeID: 31
     name: "ОАЭ"
     IANA: 'Asia/Dubai'
     flightDuration: 5
-    budgetLevelRUB: 80000
+    budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
     avgTemperature: [ 19.8, 21.2, 24.3, 28.4, 32.1, 34.6, 35.4, 35.2, 33.3, 30.4, 26.1, 22.1 ]
     leisureKinds: [ 'beach','sightseeing','shopping','party','spa' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-uae-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-uae-mobile.jpg"
-    marker:
-        text: 'Пальм Джумейра'
-        color: white
+        marker:
+            text: 'Пальм Джумейра'
+            color: white
 
 #-   id: bahrain
 #    name: "Бахрейн"
@@ -50,125 +53,140 @@
 #    backdropVisual:
 #        desktop: "/site/coral.ru/assets/backdrop-destination-bahrain-desktop.jpg"
 #        mobile: "/site/coral.ru/assets/backdrop-destination-bahrain-mobile.jpg"
-#    marker:
-#        text: 'Манама, Форт Арад'
-#        color: '#033870'
+    #    marker:
+    #        text: 'Манама, Форт Арад'
+    #        color: '#033870'
 
 -   id: srilanka
+    eeID: 40
     name: 'Шри-Ланка'
     IANA: 'Asia/Kolkata'
     flightDuration: 12
-    budgetLevelRUB: 220000
+    budgetLevel: { RUB: 220000, EUR: 2200, USD: 2400 }
     avgTemperature: [25.7, 26.3, 27.7, 28.3, 28.3, 28.1, 27.6, 27.2, 27.2, 26.8, 26.1, 25.9]
     leisureKinds: [ 'beach','exotic' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-srilanka-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-srilanka-mobile.jpg"
-    marker:
-        text: 'Львиная гора Сигирия'
-        color: white
+        marker:
+            text: 'Львиная гора Сигирия'
+            color: white
 
 -   id: thailand
+    eeID: 33
     name: "Таиланд"
     IANA: 'Asia/Bangkok'
     flightDuration: 9
-    budgetLevelRUB: 220000
+    budgetLevel: { RUB: 220000, EUR: 2200, USD: 2400 }
     avgTemperature: [ 25.9, 26.9, 28.8, 29.4, 29.9, 29, 28.4, 28.1, 27.7, 27.4, 27.2, 26.2 ]
     leisureKinds: [ 'beach','spa','exotic' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-thailand-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-thailand-mobile.jpg"
-    marker:
-        text: 'Краби, пляж «Рейли»'
-        color: '#033870'
+        marker:
+            text: 'Краби, пляж «Рейли»'
+            color: '#033870'
 
 -   id: maldives
+    eeID: 35
     name: "Мальдивы"
     IANA: 'Indian/Maldives'
     flightDuration: 15
-    budgetLevelRUB: 220000
+    budgetLevel: { RUB: 220000, EUR: 2200, USD: 2400 }
     avgTemperature: [ 28.3, 28.7, 29.3, 29.8, 29.6, 29.5, 28.7, 28.5, 28.5, 28.3, 28.1, 28.2 ]
     leisureKinds: [ 'beach','exotic','deluxe' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-maldives-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-maldives-mobile.jpg"
-    marker:
-        text: 'Южный Мале Атолл'
-        color: '#033870'
+        marker:
+            text: 'Южный Мале Атолл'
+            color: '#033870'
 
 -   id: cuba
+    eeID: 48
     name: "Куба"
     IANA: 'America/Havana'
     flightDuration: 13
     budgetLevelRUB: 300000
+    budgetLevel: { RUB: 300000, EUR: 3000, USD: 3300 }
     avgTemperature: [ 23, 23.7, 24.3, 25.9, 26.2, 27.4, 28.1, 27.6, 27.6, 26.8, 25.4, 24.1 ]
     leisureKinds: [ 'beach' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-cuba-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-cuba-mobile.jpg"
-    marker:
-        text: 'Варадеро'
-        color: white
+        marker:
+            text: 'Варадеро'
+            color: white
 
 -   id: russia
+    eeID: 3
     name: "Россия"
     flightDuration: 6
+    budgetLevel: { RUB: 50000, EUR: 500, USD: 550 }
     leisureKinds: []
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-russia-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-russia-mobile.jpg"
-    marker:
-        text: 'Озеро Байкал'
-        color: white
+        marker:
+            text: 'Озеро Байкал'
+            color: white
 
 -   id: az
+    eeID: 7
     name: "Азербайджан"
-    flightDuration: 3
     IANA: 'Asia/Baku'
+    flightDuration: 3
+    budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
     avgTemperature: [ 4, 5, 8, 13, 19, 25, 27, 27, 22, 16, 9, 6 ]
     leisureKinds: [ 'sightseeing' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-az-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-az-mobile.jpg"
-    marker:
-        text: 'Баку, «Старый город»'
-        color: white
+        marker:
+            text: 'Баку, «Старый город»'
+            color: white
 
 -   id: uz
+    eeID: 49
     name: "Узбекистан"
-    flightDuration: 4
     IANA: 'Asia/Tashkent'
+    flightDuration: 4
+    budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
     avgTemperature: [ 1.7, 3.6, 10.3, 16.7, 23.4, 28.1, 30, 26.8, 21.6, 13.5, 5.7, 2.4 ]
     leisureKinds: [ 'sightseeing' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-uz-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-uz-mobile.jpg"
-    marker:
-        text: 'Шахрисабз, Мечеть Кок Гумбаз'
-        color: white
+        marker:
+            text: 'Шахрисабз, Мечеть Кок Гумбаз'
+            color: white
 
 -   id: belarus
+    eeID: 8
     name: "Беларусь"
-    flightDuration: 3
     IANA: 'Europe/Minsk'
+    flightDuration: 3
+    budgetLevel: { RUB: 50000, EUR: 500, USD: 550 }
     avgTemperature: [ −4, −1.6, 2.5, 7.6, 13.3, 18.4, 19.1, 18.7, 12.9, 7.4, 2.8, −0.8 ]
     leisureKinds: [ 'sightseeing' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-belarus-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-belarus-mobile.jpg"
-    marker:
-        text: 'Замковый комплекс «Мир»'
-        color: white
+        marker:
+            text: 'Замковый комплекс «Мир»'
+            color: white
 
 -   id: armenia
+    eeID: 5
     name: "Армения"
-    flightDuration: 4
     IANA: 'Asia/Yerevan'
+    flightDuration: 4
+    budgetLevel: { RUB: 120000, EUR: 1200, USD: 1300 }
     avgTemperature: [ −4.7, −1.2, 3.7, 9.5, 13.8, 19.7, 22.5, 22.1, 17.6, 10.8, 3.4, −1.8 ]
     leisureKinds: [ 'sightseeing' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-armenia-desktop.jpg"
         mobile: "/site/coral.ru/assets/backdrop-destination-armenia-mobile.jpg"
-    marker:
-        text: 'Татевский монастырь'
-        color: white
+        marker:
+            text: 'Татевский монастырь'
+            color: white

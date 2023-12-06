@@ -3,7 +3,7 @@ import BackdropScene from "./BackdropScene.vue";
 import ControlPane from "./ControlPane.vue";
 import { computed, onMounted, provide, reactive, ref, watch, watchEffect } from "vue";
 
-import { tourGuideConfig, destinations } from '../config/tour-guide.js'
+import { tourGuideConfig, destinations, departures } from '../config/tour-guide.js'
 import { currencyBudget } from "./predefined-actions.js";
 
 const predefinedActions = {
@@ -103,8 +103,6 @@ provide('h2-mobile-placeholder', h2MobilePlaceholder);
 const h2MobileColor = ref('inherit');
 
 const { budget, code: currencyCode, symbol: currencySymbol } = await currencyBudget();
-// preferredSearchParams.budget.currencyCode = currencyCode;
-// preferredSearchParams.budget.currencySymbol = currencySymbol;
 provide('lowBudgetLabelMarkup', budget.low.labelMarkup);
 provide('lowBudgetRange', { currencyCode, currencySymbol, min: budget.low.min, max: budget.low.max });
 provide('mediumBudgetLabelMarkup', budget.medium.labelMarkup);
@@ -115,22 +113,31 @@ provide('highBudgetRange', { currencyCode, currencySymbol, min: budget.high.min,
 const destinationSelectorMode = ref('list');
 provide('destination-selector', { destinationSelectorMode });
 
-// tourGuideSteps['destination-selector'].setBackdrop = [destinations.find(d => d.selected).backdropVisual];
-
 watchEffect(() => {
-    tourGuideSteps['dont-know-where-destination-selector'].choices = destinations.map(dest => {
+    const step_config = tourGuideSteps['dont-know-where-destination-selector'];
+    const choices = destinations.map(dest => {
         const all_kinds = [].concat(dest.leisureKinds, preferredSearchParams.leisureKinds);
         const exclude_by_flight_duration = !!dest.flightDuration && dest.flightDuration > preferredSearchParams.maxFlightDuration;
-        const exclude_by_budget = dest.budgetLevelRUB && preferredSearchParams.budget.max && (dest.budgetLevelRUB > preferredSearchParams.budget.max);
+        const exclude_by_budget = !(currencyCode && dest.budgetLevel[currencyCode] && preferredSearchParams.budget.max
+            ? (dest.budgetLevel[currencyCode] <= preferredSearchParams.budget.max) : true);
         const exclude_by_kind = (preferredSearchParams.leisureKinds.length > 0) && (all_kinds.length === new Set(all_kinds).size);
+        const exclude = exclude_by_kind || exclude_by_flight_duration || exclude_by_budget;
         return {
             label: dest.name,
-            selected: dest.selected,
-            disabled: exclude_by_kind || exclude_by_flight_duration || exclude_by_budget,
+            selected: dest.selected && !exclude,
+            disabled: exclude,
             actions: [{ what: 'setBackdrop', predefined: dest.backdropVisual }]
         };
     });
+    step_config.choices = choices;
+    const choice2select = choices.find(choice => choice.selected) || choices.find(choice => !choice.disabled);
+    choice2select.selected = true;
+    const backdrop = choice2select.actions.find(action => action.what === 'setBackdrop').predefined;
+    step_config.setBackdrop = [backdrop];
 });
+
+const selectedDeparture = ref(departures[0]);
+provide('departures', { departures, selectedDeparture });
 
 onMounted(() => {
     const layout = matchMedia('(max-width:768px)');
@@ -151,6 +158,12 @@ onMounted(() => {
 <style lang="less">
 @import "../common/css/coral-fonts";
 @import "../common/css/coral-colors";
+
+.el-select-dropdown {
+    font-family: museosans;
+    font-weight: 400;
+}
+
 </style>
 
 <style scoped lang="less">

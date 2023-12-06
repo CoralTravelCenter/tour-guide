@@ -11,14 +11,11 @@ const layoutMode = inject('layout-mode');
 
 const $el = ref();
 
-const someOpts = [
-    { label: 'Opt1', value: 1 },
-    { label: 'Opt2', value: 2 }
-];
-const selected_value = ref();
-
 const { destinationSelectorMode } = inject('destination-selector');
 const paneBackground = computed(() => destinationSelectorMode.value === 'list' ? 'white' : 'transparent');
+
+const { departures, selectedDeparture } = inject('departures');
+
 
 </script>
 
@@ -26,11 +23,14 @@ const paneBackground = computed(() => destinationSelectorMode.value === 'list' ?
     <div ref="$el" class="destination-selector">
         <div class="switchers">
             <div class="controls">
-                <el-select v-model="selected_value">
-                    <el-option v-for="opt in someOpts"
-                               :key="opt.value"
-                               :label="opt.label"
-                               :value="opt.value"></el-option>
+                <el-select v-model="selectedDeparture" value-key="eeID" filterable>
+                    <template #header>Город вылета</template>
+                    <el-option v-for="departure in departures"
+                               :key="departure.eeID"
+                               :label="`из ${ departure.fromForm }`"
+                               :value="departure">
+                        <span>{{ departure.correctName || departure.name }}</span>
+                    </el-option>
                 </el-select>
                 <ModeSwitch v-model="destinationSelectorMode" label="Показать"/>
             </div>

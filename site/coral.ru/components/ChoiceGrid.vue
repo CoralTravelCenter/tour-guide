@@ -140,6 +140,9 @@ function handleChoiceSelect(choice, dont_step) {
         font-size: (13/20em);
         gap: unset;
         padding: 0 1.7em;
+        @media screen and (max-width: @mobile-breakpoint) {
+            padding: 2.4em 1.7em;
+        }
         > button {
             flex: 1 1 (20%);
             padding: 0 1em;

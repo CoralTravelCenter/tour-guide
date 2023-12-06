@@ -31,6 +31,7 @@ function backdropVisualStyle(idx, collection) {
             <div class="visual" v-for="(visual, idx) in backdropStack" :style="backdropVisualStyle(idx, backdropStack)">
                 <VimeoBackground v-if="layoutMode === 'desktop' && visual.desktop?.vimeoId" :vimeo-id="visual.desktop?.vimeoId"/>
                 <VimeoBackground v-if="layoutMode === 'mobile' && visual.mobile?.vimeoId" :vimeo-id="visual.mobile?.vimeoId"/>
+                <div v-if="visual.marker" class="locatino-marker" :style="{ color: visual.marker.color }">{{ visual.marker.text }}</div>
             </div>
         </div>
         <div class="foreground">
@@ -68,6 +69,27 @@ function backdropVisualStyle(idx, collection) {
         @media screen and (max-width: @mobile-breakpoint) {
             width: 100%!important;
             left: 0!important;
+        }
+        .locatino-marker {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            line-height: 1;
+            bottom: 1em;
+            left: 4em;
+            @media screen and (max-width: @mobile-breakpoint) {
+                justify-content: flex-end;
+                width: 100%;
+                padding: 0 1em;
+                left: 0;
+                bottom: 2.5em;
+            }
+            &:before {
+                content: 'location_on';
+                font-family: "Material Icons";
+                font-size: 1.5em;
+                margin-right: .1em;
+            }
         }
     }
 }
