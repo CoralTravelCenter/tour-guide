@@ -1,11 +1,11 @@
 import { cloneDeep } from "lodash";
 
 export function asapTimeframe() {
-    const tomorrow = moment().add({ d: 1 });
+    const base = moment().add({ d: 2 * 7 });
     return {
-        startMoment:    moment(tomorrow),
-        endMoment:      moment(tomorrow).add({ d: 6 }),
-        selectedMoment: moment(tomorrow)
+        startMoment:    moment(base),
+        endMoment:      moment(base).add({ d: 6 }),
+        selectedMoment: moment(base)
     };
 }
 export function in2monthsTimeframe() {

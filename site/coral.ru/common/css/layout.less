@@ -176,3 +176,24 @@
 	}
 }
 
+.loader(@size: 10px, @thickness: 1px, @color: black) {
+	width: @size;
+	height: @size;
+	position: relative;
+	text-indent: -9999em;
+	border-radius: 50%;
+	border-top: @thickness solid fade(@color, 33%);
+	border-right: @thickness solid fade(@color, 33%);
+	border-bottom: @thickness solid fade(@color, 33%);
+	border-left: @thickness solid @color;
+	transform: translateZ(0);
+	animation: load8 1s infinite linear;
+}
+@keyframes load8 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

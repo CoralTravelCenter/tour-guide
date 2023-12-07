@@ -123,6 +123,8 @@ watchEffect(() => {
         const exclude_by_kind = (preferredSearchParams.leisureKinds.length > 0) && (all_kinds.length === new Set(all_kinds).size);
         const exclude = exclude_by_kind || exclude_by_flight_duration || exclude_by_budget;
         return {
+            is: 'DestinationButton',
+            destination: dest,
             label: dest.name,
             selected: dest.selected && !exclude,
             disabled: exclude,
@@ -164,6 +166,16 @@ onMounted(() => {
     font-weight: 400;
     --el-color-primary: @coral-main-blue;
     //--el-text-color-regular: black;
+}
+
+.tour-guide-module {
+    .el-select {
+        --el-select-border-color-hover: @coral-main-blue;
+        .el-input__wrapper {
+            --el-input-border-color: @coral-page-bg;
+            box-shadow: inset 0 0 0 2px var(--el-input-border-color);
+        }
+    }
 }
 
 </style>

@@ -45,8 +45,8 @@ const departureInputPattern = ref();
         <div class="switchers">
             <div class="controls">
                 <el-select v-model="selectedDeparture" value-key="eeID" filterable :filter-method="input => departureInputPattern = input">
-
                     <template #header>Город вылета</template>
+                    <template #empty><div style="text-align:center; padding: 1em;">Не найден</div></template>
                     <el-option v-for="departure in matchedDepartures"
                                :key="departure.eeID"
                                :label="`из ${ departure.fromForm }`"
