@@ -111,7 +111,9 @@ provide('highBudgetLabelMarkup', budget.high.labelMarkup);
 provide('highBudgetRange', { currencyCode, currencySymbol, min: budget.high.min, max: budget.high.max });
 
 const destinationSelectorMode = ref('list');
-provide('destination-selector', { destinationSelectorMode });
+const selectedDestination = ref();
+
+provide('destination-selector', { destinationSelectorMode, selectedDestination });
 
 watchEffect(() => {
     const step_config = tourGuideSteps['dont-know-where-destination-selector'];
@@ -128,7 +130,10 @@ watchEffect(() => {
             label: dest.name,
             selected: dest.selected && !exclude,
             disabled: exclude,
-            actions: [{ what: 'setBackdrop', predefined: dest.backdropVisual }]
+            actions: [
+                { what: 'setBackdrop', predefined: dest.backdropVisual },
+                { what: 'setSelectedDestination', predefined: dest }
+            ]
         };
     });
     step_config.choices = choices;

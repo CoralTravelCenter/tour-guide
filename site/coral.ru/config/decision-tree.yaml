@@ -206,4 +206,4 @@ steps:
         choices: []
         behaviour:
             singleChoice:  true
-            selectOnHover: true
+            selectOnHover: false

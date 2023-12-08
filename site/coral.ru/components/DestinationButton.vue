@@ -10,9 +10,11 @@ const $el = ref();
 const state = ref();
 
 const { selectedDeparture } = inject('departures');
+const { selectedDestination } = inject('destination-selector');
 const preferredSearchParams = inject('preferred-search-params');
 
 const isDisabled = computed(() => $el.value?.classList.contains('disabled'));
+const isSelected = computed(() => $el.value?.classList.contains('selected'));
 
 async function determineState() {
     state.value = 'indeterminate';
@@ -32,7 +34,9 @@ watchEffect(() => {
 }, { flush: 'post' });
 
 onMounted(() => {
-
+    if (isSelected.value) {
+        selectedDestination.value = props.config.destination;
+    }
 });
 
 </script>
@@ -60,7 +64,7 @@ onMounted(() => {
     grid-template-columns: auto 1fr;
     justify-items: self-start;
     gap: 0.25em;
-    &:hover, &.selected {
+    &.selected {
         &.unavailable {
             background: linear-gradient(46deg, #6BDCFF, #13A0F0)!important;
         }

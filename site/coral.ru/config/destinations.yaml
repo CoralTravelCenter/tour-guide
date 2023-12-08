@@ -1,8 +1,9 @@
 -   id: turkey
     eeID: 1
-    selected: true
+#    selected: true
     name: "Турция"
     IANA: 'Turkey'
+    visa: { required: false, href: 'https://www.coral.ru/main/turkey/infoaboutvisaturkey/' }
     airports: [10,3,6719,1,147,2,22,9,6,5,6778,11,37]
     flightDuration: 4
     budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
@@ -19,6 +20,7 @@
     eeID: 12
     name: "Египет"
     IANA: 'Egypt'
+    visa: { required: true, href: 'https://www.coral.ru/main/egypt/egypvisa/' }
     airports: [142,22,21,23]
     flightDuration: 5
     budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
@@ -35,6 +37,7 @@
     eeID: 31
     name: "ОАЭ"
     IANA: 'Asia/Dubai'
+    visa: { required: false, href: 'https://www.coral.ru/main/uae/uaevisa/' }
     airports: [83,139,6650,144,87]
     flightDuration: 5
     budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
@@ -50,6 +53,7 @@
 #-   id: bahrain
 #    name: "Бахрейн"
 #    IANA: 'Asia/Bahrain'
+#    visa: { required: true, href: 'https://www.coral.ru/main/bahrein/bahreinvisa/' }
 #    flightDuration: 5
 #    airports: [6769]
 #    avgTemperature: [ 17.8, 19.0, 22.6, 26.8, 31.5, 34.6, 35.7, 35.7, 34.1, 30.6, 25.4, 20.2 ]
@@ -65,6 +69,7 @@
     eeID: 40
     name: 'Шри-Ланка'
     IANA: 'Asia/Kolkata'
+    visa: { required: true, href: 'https://www.coral.ru/main/srilanka/srilankavisa/' }
     airports: [32]
     flightDuration: 12
     budgetLevel: { RUB: 220000, EUR: 2200, USD: 2400 }
@@ -81,6 +86,7 @@
     eeID: 33
     name: "Таиланд"
     IANA: 'Asia/Bangkok'
+    visa: { required: false, href: 'https://www.coral.ru/main/thailand/visathai/' }
     airports: [67,68,84,134,6646,131,6615]
     flightDuration: 9
     budgetLevel: { RUB: 220000, EUR: 2200, USD: 2400 }
@@ -97,6 +103,7 @@
     eeID: 35
     name: "Мальдивы"
     IANA: 'Indian/Maldives'
+    visa: { required: true, href: 'https://www.coral.ru/main/maldives/maldivesvisa/' }
     airports: [64]
     flightDuration: 15
     budgetLevel: { RUB: 220000, EUR: 2200, USD: 2400 }
@@ -113,6 +120,7 @@
     eeID: 48
     name: "Куба"
     IANA: 'America/Havana'
+    visa: { required: false, href: 'https://www.coral.ru/main/cuba/visacuba/' }
     airports: [70,69,3892,6647,6786]
     flightDuration: 13
     budgetLevelRUB: 300000
@@ -129,6 +137,7 @@
 -   id: russia
     eeID: 3
     name: "Россия"
+    visa: { required: false }
     flightDuration: 6
     budgetLevel: { RUB: 50000, EUR: 500, USD: 550 }
     leisureKinds: []
@@ -143,6 +152,7 @@
     eeID: 7
     name: "Азербайджан"
     IANA: 'Asia/Baku'
+    visa: { required: false }
     airports: [3350,3349]
     flightDuration: 3
     budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
@@ -159,6 +169,7 @@
     eeID: 49
     name: "Узбекистан"
     IANA: 'Asia/Tashkent'
+    visa: { required: false, href: 'https://www.coral.ru/uzbekistan/viza-v-uzbekistan/' }
     airports: [6277,6278,3410]
     flightDuration: 4
     budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
@@ -175,10 +186,11 @@
     eeID: 8
     name: "Беларусь"
     IANA: 'Europe/Minsk'
+    visa: { required: false }
     airports: [132,6776]
     flightDuration: 3
     budgetLevel: { RUB: 50000, EUR: 500, USD: 550 }
-    avgTemperature: [ −4, −1.6, 2.5, 7.6, 13.3, 18.4, 19.1, 18.7, 12.9, 7.4, 2.8, −0.8 ]
+    avgTemperature: [ -4, -1.6, 2.5, 7.6, 13.3, 18.4, 19.1, 18.7, 12.9, 7.4, 2.8, -0.8 ]
     leisureKinds: [ 'sightseeing' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-belarus-desktop.jpg"
@@ -191,10 +203,11 @@
     eeID: 5
     name: "Армения"
     IANA: 'Asia/Yerevan'
+    visa: { required: false }
     airports: [5823]
     flightDuration: 4
     budgetLevel: { RUB: 120000, EUR: 1200, USD: 1300 }
-    avgTemperature: [ −4.7, −1.2, 3.7, 9.5, 13.8, 19.7, 22.5, 22.1, 17.6, 10.8, 3.4, −1.8 ]
+    avgTemperature: [ -4.7, -1.2, 3.7, 9.5, 13.8, 19.7, 22.5, 22.1, 17.6, 10.8, 3.4, -1.8 ]
     leisureKinds: [ 'sightseeing' ]
     backdropVisual:
         desktop: "/site/coral.ru/assets/backdrop-destination-armenia-desktop.jpg"

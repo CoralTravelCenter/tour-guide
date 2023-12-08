@@ -2,137 +2,166 @@
   fromForm: Москвы
   eeID: 2671
   latlng: [55.75, 37.62]
+  GMT: +3
   default: true
 - name: Барнаул
   fromForm: Барнаула
   eeID: 2370
   latlng: [53.36, 83.76]
+  GMT: +7
 - name: Владивосток
   fromForm: Владивостока
   eeID: 2984
   latlng: [43.11, 131.87]
+  GMT: +10
 - name: Волгоград
   fromForm: Волгограда
   eeID: 2989
   pathname: /volgograd/
   latlng: [48.72, 44.5]
+  GMT: +3
 - name: Екатеринбург
   fromForm: Екатеринбурга
   eeID: 2449
   pathname: /ekb/
   latlng: [56.85, 60.61]
+  GMT: +5
 - name: Ижевск
   fromForm: Ижевска
   eeID: 2504
   latlng: [56.85, 53.2]
+  GMT: +4
 - name: Иркутск
   fromForm: Иркутска
   eeID: 2498
   pathname: /irkutsk/
   latlng: [52.3, 104.3]
+  GMT: +8
 - name: Казань
   fromForm: Казани
   eeID: 2529
   pathname: /kazan/
   latlng: [55.79, 49.12]
+  GMT: +3
 - name: Калининград
   fromForm: Калининграда
   eeID: 2512
   pathname: /kaliningrad/
   latlng: [54.71, 20.51]
+  GMT: +2
 - name: Кемерово
   fromForm: Кемерова
   eeID: 2531
   latlng: [55.33, 86.08]
+  GMT: +7
 - name: Красноярск
   fromForm: Красноярска
   eeID: 2586
   pathname: /krasnoyarsk/
   latlng: [56.02, 92.87]
+  GMT: +7
 - name: Махачкала
   fromForm: Махачкалы
   eeID: 8995
   pathname: /mahachkala/
   latlng: [42.98, 47.5]
+  GMT: +3
 - name: Минеральные воды
   correctName: Минеральные Воды
   fromForm: Минеральных Вод
   eeID: 2662
   pathname: /mineralnye-vody/
   latlng: [44.21, 43.14]
+  GMT: +3
 - name: Н. Новгород
   correctName: Нижний Новгород
   fromForm: Нижнего Новгорода
   eeID: 2679
   pathname: /nnovgorod/
   latlng: [56.33, 44]
+  GMT: +3
 - name: Нижневартовск
   fromForm: Нижневартовска
   eeID: 2707
   latlng: [60.93, 76.55]
+  GMT: +5
 - name: Нижнекамск
   fromForm: Нижнекамска
   eeID: 2705
   latlng: [55.64, 51.82]
+  GMT: +3
 - name: Новосибирск
   fromForm: Новосибирска
   eeID: 2724
   pathname: /novosibirsk/
   latlng: [55.04, 82.93]
+  GMT: +7
 - name: Омск
   fromForm: Омска
   eeID: 2739
   pathname: /omsk/
   latlng: [54.99, 73.37]
+  GMT: +6
 - name: Оренбург
   fromForm: Оренбурга
   eeID: 2743
   pathname: /orenburg/
   latlng: [51.77, 55.1]
+  GMT: +5
 - name: Пермь
   fromForm: Перми
   eeID: 2763
   pathname: /perm/
   latlng: [58.01, 56.25]
+  GMT: +5
 - name: Самара
-  fromForm: Сымары
+  fromForm: Самары
   eeID: 2823
   pathname: /samara/
   latlng: [53.2, 50.15]
+  GMT: +4
 - name: Санкт-Петербург
   fromForm: Санкт-Петербурга
   eeID: 2817
   pathname: /spb/
   latlng: [59.94, 30.31]
+  GMT: +3
 - name: Саратов
   fromForm: Саратоав
   eeID: 2827
   latlng: [51.54, 46.01]
+  GMT: +4
 - name: Сочи
   fromForm: Сочи
   eeID: 2873
   pathname: /sochi/
   latlng: [43.6, 39.73]
+  GMT: +3
 - name: Сургут
-  fromForm: Сурнута
+  fromForm: Сургута
   eeID: 2897
   latlng: [61.25, 73.42]
+  GMT: +5
 - name: Тюмень
   fromForm: Тюмени
   eeID: 2927
   pathname: /tyumen/
   latlng: [57.15, 65.53]
+  GMT: +5
 - name: Уфа
   fromForm: Уфы
   eeID: 2935
   pathname: /ufa/
   latlng: [54.74, 55.97]
+  GMT: +5
 - name: Хабаровск
   fromForm: Хабаровска
   eeID: 2533
   latlng: [48.48, 135.08]
+  GMT: +10
 - name: Челябинск
   fromForm: Челябинска
   eeID: 2416
   pathname: /chelyabinsk/
   latlng: [55.15, 61.43]
+  GMT: +5
