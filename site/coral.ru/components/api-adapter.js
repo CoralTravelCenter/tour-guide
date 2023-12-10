@@ -1,5 +1,6 @@
 export function apiUrl(endpoint) {
-    const apiHost = location.hostname === 'localhost' ? 'http://localhost:8010/proxy' : '';
+    // const apiHost = location.hostname === 'localhost' ? 'http://localhost:8010/proxy' : '';
+    const apiHost = location.hostname === 'localhost' ? 'http://localhost:8888' : '';
     return apiHost + endpoint;
 }
 export async function fetchAvailableFlights(departure, destination) {
@@ -15,7 +16,8 @@ export async function fetchAvailableFlights(departure, destination) {
             destinationId: `Country${ destination.eeID }`,
             // nearestAirports: destination.airports.join(',')
         }).done(response => {
-            const conformedFlightsList = response.Result.map(result => {
+            const results = response.Result || JSON.parse(response).Result;
+            const conformedFlightsList = results.map(result => {
                 return {
                     timestamp: result.FlightDate.match(/\d+/)[0],
                     type: result.FlightType
