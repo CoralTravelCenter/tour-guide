@@ -21,7 +21,9 @@ async function determineState() {
     const flightsList = await fetchAvailableFlights(selectedDeparture.value, props.config.destination);
     if (preferredSearchParams.timeframe.startMoment && preferredSearchParams.timeframe.endMoment) {
         state.value = flightsList.some(flight => {
-            return moment(Number(flight.timestamp)).isBetween(preferredSearchParams.timeframe.startMoment, preferredSearchParams.timeframe.endMoment);
+            const flightMoment = moment(Number(flight.timestamp));
+            return flightMoment.isSameOrAfter(preferredSearchParams.timeframe.startMoment.startOf('day'))
+                && flightMoment.isSameOrBefore(preferredSearchParams.timeframe.endMoment.endOf('day'));
         }) ? 'available' : 'unavailable';
     } else {
         state.value = flightsList.length ? 'available' : 'unavailable';

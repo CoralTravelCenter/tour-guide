@@ -30,6 +30,7 @@ steps:
         behaviour:
             singleChoice: true
             selectOnHover: true
+            proceedWithActions: resetPreferredSearchParams
     know-where-timeframe:
         key: know-where-timeframe
         instance: StepSimpleChoice
@@ -92,25 +93,26 @@ steps:
         choices:
             - label:
                 predefined: lowBudgetLabelMarkup
-              step: destination-selector
+              step: know-where-destination-selector
               actions:
                   - what: setPreferredBudget
                     predefined: lowBudgetRange
             - label:
                 predefined: mediumBudgetLabelMarkup
-              step: destination-selector
+              step: know-where-destination-selector
               actions:
                   - what: setPreferredBudget
                     predefined: mediumBudgetRange
             - label:
                 predefined: highBudgetLabelMarkup
-              step: destination-selector
+              step: know-where-destination-selector
               actions:
                   - what: setPreferredBudget
                     predefined: highBudgetRange
         behaviour:
             resetSelection: resetPreferredBudget
-            skip: destination-selector
+            skip: know-where-destination-selector
+            step: know-where-destination-selector
             singleChoice: true
     dont-know-where-budget:
         key: dont-know-where-budget
@@ -195,6 +197,18 @@ steps:
                 - setPreferredLeisureKindsFromCurrentStep
                 - preserveBackdropFromCurrentStep
         choices: []
+
+    know-where-destination-selector:
+        key: know-where-destination-selector
+        instance: DestinationSelector
+        progress: true
+        h3: 'Выберите куда вы хотите полететь'
+        setBackdrop: ''
+        setSolidFill: 'transparent'
+        choices: []
+        behaviour:
+            singleChoice:  true
+            selectOnHover: false
 
     dont-know-where-destination-selector:
         key: dont-know-where-destination-selector

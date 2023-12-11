@@ -2,7 +2,7 @@
 
 import { inject } from "vue";
 
-const { selectedDestination } = inject('destination-selector');
+const { selectedDestination, destinationSelectorMode } = inject('destination-selector');
 
 </script>
 

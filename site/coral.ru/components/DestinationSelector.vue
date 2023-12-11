@@ -4,6 +4,7 @@ import ModeSwitch from "./ModeSwitch.vue";
 import DestinationInfoSheet from "./DestinationInfoSheet.vue";
 import { useStepBehaviour } from "./step-behaviour";
 import { computed, inject, ref } from "vue";
+import DestinationVisual from "./DestinationVisual.vue";
 
 const config = useStepBehaviour();
 
@@ -11,7 +12,8 @@ const layoutMode = inject('layout-mode');
 
 const $el = ref();
 
-const { destinationSelectorMode } = inject('destination-selector');
+const { selectedDestination, destinationSelectorMode } = inject('destination-selector');
+const selectedDestinationName = computed(() => selectedDestination.value?.name || '');
 const paneBackground = computed(() => destinationSelectorMode.value === 'list' ? 'white' : 'transparent');
 
 const { departures, selectedDeparture } = inject('departures');
@@ -64,7 +66,11 @@ const departureInputPattern = ref();
                     <ChoiceGrid trait="ramp" layout="destinations-grid"/>
                     <DestinationInfoSheet/>
                 </div>
-                <div v-else class="map-view">MAP</div>
+                <div v-else class="map-view">
+                    <DestinationVisual/>
+                    <h3>{{ selectedDestinationName }}</h3>
+                    <DestinationInfoSheet/>
+                </div>
             </Transition>
         </div>
     </div>
@@ -94,6 +100,7 @@ const departureInputPattern = ref();
     .view-mode {
         background: white;
         border-radius: 1em;
+        overflow: hidden;
     }
     .list-view {
         display: grid;
@@ -103,6 +110,23 @@ const departureInputPattern = ref();
         justify-content: center;
         h3 {
             text-align: center;
+        }
+    }
+    .map-view {
+        height: 100%;
+        display: grid;
+        gap: 1em;
+        grid-template-areas: "visual name" "visual sheet";
+        grid-template-columns: 57fr 43fr;
+        .destination-info-visual {
+            grid-area: visual;
+        }
+        h3 {
+            grid-area: name;
+            align-self: end;
+        }
+        .info-sheet {
+            grid-area: sheet;
         }
     }
 }

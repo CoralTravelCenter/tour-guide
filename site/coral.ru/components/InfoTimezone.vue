@@ -2,7 +2,7 @@
 
 import { computed, inject, ref, watchEffect } from "vue";
 
-const { selectedDestination } = inject('destination-selector');
+const { selectedDestination, destinationSelectorMode } = inject('destination-selector');
 const { selectedDeparture } = inject('departures');
 
 const timeDiff = ref(null);

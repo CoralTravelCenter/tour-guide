@@ -7,6 +7,12 @@ import { tourGuideConfig, destinations, departures } from '../config/tour-guide.
 import { currencyBudget } from "./predefined-actions.js";
 
 const predefinedActions = {
+    resetPreferredSearchParams() {
+        Object.assign(preferredSearchParams.timeframe, { startMoment: null, endMoment: null, selectedMoment: null });
+        Object.assign(preferredSearchParams.budget, { currencyCode: '', currencySymbol: '', min: null, max: null });
+        preferredSearchParams.maxFlightDuration = Infinity;
+        preferredSearchParams.leisureKinds = [];
+    },
     resetPreferredTimeframe() {
         Object.assign(preferredSearchParams.timeframe, { startMoment: null, endMoment: null, selectedMoment: null });
     },
@@ -116,8 +122,9 @@ const selectedDestination = ref();
 provide('destination-selector', { destinationSelectorMode, selectedDestination });
 
 watchEffect(() => {
-    const step_config = tourGuideSteps['dont-know-where-destination-selector'];
-    const choices = destinations.map(dest => {
+    // Setup/config "dont-know-where-destination-selector"
+    let step_config = tourGuideSteps['dont-know-where-destination-selector'];
+    let choices = destinations.map(dest => {
         const all_kinds = [].concat(dest.leisureKinds, preferredSearchParams.leisureKinds);
         const exclude_by_flight_duration = !!dest.flightDuration && dest.flightDuration > preferredSearchParams.maxFlightDuration;
         const exclude_by_budget = !(currencyCode && dest.budgetLevel[currencyCode] && preferredSearchParams.budget.max
@@ -137,9 +144,32 @@ watchEffect(() => {
         };
     });
     step_config.choices = choices;
-    const choice2select = choices.find(choice => choice.selected) || choices.find(choice => !choice.disabled);
+    let choice2select = choices.find(choice => choice.selected) || choices.find(choice => !choice.disabled);
     choice2select.selected = true;
-    const backdrop = choice2select.actions.find(action => action.what === 'setBackdrop').predefined;
+    let backdrop = choice2select.actions.find(action => action.what === 'setBackdrop').predefined;
+    step_config.setBackdrop = [backdrop];
+
+    // Setup/config "know-where-destination-selector"
+    step_config = tourGuideSteps['know-where-destination-selector'];
+    choices = destinations.map(dest => {
+        const exclude_by_budget = !(currencyCode && dest.budgetLevel[currencyCode] && preferredSearchParams.budget.max
+                                    ? (dest.budgetLevel[currencyCode] <= preferredSearchParams.budget.max) : true);
+        return {
+            is: 'DestinationButton',
+            destination: dest,
+            label: dest.name,
+            selected: dest.selected && !exclude,
+            disabled: exclude_by_budget,
+            actions: [
+                { what: 'setBackdrop', predefined: dest.backdropVisual },
+                { what: 'setSelectedDestination', predefined: dest }
+            ]
+        };
+    });
+    step_config.choices = choices;
+    choice2select = choices.find(choice => choice.selected) || choices.find(choice => !choice.disabled);
+    choice2select.selected = true;
+    backdrop = choice2select.actions.find(action => action.what === 'setBackdrop').predefined;
     step_config.setBackdrop = [backdrop];
 });
 

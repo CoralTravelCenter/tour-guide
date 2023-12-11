@@ -2,7 +2,7 @@
 
 import { computed, inject } from "vue";
 
-const { selectedDestination } = inject('destination-selector');
+const { selectedDestination, destinationSelectorMode } = inject('destination-selector');
 const preferredSearchParams = inject('preferred-search-params');
 
 const displayedMonthName = computed(() => {
@@ -12,7 +12,7 @@ const displayedMonthName = computed(() => {
 
 const displayedTemp = computed(() => {
     const month_idx = preferredSearchParams.timeframe.selectedMoment?.month() || moment().month();
-    const temp = Math.round(selectedDestination.value?.avgTemperature[month_idx]);
+    const temp = selectedDestination.value?.avgTemperature ? Math.round(selectedDestination.value?.avgTemperature[month_idx]) : 0;
     return `${ temp > 0 ? '+' : '' }${ temp }&deg;`;
 });
 

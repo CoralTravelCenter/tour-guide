@@ -2,7 +2,7 @@
 
 import { computed, inject } from "vue";
 
-const { selectedDestination } = inject('destination-selector');
+const { selectedDestination, destinationSelectorMode } = inject('destination-selector');
 
 const requiredOrNot = computed(() => {
     if (selectedDestination?.value?.visa) {

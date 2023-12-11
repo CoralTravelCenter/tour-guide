@@ -25,3 +25,15 @@ a.infosheet-item {
         }
     }
 }
+.info-sheet {
+	&[data-view-mode=map] {
+		.infosheet-item {
+			flex-direction: row;
+			.info {
+				text-align: left;
+				margin-top: 0;
+				margin-left: 1em;
+			}
+		}
+	}
+}
