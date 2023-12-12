@@ -1,8 +1,8 @@
 -   id: turkey
     eeID: 1
-#    selected: true
     name: "Турция"
     IANA: 'Turkey'
+    ISO: 'TR'
     visa: { required: false, href: 'https://www.coral.ru/main/turkey/infoaboutvisaturkey/' }
     airports: [10,3,6719,1,147,2,22,9,6,5,6778,11,37]
     flightDuration: 4
@@ -20,6 +20,7 @@
     eeID: 12
     name: "Египет"
     IANA: 'Egypt'
+    ISO: 'EG'
     visa: { required: true, href: 'https://www.coral.ru/main/egypt/egypvisa/' }
     airports: [142,22,21,23]
     flightDuration: 5
@@ -37,6 +38,7 @@
     eeID: 31
     name: "ОАЭ"
     IANA: 'Asia/Dubai'
+    ISO: 'AE'
     visa: { required: false, href: 'https://www.coral.ru/main/uae/uaevisa/' }
     airports: [83,139,6650,144,87]
     flightDuration: 5
@@ -53,6 +55,7 @@
 #-   id: bahrain
 #    name: "Бахрейн"
 #    IANA: 'Asia/Bahrain'
+#    ISO: 'BH'
 #    visa: { required: true, href: 'https://www.coral.ru/main/bahrein/bahreinvisa/' }
 #    flightDuration: 5
 #    airports: [6769]
@@ -69,6 +72,7 @@
     eeID: 40
     name: 'Шри-Ланка'
     IANA: 'Asia/Kolkata'
+    ISO: 'LK'
     visa: { required: true, href: 'https://www.coral.ru/main/srilanka/srilankavisa/' }
     airports: [32]
     flightDuration: 12
@@ -86,6 +90,7 @@
     eeID: 33
     name: "Таиланд"
     IANA: 'Asia/Bangkok'
+    ISO: 'TH'
     visa: { required: false, href: 'https://www.coral.ru/main/thailand/visathai/' }
     airports: [67,68,84,134,6646,131,6615]
     flightDuration: 9
@@ -103,6 +108,7 @@
     eeID: 35
     name: "Мальдивы"
     IANA: 'Indian/Maldives'
+    ISO: 'MV'
     visa: { required: true, href: 'https://www.coral.ru/main/maldives/maldivesvisa/' }
     airports: [64]
     flightDuration: 15
@@ -120,6 +126,7 @@
     eeID: 48
     name: "Куба"
     IANA: 'America/Havana'
+    ISO: 'CU'
     visa: { required: false, href: 'https://www.coral.ru/main/cuba/visacuba/' }
     airports: [70,69,3892,6647,6786]
     flightDuration: 13
@@ -152,6 +159,7 @@
     eeID: 7
     name: "Азербайджан"
     IANA: 'Asia/Baku'
+    ISO: 'AZ'
     visa: { required: false }
     airports: [3350,3349]
     flightDuration: 3
@@ -169,6 +177,7 @@
     eeID: 49
     name: "Узбекистан"
     IANA: 'Asia/Tashkent'
+    ISO: 'UZ'
     visa: { required: false, href: 'https://www.coral.ru/uzbekistan/viza-v-uzbekistan/' }
     airports: [6277,6278,3410]
     flightDuration: 4
@@ -186,6 +195,7 @@
     eeID: 8
     name: "Беларусь"
     IANA: 'Europe/Minsk'
+    ISO: 'BY'
     visa: { required: false }
     airports: [132,6776]
     flightDuration: 3
@@ -203,6 +213,7 @@
     eeID: 5
     name: "Армения"
     IANA: 'Asia/Yerevan'
+    ISO: 'AM'
     visa: { required: false }
     airports: [5823]
     flightDuration: 4

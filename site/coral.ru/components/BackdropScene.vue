@@ -7,6 +7,10 @@ import VimeoBackground from "./VimeoBackground.vue";
 const { backdropSolidFill, backdropStack } = inject('backdrop');
 const layoutMode = inject('layout-mode');
 
+const mapPlaceholderEl = inject('map-placeholder-el');
+
+const { destinationSelectorMode } = inject('destination-selector');
+
 function backdropVisualStyle(idx, collection) {
     const visual = collection.at(idx);
     const visible_region_percent = 55;
@@ -37,6 +41,7 @@ function backdropVisualStyle(idx, collection) {
         <div class="foreground">
             <ForegroundStack/>
         </div>
+        <div ref="mapPlaceholderEl" class="map-placeholder"></div>
     </div>
 </template>
 

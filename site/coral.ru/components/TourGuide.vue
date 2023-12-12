@@ -5,6 +5,7 @@ import { computed, onMounted, provide, reactive, ref, watch, watchEffect } from 
 
 import { tourGuideConfig, destinations, departures } from '../config/tour-guide.js'
 import { currencyBudget } from "./predefined-actions.js";
+import { observeElementProp } from "./usefuls";
 
 const predefinedActions = {
     resetPreferredSearchParams() {
@@ -118,8 +119,12 @@ provide('highBudgetRange', { currencyCode, currencySymbol, min: budget.high.min,
 
 const destinationSelectorMode = ref('list');
 const selectedDestination = ref();
+const destinationRussia = computed(() => selectedDestination.value?.id === 'russia');
 
-provide('destination-selector', { destinationSelectorMode, selectedDestination });
+provide('destination-selector', { destinationSelectorMode, selectedDestination, destinationRussia });
+
+const mapPlaceholderEl = ref();
+provide('map-placeholder-el', mapPlaceholderEl);
 
 watchEffect(() => {
     // Setup/config "dont-know-where-destination-selector"
@@ -173,7 +178,16 @@ watchEffect(() => {
     step_config.setBackdrop = [backdrop];
 });
 
-const selectedDeparture = ref(departures[0]);
+const { value: departureCityId } = window.global.getActiveDeparture();
+const selectedDeparture = ref(
+    departures.find(dep=>Number(dep.eeID) === Number(departureCityId)) ?? departures[0]
+);
+observeElementProp(document.querySelector('input.packageSearch__departureInput'), 'value', (new_departure_name) => {
+    if (new_departure_name) {
+        const found_departure = departures.find(dep => dep.name === new_departure_name);
+        if (found_departure) selectedDeparture.value = found_departure;
+    }
+});
 provide('departures', { departures, selectedDeparture });
 
 onMounted(() => {

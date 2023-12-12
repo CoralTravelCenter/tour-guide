@@ -5,8 +5,7 @@ import InfoAvgTemp from "./InfoAvgTemp.vue";
 import InfoVisa from "./InfoVisa.vue";
 import { computed, inject } from "vue";
 
-const { selectedDestination } = inject('destination-selector');
-const destinationRussia = computed(() => selectedDestination.value?.id === 'russia');
+const { destinationRussia } = inject('destination-selector');
 
 const { destinationSelectorMode } = inject('destination-selector');
 

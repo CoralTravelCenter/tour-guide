@@ -1,10 +1,14 @@
 <script setup>
+import { inject } from "vue";
+
 defineProps(['label', 'modelValue']);
 defineEmits(['update:modelValue'])
+
+const { destinationRussia } = inject('destination-selector');
 </script>
 
 <template>
-    <div class="mode-switch">
+    <div class="mode-switch" :class="{ hidden: destinationRussia }">
         <div class="label">{{ label }}</div>
         <div class="switch">
             <span @click="$emit('update:modelValue', 'list')"
@@ -21,6 +25,11 @@ defineEmits(['update:modelValue'])
 .mode-switch {
     display: flex;
     align-items: center;
+    .transit(opacity, .2s);
+    &.hidden {
+        pointer-events: none;
+        opacity: 0;
+    }
     .label {
         margin-right: 1em;
     }

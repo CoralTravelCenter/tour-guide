@@ -5,6 +5,7 @@ import DestinationInfoSheet from "./DestinationInfoSheet.vue";
 import { useStepBehaviour } from "./step-behaviour";
 import { computed, inject, ref } from "vue";
 import DestinationVisual from "./DestinationVisual.vue";
+import InteractiveMap from "./InteractiveMap.vue";
 
 const config = useStepBehaviour();
 
@@ -40,6 +41,8 @@ const matchedDepartures = computed(() => {
 
 const departureInputPattern = ref();
 
+const mapPlaceholderEl = inject('map-placeholder-el');
+
 </script>
 
 <template>
@@ -73,6 +76,13 @@ const departureInputPattern = ref();
                 </div>
             </Transition>
         </div>
+        <Teleport :to="mapPlaceholderEl">
+            <KeepAlive>
+                <Transition name="map">
+                    <InteractiveMap v-if="destinationSelectorMode === 'map' "/>
+                </Transition>
+            </KeepAlive>
+        </Teleport>
     </div>
 </template>
 
