@@ -5,6 +5,7 @@ import { inject, onMounted, ref, watch } from "vue";
 const layoutMode = inject('layout-mode');
 const { selectedDestination } = inject('destination-selector');
 const stepConfig = inject('current-step-config');
+const { departures, selectedDeparture } = inject('departures');
 
 const $el = ref();
 
@@ -15,7 +16,9 @@ let mapArea;
 
 onMounted(async () => {
     console.log('+++ MAP mounted');
-    yandexMap = new YandexMap($el.value);
+    window.yandexMap = yandexMap = new YandexMap($el.value, {
+        departures
+    });
     await yandexMap.init();
     if (layoutMode.value === 'desktop') mapArea = yandexMap.ymap.margin.addArea({ top: 0, right: 0, width: '40%', height: '100%' });
     locked.value = false;

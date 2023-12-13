@@ -1,5 +1,7 @@
 import { preloadScript } from "./usefuls";
 
+import placemark_svg from 'data-url:/site/coral.ru/assets-inline/departure-marker.svg';
+
 export default class YandexMap {
 
     static get apiInitialized() {
@@ -11,7 +13,7 @@ export default class YandexMap {
     ymap;
     backdropPane;
     routesPane;
-    countries;
+    countriesGOC;
 
     options = {
         ymaps_api:      '//api-maps.yandex.ru/2.1.64/?apikey=49de5080-fb39-46f1-924b-dee5ddbad2f1&lang=ru-RU',
@@ -19,6 +21,7 @@ export default class YandexMap {
         genericFill:    '#B6D7E3',
         genericStroke:  '#FFFFFF',
         homeRegionFill: '#1EBDFF',
+        departures:     []
     }
     constructor(el, options) {
         this.el = el;
@@ -41,7 +44,7 @@ export default class YandexMap {
     async ymapsInit() {
         return new Promise(async resolve => {
             window.ymap = this.ymap = new ymaps.Map(this.el, {
-                center: [65, 90],
+                center: [47.2, 92.8],
                 zoom: 2,
                 type: null,
                 // margin: [70, 500, 10, 70],
@@ -65,23 +68,26 @@ export default class YandexMap {
             });
             this.ymap.panes.append('routesPane', this.routesPane);
 
-            const bordersData = await this.fetchCoutriesBorders();
-            this.countries = new ymaps.GeoObjectCollection(null, {
+            const bordersData = await this.fetchCountriesBorders();
+            this.countriesGOC = new ymaps.GeoObjectCollection(null, {
                 fillColor: this.options.genericFill,
                 strokeColor: this.options.genericStroke,
                 hasHint: false,
                 cursor: 'default'
             });
             for (const feature of bordersData.features) {
-                this.countries.add(new ymaps.GeoObject(feature));
+                this.countriesGOC.add(new ymaps.GeoObject(feature));
             }
-            this.ymap.geoObjects.add(this.countries);
+            this.ymap.geoObjects.add(this.countriesGOC);
 
             resolve(this.ymap);
+
+            this.makeDeparturesPlacemarks();
+
         });
     }
 
-    async fetchCoutriesBorders() {
+    async fetchCountriesBorders() {
         if (YandexMap.coutriesBordersData) {
             return Promise.resolve(YandexMap.coutriesBordersData);
         } else {
@@ -94,4 +100,31 @@ export default class YandexMap {
         }
     }
 
+    makeDeparturesPlacemarks() {
+        this.PlacemarkLayout = ymaps.templateLayoutFactory.createClass(
+            "<div class='departure-placemark-label'>{{ properties.departure.correctName | default:properties.departure.name }}</div>"
+        );
+        for (const departure of this.options.departures) {
+            departure.placemark = this.makeDeparturePlacemark(departure);
+            this.ymap.geoObjects.add(departure.placemark);
+        }
+    }
+
+    makeDeparturePlacemark(departure) {
+        const placemark = new ymaps.Placemark(departure.latlng, {
+            departure,
+            // iconContent: departure.correctName ?? departure.name
+        }, {
+            iconLayout:        'default#imageWithContent',
+            iconImageHref:     placemark_svg,
+            iconImageSize:     [33, 43],
+            iconImageOffset:   [-16, -43],
+            iconContentOffset: [0, 2],
+            iconContentLayout: this.PlacemarkLayout,
+        });
+        placemark.events.add('propertieschange', (e) => {
+            debugger;
+        });
+        return placemark;
+    }
 };
