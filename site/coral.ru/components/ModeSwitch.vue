@@ -32,6 +32,9 @@ const { destinationRussia } = inject('destination-selector');
     }
     .label {
         margin-right: 1em;
+        @media screen and (max-width: @mobile-breakpoint) {
+            display: none;
+        }
     }
     .switch {
         display: inline-grid;

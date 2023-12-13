@@ -262,6 +262,7 @@ onMounted(() => {
     }
 
     .h2-mobile-placeholder {
+        pointer-events: none;
         display: flex;
         flex-direction: column;
         align-items: center;

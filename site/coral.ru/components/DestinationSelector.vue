@@ -77,11 +77,9 @@ const mapPlaceholderEl = inject('map-placeholder-el');
             </Transition>
         </div>
         <Teleport :to="mapPlaceholderEl">
-            <KeepAlive>
-                <Transition name="map">
-                    <InteractiveMap v-if="destinationSelectorMode === 'map' "/>
-                </Transition>
-            </KeepAlive>
+            <Transition name="map">
+                <InteractiveMap v-if="destinationSelectorMode === 'map' "/>
+            </Transition>
         </Teleport>
     </div>
 </template>

@@ -5,6 +5,7 @@ export default class YandexMap {
     static get apiInitialized() {
         return !!window.ymaps?.Map;
     }
+    static coutriesBordersData;
 
     el;
     ymap;
@@ -24,55 +25,73 @@ export default class YandexMap {
         Object.assign(this.options, options);
     }
 
-    init() {
+    async init() {
         if (YandexMap.apiInitialized) {
-            this.ymapsInit();
+            return this.ymapsInit();
         } else {
             console.log('+++ loading YandexMaps API...');
             const ymaps_api_callback = `ymaps_loaded_${ Math.round(Math.random() * 1000000) }`;
-            window[ymaps_api_callback] = () => this.ymapsInit();
+            let doResolve;
+            window[ymaps_api_callback] = () => doResolve(this.ymapsInit());
             preloadScript(`${ this.options.ymaps_api }&onload=${ ymaps_api_callback }`);
+            return new Promise(resolve => doResolve = resolve);
         }
     }
 
-    ymapsInit() {
-        this.ymap = new ymaps.Map(this.el, {
-            center: [65, 90],
-            zoom:   2,
-            type:   null,
-            // margin: [70, 500, 10, 70],
-            controls: ['zoomControl'],
-        },{
-            minZoom:  2,
-            maxZoom: 6,
-            suppressMapOpenBlock: true,
-            avoidFractionalZoom: false,
-            autoFitToViewport: 'always',
-            // restrictMapArea: [[80,-160],[-80,160]]
-        });
-        this.backdropPane = new ymaps.pane.StaticPane(this.ymap, {
-            css: { width: '100%', height: '100%', backgroundColor: this.options.worldFill },
-            zIndex: 100
-        });
-        this.ymap.panes.append('backdropPane', this.backdropPane);
-        this.routesPane = new ymaps.pane.MovablePane(this.ymap, {
-            css: { width: '100%', height: '100%' },
-            zIndex: 300
-        });
-        this.ymap.panes.append('routesPane', this.routesPane);
-
-        ymaps.borders.load('001', { lang: 'ru', quality: 1 }).then((result) => {
-            this.countries = new ymaps.GeoObjectCollection(null, {
-                fillColor:   this.options.genericFill,
-                strokeColor: this.options.genericStroke,
-                hasHint:     false,
-                cursor:      'default'
+    async ymapsInit() {
+        return new Promise(async resolve => {
+            window.ymap = this.ymap = new ymaps.Map(this.el, {
+                center: [65, 90],
+                zoom: 2,
+                type: null,
+                // margin: [70, 500, 10, 70],
+                controls: ['zoomControl'],
+            }, {
+                minZoom: 2,
+                maxZoom: 6,
+                suppressMapOpenBlock: true,
+                avoidFractionalZoom: false,
+                autoFitToViewport: 'always',
+                // restrictMapArea: [[80,-160],[-80,160]]
             });
-            for (const feature of result.features) {
+            this.backdropPane = new ymaps.pane.StaticPane(this.ymap, {
+                css: { width: '100%', height: '100%', backgroundColor: this.options.worldFill },
+                zIndex: 100
+            });
+            this.ymap.panes.append('backdropPane', this.backdropPane);
+            this.routesPane = new ymaps.pane.MovablePane(this.ymap, {
+                css: { width: '100%', height: '100%' },
+                zIndex: 300
+            });
+            this.ymap.panes.append('routesPane', this.routesPane);
+
+            const bordersData = await this.fetchCoutriesBorders();
+            this.countries = new ymaps.GeoObjectCollection(null, {
+                fillColor: this.options.genericFill,
+                strokeColor: this.options.genericStroke,
+                hasHint: false,
+                cursor: 'default'
+            });
+            for (const feature of bordersData.features) {
                 this.countries.add(new ymaps.GeoObject(feature));
             }
             this.ymap.geoObjects.add(this.countries);
-        });
 
+            resolve(this.ymap);
+        });
     }
+
+    async fetchCoutriesBorders() {
+        if (YandexMap.coutriesBordersData) {
+            return Promise.resolve(YandexMap.coutriesBordersData);
+        } else {
+            return new Promise(resolve => {
+                ymaps.borders.load('001', { lang: 'ru', quality: 1 }).then(result => {
+                    YandexMap.coutriesBordersData = result;
+                    resolve(result);
+                });
+            });
+        }
+    }
+
 };

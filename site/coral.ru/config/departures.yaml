@@ -127,7 +127,7 @@
   latlng: [59.94, 30.31]
   GMT: +3
 - name: Саратов
-  fromForm: Саратоав
+  fromForm: Саратова
   eeID: 2827
   latlng: [51.54, 46.01]
   GMT: +4
