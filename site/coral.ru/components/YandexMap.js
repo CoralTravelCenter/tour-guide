@@ -1,7 +1,5 @@
 import { preloadScript } from "./usefuls";
 
-import placemark_svg from 'data-url:/site/coral.ru/assets-inline/departure-marker.svg';
-
 export default class YandexMap {
 
     static get apiInitialized() {
@@ -101,8 +99,26 @@ export default class YandexMap {
     }
 
     makeDeparturesPlacemarks() {
-        this.PlacemarkLayout = ymaps.templateLayoutFactory.createClass(
-            "<div class='departure-placemark-label'>{{ properties.departure.correctName | default:properties.departure.name }}</div>"
+
+        this.ymap.events.add('boundschange', () => {
+            this.ymap.container.getElement().setAttribute('data-zoom', this.ymap.getZoom());
+        });
+        this.ymap.container.getElement().setAttribute('data-zoom', this.ymap.getZoom());
+
+        const layout = this.PlacemarkLayout = ymaps.templateLayoutFactory.createClass(
+            `<div class='departure-placemark'>
+                        <div class="place-marker"></div>
+                        <div class='label'>{{ properties.departure.correctName | default:properties.departure.name }}</div>
+                    </div>`,
+            {
+                build() {
+                    layout.superclass.build.call(this);
+                    const el = this.getElement();
+                    this.events.add('propertieschange', () => {
+                        debugger;
+                    });
+                },
+            }
         );
         for (const departure of this.options.departures) {
             departure.placemark = this.makeDeparturePlacemark(departure);
@@ -115,16 +131,21 @@ export default class YandexMap {
             departure,
             // iconContent: departure.correctName ?? departure.name
         }, {
-            iconLayout:        'default#imageWithContent',
-            iconImageHref:     placemark_svg,
-            iconImageSize:     [33, 43],
-            iconImageOffset:   [-16, -43],
-            iconContentOffset: [0, 2],
-            iconContentLayout: this.PlacemarkLayout,
+            iconLayout:        this.PlacemarkLayout,
+            // iconImageHref:     placemark_svg,
+            // iconImageSize:     [33, 43],
+            // iconImageOffset:   [-16, -43],
+            // iconContentOffset: [0, 2],
         });
         placemark.events.add('propertieschange', (e) => {
             debugger;
         });
         return placemark;
     }
+
+    selectDeparture(departure2select) {
+        const departure = this.options.departures.find(d => d.eeID === departure2select.eeID);
+        departure?.placemark.properties.set('selected', true);
+    }
+
 };
