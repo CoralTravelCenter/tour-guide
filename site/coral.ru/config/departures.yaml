@@ -4,6 +4,12 @@
   latlng: [55.75, 37.62]
   GMT: +3
   default: true
+- name: Санкт-Петербург
+  fromForm: Санкт-Петербурга
+  eeID: 2817
+  pathname: /spb/
+  latlng: [59.94, 30.31]
+  GMT: +3
 - name: Барнаул
   fromForm: Барнаула
   eeID: 2370
@@ -120,12 +126,6 @@
   pathname: /samara/
   latlng: [53.2, 50.15]
   GMT: +4
-- name: Санкт-Петербург
-  fromForm: Санкт-Петербурга
-  eeID: 2817
-  pathname: /spb/
-  latlng: [59.94, 30.31]
-  GMT: +3
 - name: Саратов
   fromForm: Саратова
   eeID: 2827

@@ -33,7 +33,7 @@ async function determineState() {
 
 watchEffect(() => {
     selectedDeparture.value && !isDisabled.value && determineState();
-}, { flush: 'post' });
+}/*, { flush: 'post' }*/);
 
 onMounted(() => {
     if (isSelected.value) {
@@ -66,6 +66,11 @@ onMounted(() => {
     grid-template-columns: auto 1fr;
     justify-items: self-start;
     gap: 0.25em;
+    &.disabled {
+        .available, .unavailable {
+            color: unset!important;
+        }
+    }
     &.selected {
         &.unavailable {
             background: linear-gradient(46deg, #6BDCFF, #13A0F0)!important;
