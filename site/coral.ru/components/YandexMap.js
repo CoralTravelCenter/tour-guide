@@ -1,4 +1,5 @@
 import { preloadScript } from "./usefuls";
+import { destinations } from "../config/tour-guide";
 
 export default class YandexMap {
 
@@ -6,24 +7,30 @@ export default class YandexMap {
     static get apiInitialized() {
         return !!window.ymaps?.Map;
     }
-    static coutriesBordersData;
+    static countriesBordersData;
 
     el;
     ymap;
     backdropPane;
     routesPane;
-    countriesGOC;
+    availableCountriesGOC;
+    otherCountriesGOC;
     departure2placemark;
+    destination2placemark;
 
     options = {
         variant:           0,
         variants: [
             {
-                mapType: null,
-                worldFill: '#0193CF'
+                mapType:         null,
+                worldFill:       '#0193CF',
+                availableFill:   '#FFFFFF',
+                availableStroke: '#0067B5',
             },
             {
-                mapType: undefined,
+                mapType:         undefined,
+                availableFill:   '#FFFFFFCC',
+                availableStroke: '#0067B5',
             }
         ],
         ymaps_api:         '//api-maps.yandex.ru/2.1.64/?apikey=49de5080-fb39-46f1-924b-dee5ddbad2f1&lang=ru-RU',
@@ -32,6 +39,12 @@ export default class YandexMap {
         },
         get mapType() {
             return this.variants[this.variant].mapType;
+        },
+        get availableFill() {
+            return this.variants[this.variant].availableFill;
+        },
+        get availableStroke() {
+            return this.variants[this.variant].availableStroke;
         },
         genericFill:         '#B6D7E3',
         genericStroke:       '#FFFFFF',
@@ -89,35 +102,57 @@ export default class YandexMap {
             });
             this.ymap.panes.append('routesPane', this.routesPane);
 
-            const bordersData = await this.fetchCountriesBorders();
-            this.countriesGOC = new ymaps.GeoObjectCollection(null, {
-                fillColor: this.options.genericFill,
-                strokeColor: this.options.genericStroke,
-                hasHint: false,
-                cursor: 'default'
+            this.ymap.events.add('boundschange', () => {
+                this.ymap.container.getElement().setAttribute('data-zoom', this.ymap.getZoom());
             });
-            const destinatios_iso_codes = this.options.destinations.map(d => d.ISO);
-            const features2add = this.options.variant === 0 ? bordersData.features
-                                                            : bordersData.features.filter(feature=>destinatios_iso_codes.includes(feature.properties.iso3166));
-            for (const feature of features2add) {
-                this.countriesGOC.add(new ymaps.GeoObject(feature));
-            }
-            this.ymap.geoObjects.add(this.countriesGOC);
+            this.ymap.container.getElement().setAttribute('data-zoom', this.ymap.getZoom());
+
+            await this.initCountriesCollections();
+            this.otherCountriesGOC && this.ymap.geoObjects.add(this.otherCountriesGOC);
+            this.ymap.geoObjects.add(this.availableCountriesGOC);
 
             this.makeDeparturesPlacemarks();
+            this.makeDestinationsPlacemarks();
 
             resolve(this.ymap);
 
         });
     }
 
+    async initCountriesCollections() {
+        const bordersData = await this.fetchCountriesBorders();
+        const destinations_iso_codes = this.options.destinations.map(d => d.ISO);
+        let features2add = bordersData.features.filter(feature => destinations_iso_codes.includes(feature.properties.iso3166));
+        this.availableCountriesGOC = new ymaps.GeoObjectCollection(null, {
+            fillColor:   this.options.availableFill,
+            strokeColor: this.options.availableStroke,
+            hasHint:     false,
+            cursor:      'default'
+        });
+        for (const feature of features2add) {
+            this.availableCountriesGOC.add(new ymaps.GeoObject(feature));
+        }
+        if (this.options.variant === 0) {
+            features2add = bordersData.features.filter(feature => !destinations_iso_codes.includes(feature.properties.iso3166));
+            this.otherCountriesGOC = new ymaps.GeoObjectCollection(null, {
+                fillColor:   this.options.genericFill,
+                strokeColor: this.options.genericStroke,
+                hasHint:     false,
+                cursor:      'default'
+            });
+            for (const feature of features2add) {
+                this.otherCountriesGOC.add(new ymaps.GeoObject(feature));
+            }
+        }
+    }
+
     async fetchCountriesBorders() {
-        if (YandexMap.coutriesBordersData) {
-            return Promise.resolve(YandexMap.coutriesBordersData);
+        if (YandexMap.countriesBordersData) {
+            return Promise.resolve(YandexMap.countriesBordersData);
         } else {
             return new Promise(resolve => {
-                ymaps.borders.load('001', { lang: 'ru', quality: 1 }).then(result => {
-                    YandexMap.coutriesBordersData = result;
+                ymaps.borders.load('001', { lang: 'ru', quality: 2 }).then(result => {
+                    YandexMap.countriesBordersData = result;
                     resolve(result);
                 });
             });
@@ -125,12 +160,6 @@ export default class YandexMap {
     }
 
     makeDeparturesPlacemarks() {
-
-        this.ymap.events.add('boundschange', () => {
-            this.ymap.container.getElement().setAttribute('data-zoom', this.ymap.getZoom());
-        });
-        this.ymap.container.getElement().setAttribute('data-zoom', this.ymap.getZoom());
-
         const layout = this.PlacemarkLayout = ymaps.templateLayoutFactory.createClass(
             `<div class='departure-placemark'>
                         <div class="place-marker"></div>
@@ -180,6 +209,61 @@ export default class YandexMap {
     selectDeparture(departure2select) {
         for (const departure of this.options.departures) {
             this.departure2placemark.get(departure)?.properties.set('selected', departure.eeID === departure2select.eeID);
+        }
+    }
+
+    makeDestinationsPlacemarks() {
+        const layout = this.DestinationPlacemarkLayout = ymaps.templateLayoutFactory.createClass(
+            `<div class='destination-placemark'>
+                        <div class="place-marker {{ properties.destination.ISO }}"></div>
+                        <div class='label'>{{ properties.destination.name }}</div>
+                    </div>`,
+            {
+                build() {
+                    layout.superclass.build.call(this);
+                    const el = this.getElement();
+                    const placemark = this.getData().geoObject;
+                    placemark.events.add('propertieschange', (e) => {
+                        const select = !!placemark.properties.get('selected');
+                        el.querySelector('.destination-placemark')?.classList.toggle('selected', select);
+                        placemark.options.set({ zIndex: select ? 100 : 0 });
+                        const hover = !!placemark.properties.get('open');
+                        el.querySelector('.destination-placemark')?.classList.toggle('open', hover);
+                    });
+                    placemark.events.add('mouseenter', (e) => {
+                        placemark.properties.set('open', true);
+                    });
+                    placemark.events.add('mouseleave', (e) => {
+                        placemark.properties.set('open', false);
+                    });
+                    placemark.events.add('click', function (e) {
+                        YandexMap.instance.options.selectedDestination.value = placemark.properties.get('destination');
+                    });
+                },
+            }
+        );
+
+        this.destination2placemark = new WeakMap();
+        for (const destination of this.options.destinations) {
+            const placemark = this.makeDestinationPlacemark(destination);
+            this.destination2placemark.set(destination, placemark);
+            this.ymap.geoObjects.add(placemark);
+        }
+
+
+    }
+    makeDestinationPlacemark(destination) {
+        return new ymaps.Placemark(destination.capitalLatLng, {
+            destination,
+        }, {
+            iconLayout: this.DestinationPlacemarkLayout,
+            iconShape:  { type: 'Circle', coordinates: [0, 0], radius: 20 },
+        });
+    }
+
+    selectDestination(destination2select) {
+        for (const destination of this.options.destinations) {
+            this.destination2placemark.get(destination).properties.set('selected', destination.eeID === destination2select.eeID);
         }
     }
 

@@ -1,0 +1,39 @@
+
+.TR {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/tr.svg);
+}
+.EG {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/eg.svg);
+}
+.AE {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/ae.svg);
+}
+/*
+.BH {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/bh.svg);
+}
+*/
+.LK {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/lk.svg);
+}
+.TH {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/th.svg);
+}
+.MV {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/mv.svg);
+}
+.CU {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/cu.svg);
+}
+.AZ {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/az.svg);
+}
+.UZ {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/uz.svg);
+}
+.BY {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/by.svg);
+}
+.AM {
+    background-image: url(data-url:/node_modules/flag-icons/flags/1x1/am.svg);
+}

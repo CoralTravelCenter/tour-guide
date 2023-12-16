@@ -1,11 +1,18 @@
 <script setup>
 import YandexMap from "./YandexMap";
-import { inject, onMounted, ref, watch, watchEffect } from "vue";
+import { computed, inject, onMounted, ref, watch, watchEffect } from "vue";
 import { destinations } from "../config/tour-guide";
 
 const layoutMode = inject('layout-mode');
-const { selectedDestination } = inject('destination-selector');
 const stepConfig = inject('current-step-config');
+const { selectedDestination } = inject('destination-selector');
+const availableDestinations = computed(() => {
+    return Array.from((function* (choices) {
+        for (const choice of choices) {
+            if (!choice.disabled) yield choice.destination;
+        }
+    })(stepConfig.value.choices));
+});
 const { departures, selectedDeparture } = inject('departures');
 
 const $el = ref();
@@ -18,15 +25,16 @@ let mapArea;
 onMounted(async () => {
     console.log('+++ MAP mounted');
     window.yandexMap = yandexMap = new YandexMap($el.value, {
-        variant: 0,
+        variant: 1,
         departures,
         selectedDeparture,
-        destinations,
+        destinations: availableDestinations.value,
         selectedDestination
     });
     await yandexMap.init();
     setTimeout(() => {
-        yandexMap.selectDeparture(selectedDeparture.value)
+        yandexMap.selectDeparture(selectedDeparture.value);
+        yandexMap.selectDestination(selectedDestination.value);
     }, 100);
     if (layoutMode.value === 'desktop') mapArea = yandexMap.ymap.margin.addArea({ top: 0, right: 0, width: '40%', height: '100%' });
     locked.value = false;
@@ -42,6 +50,11 @@ watchEffect(() => {
         yandexMap?.selectDeparture(selectedDeparture.value);
     }
 });
+watchEffect(() => {
+    if (selectedDestination.value) {
+        yandexMap?.selectDestination(selectedDestination.value);
+    }
+});
 
 </script>
 
@@ -54,19 +67,22 @@ watchEffect(() => {
     </div>
 </template>
 
+<style lang="less">
+@import (inline) "../config/destination-flags.css";
+</style>
 <style scoped lang="less">
 @import "../common/css/coral-colors";
 @import "../common/css/layout";
 
-.placemark-sizing(@base: 11px) {
-    @marker-scale: 1.85em;
+.placemark-sizing(@base: 11px, @marker-ratio: 1, @marker-scale: 1.85em) {
     font-size: @base;
     margin-left: -(@marker-scale/2);
-    margin-top: -(43/33) * @marker-scale;
+    @top-margin-divider: if((@marker-ratio = 1), 2, 1);
+    margin-top: -((@marker-ratio * @marker-scale) / @top-margin-divider);
     .place-marker {
         font-size: inherit;
         width: @marker-scale;
-        height: (43/33) * @marker-scale;
+        height: @marker-ratio * @marker-scale;
     }
     .label {
         font-size: inherit;
@@ -85,29 +101,29 @@ watchEffect(() => {
         }
 
         :deep([data-zoom='3']) {
-            .departure-placemark {
+            .departure-placemark, .destination-placemark {
                 font-size: 12px;
             }
         }
         :deep([data-zoom='4']) {
-            .departure-placemark {
+            .departure-placemark, .destination-placemark {
                 font-size: 13px;
             }
         }
         :deep([data-zoom='5']) {
-            .departure-placemark {
+            .departure-placemark, .destination-placemark {
                 font-size: 14px;
             }
         }
         :deep([data-zoom='6']) {
-            .departure-placemark {
+            .departure-placemark, .destination-placemark {
                 font-size: 14px;
             }
         }
 
         :deep(.departure-placemark) {
             position: relative;
-            .placemark-sizing(@base: 11px);
+            .placemark-sizing(@base: 11px, @marker-ratio: (43/33));
             .transit(filter);
             &.open, &.selected {
                 filter: drop-shadow(1px 2px 2px fade(black, 20%));
@@ -129,6 +145,43 @@ watchEffect(() => {
                 z-index: 1;
                 background-size: cover;
                 background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzMiIGhlaWdodD0iNDMiIHZpZXdCb3g9IjAgMCAzMyA0MyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Zz48cGF0aCBkPSJNMzIgMTYuNUMzMiAyMi42ODQ4IDI4LjA3OTIgMjkuMDc0NSAyMy45Nzk1IDM0LjAyOThDMjEuOTQ5OCAzNi40ODMxIDE5LjkxNzUgMzguNTM2MSAxOC4zOTE3IDM5Ljk3NjFDMTcuNjI5NSA0MC42OTU1IDE2Ljk5NTQgNDEuMjYwMyAxNi41NTM0IDQxLjY0NEMxNi41MzUzIDQxLjY1OTcgMTYuNTE3NSA0MS42NzUyIDE2LjUgNDEuNjkwM0MxNi40ODI1IDQxLjY3NTIgMTYuNDY0NyA0MS42NTk3IDE2LjQ0NjYgNDEuNjQ0QzE2LjAwNDYgNDEuMjYwMyAxNS4zNzA1IDQwLjY5NTUgMTQuNjA4MyAzOS45NzYxQzEzLjA4MjUgMzguNTM2MSAxMS4wNTAyIDM2LjQ4MzEgOS4wMjA0OSAzNC4wMjk4QzQuOTIwNzkgMjkuMDc0NSAxIDIyLjY4NDggMSAxNi41QzEgNy45Mzk1OSA3LjkzOTU5IDEgMTYuNSAxQzI1LjA2MDQgMSAzMiA3LjkzOTU5IDMyIDE2LjVaTTE2LjUgMjMuOTAyOEMyMC41ODg1IDIzLjkwMjggMjMuOTAyOCAyMC41ODg1IDIzLjkwMjggMTYuNUMyMy45MDI4IDEyLjQxMTYgMjAuNTg4NSA5LjA5NzIxIDE2LjUgOS4wOTcyMUMxMi40MTE1IDkuMDk3MjEgOS4wOTcyIDEyLjQxMTYgOS4wOTcyIDE2LjVDOS4wOTcyIDIwLjU4ODUgMTIuNDExNSAyMy45MDI4IDE2LjUgMjMuOTAyOFoiIGZpbGw9IiMwMDkzRDAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48L3N2Zz4K");
+            }
+            .label {
+                position: absolute;
+                z-index: 0;
+                left: 0;
+                top: 0;
+                overflow: hidden;
+                white-space: nowrap;
+                background-color: white;
+                border-radius: 100px;
+                width: fit-content;
+                text-indent: -8em;
+                opacity: 0;
+                .transit(padding, .25s);
+                .transit(opacity, .25s);
+                .transit(text-indent, .25s);
+            }
+        }
+        :deep(.destination-placemark) {
+            position: relative;
+            .placemark-sizing(@base: 11px);
+            .transit(filter);
+            filter: drop-shadow(1px 2px 2px fade(black, 25%));
+            &.open, &.selected {
+                .label {
+                    padding: 0 .5em 0 2em;
+                    text-indent: 0;
+                    opacity: 1;
+                }
+            }
+            .place-marker {
+                position: absolute;
+                left: -1px;
+                top: 0;
+                z-index: 1;
+                background-size: cover;
+                border-radius: 50%;
             }
             .label {
                 position: absolute;
