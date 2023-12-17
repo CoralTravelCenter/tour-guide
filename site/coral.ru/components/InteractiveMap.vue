@@ -24,6 +24,15 @@ let mapArea;
 
 onMounted(async () => {
     console.log('+++ MAP mounted');
+    // validate selectedDestination
+    let destination_ok;
+    if (selectedDestination.value) {
+        destination_ok = stepConfig.value.choices.find(choice => choice.destination.eeID === selectedDestination.value.eeID && !choice.disabled);
+    }
+    if (!destination_ok) {
+        selectedDestination.value = availableDestinations.value[0];
+    }
+    //
     window.yandexMap = yandexMap = new YandexMap($el.value, {
         variant: 1,
         departures,

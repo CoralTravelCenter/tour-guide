@@ -149,7 +149,8 @@ watchEffect(() => {
         };
     });
     step_config.choices = choices;
-    let choice2select = choices.find(choice => choice.selected) || choices.find(choice => !choice.disabled);
+    let choice2select = selectedDestination.value && choices.find(choice => !choice.disabled && choice.destination.eeID === selectedDestination.value.eeID);
+    choice2select ||= choices.find(choice => !choice.disabled);
     choice2select.selected = true;
     let backdrop = choice2select.actions.find(action => action.what === 'setBackdrop').predefined;
     step_config.setBackdrop = [backdrop];
@@ -172,7 +173,8 @@ watchEffect(() => {
         };
     });
     step_config.choices = choices;
-    choice2select = choices.find(choice => choice.selected) || choices.find(choice => !choice.disabled);
+    choice2select = selectedDestination.value && choices.find(choice => !choice.disabled && choice.destination.eeID === selectedDestination.value.eeID);
+    choice2select ||= choices.find(choice => !choice.disabled);
     choice2select.selected = true;
     backdrop = choice2select.actions.find(action => action.what === 'setBackdrop').predefined;
     step_config.setBackdrop = [backdrop];

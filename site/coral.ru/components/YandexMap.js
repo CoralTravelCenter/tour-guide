@@ -26,26 +26,21 @@ export default class YandexMap {
                 worldFill:       '#0193CF',
                 availableFill:   '#FFFFFF',
                 availableStroke: '#0067B5',
+                selectedFill:    '#F0AB00'
             },
             {
                 mapType:         undefined,
                 availableFill:   '#FFFFFFCC',
                 availableStroke: '#0067B5',
+                selectedFill:    '#F0AB00CC'
             }
         ],
         ymaps_api:         '//api-maps.yandex.ru/2.1.64/?apikey=49de5080-fb39-46f1-924b-dee5ddbad2f1&lang=ru-RU',
-        get worldFill() {
-            return this.variants[this.variant].worldFill;
-        },
-        get mapType() {
-            return this.variants[this.variant].mapType;
-        },
-        get availableFill() {
-            return this.variants[this.variant].availableFill;
-        },
-        get availableStroke() {
-            return this.variants[this.variant].availableStroke;
-        },
+        get worldFill() { return this.variants[this.variant].worldFill },
+        get mapType() { return this.variants[this.variant].mapType },
+        get availableFill() { return this.variants[this.variant].availableFill },
+        get availableStroke() { return this.variants[this.variant].availableStroke },
+        get selectedFill() { return this.variants[this.variant].selectedFill },
         genericFill:         '#B6D7E3',
         genericStroke:       '#FFFFFF',
         homeRegionFill:      '#1EBDFF',

@@ -1,10 +1,10 @@
 <script setup>
 
-import { computed, inject, onMounted, ref, watchEffect } from "vue";
+import { computed, inject, nextTick, onMounted, ref, watchEffect } from "vue";
 import { fetchAvailableFlights } from "./api-adapter";
 
 const props = defineProps({ config: Object });
-defineEmits(['selected']);
+const emit = defineEmits(['selected']);
 
 const $el = ref();
 const state = ref();
@@ -35,9 +35,11 @@ watchEffect(() => {
     selectedDeparture.value && !isDisabled.value && determineState();
 }/*, { flush: 'post' }*/);
 
-onMounted(() => {
+onMounted(async () => {
     if (isSelected.value) {
-        selectedDestination.value = props.config.destination;
+        // selectedDestination.value = props.config.destination;
+        await nextTick();
+        emit('selected');
     }
 });
 
