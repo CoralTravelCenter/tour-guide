@@ -1,5 +1,6 @@
 import { preloadScript } from "./usefuls";
 import { destinations } from "../config/tour-guide";
+import { fetchAvailableFlights } from "./api-adapter";
 
 export default class YandexMap {
 
@@ -47,7 +48,8 @@ export default class YandexMap {
         departures:          [],
         selectedDeparture:   { value: null },
         destinations:        [],
-        selectedDestination: { value: null }
+        selectedDestination: { value: null },
+        preferredSearchParams: {}
     }
     constructor(el, options) {
         this.el = el;
@@ -93,7 +95,8 @@ export default class YandexMap {
             }
             this.routesPane = new ymaps.pane.MovablePane(this.ymap, {
                 css: { width: '100%', height: '100%' },
-                zIndex: 300
+                // zIndex: 300
+                zIndex: 401
             });
             this.ymap.panes.append('routesPane', this.routesPane);
 
@@ -141,6 +144,11 @@ export default class YandexMap {
         }
     }
 
+    getGeoObjectWithISOCode(iso3166) {
+        const collection = this.availableCountriesGOC;
+        return collection.toArray().find(go => go.properties.get('iso3166') === iso3166);
+    }
+
     async fetchCountriesBorders() {
         if (YandexMap.countriesBordersData) {
             return Promise.resolve(YandexMap.countriesBordersData);
@@ -184,7 +192,7 @@ export default class YandexMap {
                 },
             }
         );
-        this.departure2placemark = new WeakMap();
+        this.departure2placemark = new Map();
         for (const departure of this.options.departures) {
             const placemark = this.makeDeparturePlacemark(departure);
             this.departure2placemark.set(departure, placemark);
@@ -238,7 +246,7 @@ export default class YandexMap {
             }
         );
 
-        this.destination2placemark = new WeakMap();
+        this.destination2placemark = new Map();
         for (const destination of this.options.destinations) {
             const placemark = this.makeDestinationPlacemark(destination);
             this.destination2placemark.set(destination, placemark);
@@ -253,13 +261,58 @@ export default class YandexMap {
         }, {
             iconLayout: this.DestinationPlacemarkLayout,
             iconShape:  { type: 'Circle', coordinates: [0, 0], radius: 20 },
+            zIndex: 402
         });
     }
 
     selectDestination(destination2select) {
         for (const destination of this.options.destinations) {
-            this.destination2placemark.get(destination).properties.set('selected', destination.eeID === destination2select.eeID);
+            const select = destination.eeID === destination2select.eeID;
+            this.destination2placemark.get(destination).properties.set('selected', select);
+            const countryGO = this.getGeoObjectWithISOCode(destination.ISO);
+            countryGO?.options.set('fillColor', select ? this.options.selectedFill : undefined);
         }
+    }
+
+    async updateRouteInfo(departure, destination) {
+        departure ||= this.options.selectedDeparture.value;
+        destination ||= this.options.selectedDestination.value;
+        const { preferredSearchParams } = this.options;
+        let flightAvailable;
+        try {
+            const flightsList = await fetchAvailableFlights(departure, destination);
+            if (preferredSearchParams.timeframe.startMoment && preferredSearchParams.timeframe.endMoment) {
+                flightAvailable = flightsList.some(flight => {
+                    const flightMoment = moment(Number(flight.timestamp));
+                    return flightMoment.isSameOrAfter(preferredSearchParams.timeframe.startMoment.startOf('day'))
+                        && flightMoment.isSameOrBefore(preferredSearchParams.timeframe.endMoment.endOf('day'));
+                });
+            } else {
+                flightAvailable = !!flightsList.length;
+            }
+        } catch (ex) {}
+
+        if (!this.draw) {
+            const routes_el = this.routesPane.getElement();
+            this.draw = SVG().attr({ id: 'routes-svg' });
+            this.draw.addTo(routes_el);
+            this.ymap.events.add('boundschange', () => { this.updateRouteInfo() });
+            this.ymap.events.add('actionend', () => { this.updateRouteInfo() });
+        }
+        const [[tl_x, tl_y], [br_x, br_y]] = this.ymap.getGlobalPixelBounds();
+        this.draw.viewbox(tl_x, tl_y, br_x - tl_x, br_y - tl_y);
+        this.draw.find('*').remove();
+        const from_placemark = this.departure2placemark.get(this.options.departures.find(d => d.eeID === departure.eeID));
+        const to_placemark = this.destination2placemark.get(destination);
+        const from_p = from_placemark.geometry.getPixelGeometry().getCoordinates();
+        const to_p = to_placemark.geometry.getPixelGeometry().getCoordinates();
+        const d = `M ${ from_p.join(' ') } Q ${ to_p[0] } ${ from_p[1] } ${ to_p.join(' ') }`;
+        let p =this.draw
+            .path(d)
+            .fill('none')
+            .stroke({ width: 4, color: flightAvailable ? '#E27300' : '#0093D0' });
+        const midPoint = p.node.getPointAtLength(p.node.getTotalLength() / 2);
+
     }
 
 };

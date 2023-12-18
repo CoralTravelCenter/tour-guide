@@ -1,8 +1,8 @@
 <script setup>
 import YandexMap from "./YandexMap";
 import { computed, inject, onMounted, ref, watch, watchEffect } from "vue";
-import { destinations } from "../config/tour-guide";
 
+const preferredSearchParams = inject('preferred-search-params');
 const layoutMode = inject('layout-mode');
 const stepConfig = inject('current-step-config');
 const { selectedDestination } = inject('destination-selector');
@@ -38,12 +38,14 @@ onMounted(async () => {
         departures,
         selectedDeparture,
         destinations: availableDestinations.value,
-        selectedDestination
+        selectedDestination,
+        preferredSearchParams
     });
     await yandexMap.init();
     setTimeout(() => {
         yandexMap.selectDeparture(selectedDeparture.value);
         yandexMap.selectDestination(selectedDestination.value);
+        yandexMap.updateRouteInfo(selectedDeparture.value, selectedDestination.value);
     }, 100);
     if (layoutMode.value === 'desktop') mapArea = yandexMap.ymap.margin.addArea({ top: 0, right: 0, width: '40%', height: '100%' });
     locked.value = false;
@@ -62,6 +64,11 @@ watchEffect(() => {
 watchEffect(() => {
     if (selectedDestination.value) {
         yandexMap?.selectDestination(selectedDestination.value);
+    }
+});
+watchEffect(() => {
+    if (selectedDeparture.value && selectedDestination.value) {
+        yandexMap?.updateRouteInfo(selectedDeparture.value, selectedDestination.value);
     }
 });
 

@@ -5,6 +5,9 @@ export function apiUrl(endpoint) {
 }
 export async function fetchAvailableFlights(departure, destination) {
 
+    if (!departure?.eeID || !destination?.eeID) {
+        return Promise.reject();
+    }
     const cacheKey = `${ departure.eeID }->${ destination.eeID }`;
     const cachedResponse = sessionStorage.getItem(cacheKey);
     if (cachedResponse) return Promise.resolve(JSON.parse(cachedResponse));
