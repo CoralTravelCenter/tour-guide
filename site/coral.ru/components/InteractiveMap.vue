@@ -69,6 +69,9 @@ watchEffect(() => {
 watchEffect(() => {
     if (selectedDeparture.value && selectedDestination.value) {
         yandexMap?.updateRouteInfo(selectedDeparture.value, selectedDestination.value);
+        // setTimeout(() => {
+        //     yandexMap?.setBoundsWith(selectedDeparture.value, selectedDestination.value);
+        // }, 100);
     }
 });
 
@@ -85,6 +88,23 @@ watchEffect(() => {
 
 <style lang="less">
 @import (inline) "../config/destination-flags.css";
+
+svg foreignObject {
+    overflow: visible;
+    .flight-info {
+        width: fit-content;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 100px;
+        line-height: 1;
+        padding: .25em .7em;
+        border: 2px solid currentColor;
+    }
+}
+
 </style>
 <style scoped lang="less">
 @import "../common/css/coral-colors";

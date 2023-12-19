@@ -8,7 +8,7 @@ defineEmits(['selected']);
 </script>
 
 <template>
-    <DestinationButton v-if="config.is === 'DestinationButton'" :config="config" @selected="$emit('selected')"/>
+    <DestinationButton v-if="config.is === 'DestinationButton'" :config="config" @selected="$emit('selected','dont-step')"/>
     <button v-else-if="config.label" @click="$emit('selected')" v-html="typeof config.label === 'string' ? config.label : inject(config.label.predefined)"></button>
     <TimeframePicker v-else @selected="$emit('selected')"/>
 </template>

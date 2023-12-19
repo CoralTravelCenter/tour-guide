@@ -100,7 +100,7 @@ function handleChoiceSelect(choice, dont_step) {
                     disabled: choice.disabled || choiceLeadsToDeadEnd(choice, destinations, preferredSearchParams)
                 }"
                 @mouseenter="handleChoiceHover(choice)"
-                @selected="handleChoiceSelect(choice)">{{ choice.label }}</ChoiceItem>
+                @selected="(dont_step) => handleChoiceSelect(choice, dont_step)">{{ choice.label }}</ChoiceItem>
     </div>
 </template>
 

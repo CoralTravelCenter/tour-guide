@@ -8,7 +8,7 @@ const selectedDestinationImage = computed(() => selectedDestination.value?.backd
 
 <template>
     <div class="destination-info-visual">
-        <Transition>
+        <Transition name="slide-fade">
             <img v-if="selectedDestinationImage" :src="selectedDestinationImage" :key="selectedDestinationImage">
         </Transition>
     </div>
@@ -23,6 +23,14 @@ const selectedDestinationImage = computed(() => selectedDestination.value?.backd
         object-fit: cover;
         border-radius: 1em;
         box-shadow: 2px 0 16px fade(black, 15%);
+        .transit(opacity);
+        .transit(transform);
+        .transit(box-shadow);
+        &.slide-fade-enter-from, &.slide-fade-leave-to {
+            opacity: 0;
+            transform: translateX(-100%);
+            box-shadow: none;
+        }
     }
 }
 </style>

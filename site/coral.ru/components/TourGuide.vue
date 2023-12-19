@@ -166,6 +166,7 @@ watchEffect(() => {
             label: dest.name,
             selected: dest.selected && !exclude,
             disabled: exclude_by_budget,
+            step: dest.knowWhereStep,
             actions: [
                 { what: 'setBackdrop', predefined: dest.backdropVisual },
                 { what: 'setSelectedDestination', predefined: dest }

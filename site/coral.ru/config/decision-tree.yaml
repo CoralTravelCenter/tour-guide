@@ -221,3 +221,42 @@ steps:
         behaviour:
             singleChoice:  true
             selectOnHover: false
+
+    regions-turkey:
+        key: regions-turkey
+        instance: StepSimpleChoice
+        progress: true
+        h2: 'Tamam, tamam!'
+        h3: 'Что для вас более заманчиво?'
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-destination-turkey-azure-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-destination-turkey-azure-mobile.jpg'
+              h2MobileColor: 'white'
+        setSolidFill: 'transparent'
+        choices:
+            - label: 'Горы и лазурные бухты'
+              selected: true
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-turkey-azure-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-turkey-azure-mobile.jpg'
+                        h2MobileColor: 'white'
+            - label: 'Солнце, пляж и море'
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-turkey-beach-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-turkey-beach-mobile.jpg'
+                        h2MobileColor: 'white'
+            - label: 'Мечети, базары, местный колорит'
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-turkey-bazaar-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-turkey-bazaar-mobile.jpg'
+                        h2MobileColor: 'white'
+        behaviour:
+            singleChoice:  true
+            selectOnHover: true
+            proceedWithActions: preserveBackdropFromCurrentStep
