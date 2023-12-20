@@ -17,7 +17,7 @@ const isDesktopLayout = computed(() => layoutMode.value === 'desktop');
             <h2 v-if="config.h2">{{ config.h2 }}</h2>
         </Teleport>
         <h3 v-if="config.h3">{{ config.h3 }}</h3>
-        <ChoiceGrid trait="ramp-hover"/>
+        <ChoiceGrid trait="ramp-hover" :layout="config.layout"/>
     </div>
 </template>
 

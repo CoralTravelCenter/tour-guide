@@ -23,6 +23,9 @@ const predefinedActions = {
     resetMaxFlightDuration() {
         preferredSearchParams.maxFlightDuration = Infinity;
     },
+    resetRegionFilter() {
+        preferredSearchParams.regionFilter = []
+    },
     setPreferredLeisureKindsFromCurrentStep() {
         preferredSearchParams.leisureKinds = currentStepConfig.value.choices.filter(choice => choice.selected).map(choice => choice.kindKey);
     },
@@ -46,7 +49,8 @@ const preferredSearchParams = reactive({
         max:            null
     },
     maxFlightDuration: Infinity,
-    leisureKinds: []
+    leisureKinds: [],
+    regionFilter: []
 });
 provide('preferred-search-params', preferredSearchParams);
 
@@ -90,7 +94,11 @@ function stepByKey(key) {
     }
 }
 function stepBack() {
-    performActionsForStep(breadcrumbs.at(-1));
+    const step_config = breadcrumbs.at(-1);
+    performActionsForStep(step_config);
+    if (step_config.behaviour?.resetOnStepback && predefinedActions[step_config.behaviour?.resetOnStepback]) {
+        predefinedActions[step_config.behaviour.resetOnStepback]();
+    }
     if (breadcrumbs.length > 1) {
         breadcrumbs.pop();
         currentStepConfig.value = breadcrumbs.at(-1);
@@ -142,6 +150,7 @@ watchEffect(() => {
             label: dest.name,
             selected: dest.selected && !exclude,
             disabled: exclude,
+            step: 'must-have',
             actions: [
                 { what: 'setBackdrop', predefined: dest.backdropVisual },
                 { what: 'setSelectedDestination', predefined: dest }

@@ -71,6 +71,9 @@ function handleChoiceSelect(choice, dont_step) {
                 case 'setSelectedDestination':
                     selectedDestination.value = action.predefined;
                     break;
+                case 'setRegionFilter':
+                    preferredSearchParams.regionFilter = action.predefined
+                    break;
             }
         } else {
             switch (action.what) {
@@ -115,6 +118,13 @@ function handleChoiceSelect(choice, dont_step) {
     align-items: stretch;
     > * {
         height: (48/20em);
+    }
+    &.two-columns {
+        font-size: (13/20em);
+        display: grid;
+        grid-template-rows: repeat(4,auto);
+        grid-template-columns: repeat(2,auto);
+        grid-auto-flow: column;
     }
     &.kind-grid {
         flex-direction: row;
