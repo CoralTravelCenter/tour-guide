@@ -1,8 +1,9 @@
 <script setup>
 
-import { computed, inject } from "vue";
+import { computed, inject, ref, watchEffect } from "vue";
 
 const { stepBack, skip, stepByKey } = inject('flow-control');
+const tourGuideSteps = inject('tour-guide-steps');
 const stepConfig = inject('current-step-config');
 const anyChoiceSelected = computed(() => {
     return stepConfig.value.choices.some(choice => choice.selected);
@@ -19,12 +20,34 @@ function skipProceedHandler() {
     }
 }
 
+function countStepsFurther(step_config) {
+    if (step_config) {
+        let next_steps = [];
+        step_config.behaviour?.step && next_steps.push(step_config.behaviour.step);
+        step_config.behaviour?.skip && next_steps.push(step_config.behaviour.skip);
+        for (const choice of step_config.choices ?? []) {
+            choice.step && next_steps.push(choice.step);
+        }
+        next_steps = Array.from(new Set(next_steps));
+        return next_steps.reduce((count, step_key) => {
+            return Math.max(count, 1 + countStepsFurther(tourGuideSteps[step_key]));
+        }, 0) || 0;
+    }
+    return 0;
+}
+
+const progressPercent = ref(0);
+
+watchEffect(() => {
+    progressPercent.value = 100 * (1 - countStepsFurther(stepConfig.value) / countStepsFurther(tourGuideSteps['intro']));
+});
+
 </script>
 
 <template>
     <div class="progress-navigation">
         <button class="back" @click="stepBack">Назад</button>
-        <div class="progress-bar"><div class="filler"></div></div>
+        <div class="progress-bar"><div class="filler" :style="{ width: progressPercent + '%' }"></div></div>
         <button class="skip-proceed"
                 :class="{ [anyChoiceSelected ? 'proceed' : 'skip']: true }"
                 @click="skipProceedHandler">{{ anyChoiceSelected ? 'Продолжить' : 'Пропустить' }}</button>

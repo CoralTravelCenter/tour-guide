@@ -284,12 +284,56 @@ steps:
               h2MobileColor: 'white'
         setSolidFill: 'transparent'
         choices:
-            - label: 'Бассейн в отеле'
+            - label: 'Крытый бассейн'
+              step: fin
+              actions:
+                  - what: setMusthaveFilter
+                    predefined: { hotelfacilities: [4] }
             - label: 'Песчаный пляж'
+              step: fin
+              actions:
+                  - what: setMusthaveFilter
+                    predefined: { beach: [13] }
             - label: 'VIP-отели, Элитный отдых'
+              step: fin
+              actions:
+                  - what: setMusthaveFilter
+                    predefined: { leisuretypes: [1,49] }
             - label: 'Аквапарк и водные горки'
+              step: fin
+              actions:
+                  - what: setMusthaveFilter
+                    predefined: { hotelfacilities: [8] }
             - label: 'Отель только для взрослых'
+              step: fin
+              actions:
+                  - what: setMusthaveFilter
+                    predefined: { leisuretypes: [25] }
             - label: 'Балкон или терраса'
+              step: fin
+              actions:
+                  - what: setMusthaveFilter
+                    predefined: { roomfacilities: [14] }
             - label: 'Дискотека'
+              step: fin
+              actions:
+                  - what: setMusthaveFilter
+                    predefined: { hotelfacilities: [3] }
         behaviour:
             singleChoice:  true
+            resetSelection: resetMusthaveFilter
+            skip: fin
+            step: fin
+
+    fin:
+        key: fin
+        instance: StepFinal
+        progress: true
+        h2: 'Cупер! Последний шаг'
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-final-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-final-mobile.jpg'
+              h2MobileColor: 'white'
+        setSolidFill: 'transparent'
+        choices: []
+

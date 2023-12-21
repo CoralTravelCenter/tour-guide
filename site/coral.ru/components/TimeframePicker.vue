@@ -204,6 +204,19 @@ onUnmounted(() => {
         :deep(button[aria-disabled]) {
             visibility: hidden;
         }
+        :deep(.dp__main) {
+            justify-content: center;
+            .dp__outer_menu_wrap {
+                flex-grow: 1;
+                .dp__calendar_item {
+                    display: flex;
+                    justify-content: center;
+                    .dp__cell_inner {
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
         :deep(.dp__action_buttons) {
             flex: 1;
         }

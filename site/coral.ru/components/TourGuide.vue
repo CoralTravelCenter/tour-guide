@@ -13,6 +13,8 @@ const predefinedActions = {
         Object.assign(preferredSearchParams.budget, { currencyCode: '', currencySymbol: '', min: null, max: null });
         preferredSearchParams.maxFlightDuration = Infinity;
         preferredSearchParams.leisureKinds = [];
+        preferredSearchParams.regionFilter = [];
+        preferredSearchParams.musthaveFilter = {};
     },
     resetPreferredTimeframe() {
         Object.assign(preferredSearchParams.timeframe, { startMoment: null, endMoment: null, selectedMoment: null });
@@ -25,6 +27,9 @@ const predefinedActions = {
     },
     resetRegionFilter() {
         preferredSearchParams.regionFilter = []
+    },
+    resetMusthaveFilter() {
+        preferredSearchParams.musthaveFilter = {};
     },
     setPreferredLeisureKindsFromCurrentStep() {
         preferredSearchParams.leisureKinds = currentStepConfig.value.choices.filter(choice => choice.selected).map(choice => choice.kindKey);
@@ -50,12 +55,14 @@ const preferredSearchParams = reactive({
     },
     maxFlightDuration: Infinity,
     leisureKinds: [],
-    regionFilter: []
+    regionFilter: [],
+    musthaveFilter: {}
 });
 provide('preferred-search-params', preferredSearchParams);
 
 const currentStepConfig = ref(Object.values(tourGuideSteps).find(step => !!step.root));
 provide('current-step-config', currentStepConfig);
+provide('tour-guide-steps', tourGuideSteps);
 const breadcrumbs = [currentStepConfig.value];
 
 const backdropSolidFill = ref('transparent');

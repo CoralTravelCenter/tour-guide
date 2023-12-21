@@ -74,6 +74,9 @@ function handleChoiceSelect(choice, dont_step) {
                 case 'setRegionFilter':
                     preferredSearchParams.regionFilter = action.predefined
                     break;
+                case 'setMusthaveFilter':
+                    preferredSearchParams.musthaveFilter = action.predefined
+                    break;
             }
         } else {
             switch (action.what) {
