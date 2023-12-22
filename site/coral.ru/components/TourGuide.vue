@@ -229,6 +229,10 @@ onMounted(() => {
 @import "../common/css/coral-fonts";
 @import "../common/css/coral-colors";
 
+:root {
+    --el-font-family: 'museosans'!important;
+}
+
 .el-select-dropdown {
     font-family: museosans;
     font-weight: 400;
