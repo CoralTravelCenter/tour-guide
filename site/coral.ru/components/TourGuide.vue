@@ -42,21 +42,22 @@ const predefinedActions = {
 const tourGuideSteps = reactive(tourGuideConfig.steps);
 
 const preferredSearchParams = reactive({
-    timeframe: {
+    chartersOnly:      false,
+    timeframe:         {
         startMoment:    null,
         endMoment:      null,
         selectedMoment: null
     },
-    budget: {
+    budget:            {
         currencyCode:   '',
         currencySymbol: '',
         min:            null,
         max:            null
     },
     maxFlightDuration: Infinity,
-    leisureKinds: [],
-    regionFilter: [],
-    musthaveFilter: {}
+    leisureKinds:      [],
+    regionFilter:      [],
+    musthaveFilter:    {}
 });
 provide('preferred-search-params', preferredSearchParams);
 

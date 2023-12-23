@@ -49,7 +49,10 @@ const mapPlaceholderEl = inject('map-placeholder-el');
     <div ref="$el" class="destination-selector">
         <div class="switchers">
             <div class="controls">
-                <el-select v-model="selectedDeparture" value-key="eeID" filterable :filter-method="input => departureInputPattern = input">
+                <el-select v-model="selectedDeparture" value-key="eeID"
+                           default-first-option
+                           filterable
+                           :filter-method="input => departureInputPattern = input">
                     <template #header>Город вылета</template>
                     <template #empty><div style="text-align:center; padding: 1em;">Не найден</div></template>
                     <el-option v-for="departure in matchedDepartures"

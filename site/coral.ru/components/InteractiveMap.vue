@@ -35,6 +35,7 @@ onMounted(async () => {
     //
     window.yandexMap = yandexMap = new YandexMap($el.value, {
         variant: 1,
+        chartersOnly: preferredSearchParams.chartersOnly,
         departures,
         selectedDeparture,
         destinations: availableDestinations.value,

@@ -21,6 +21,7 @@ export default class YandexMap {
 
     options = {
         variant:           0,
+        chartersOnly:      false,
         variants: [
             {
                 mapType:         null,
@@ -280,7 +281,7 @@ export default class YandexMap {
         const { preferredSearchParams } = this.options;
         let flightAvailable;
         try {
-            const flightsList = await fetchAvailableFlights(departure, destination);
+            const flightsList = await fetchAvailableFlights(departure, destination, this.options.chartersOnly);
             if (preferredSearchParams.timeframe.startMoment && preferredSearchParams.timeframe.endMoment) {
                 flightAvailable = flightsList.some(flight => {
                     const flightMoment = moment(Number(flight.timestamp));

@@ -93,6 +93,7 @@
         marker:
             text: 'Львиная гора Сигирия'
             color: white
+    knowWhereStep: must-have
 
 -   id: thailand
     eeID: 33
@@ -112,6 +113,7 @@
         marker:
             text: 'Краби, пляж «Рейли»'
             color: '#033870'
+    knowWhereStep: must-have
 
 -   id: maldives
     eeID: 35
@@ -131,6 +133,7 @@
         marker:
             text: 'Южный Мале Атолл'
             color: '#033870'
+    knowWhereStep: must-have
 
 -   id: cuba
     eeID: 48
@@ -151,6 +154,7 @@
         marker:
             text: 'Варадеро'
             color: white
+    knowWhereStep: must-have
 
 -   id: russia
     eeID: 3
@@ -185,6 +189,7 @@
         marker:
             text: 'Баку, «Старый город»'
             color: white
+    knowWhereStep: must-have
 
 -   id: uz
     eeID: 49
@@ -204,6 +209,7 @@
         marker:
             text: 'Шахрисабз, Мечеть Кок Гумбаз'
             color: white
+    knowWhereStep: must-have
 
 -   id: belarus
     eeID: 8
@@ -223,6 +229,7 @@
         marker:
             text: 'Замковый комплекс «Мир»'
             color: white
+    knowWhereStep: must-have
 
 -   id: armenia
     eeID: 5
@@ -242,3 +249,4 @@
         marker:
             text: 'Татевский монастырь'
             color: white
+    knowWhereStep: must-have

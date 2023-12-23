@@ -18,7 +18,7 @@ const isSelected = computed(() => $el.value?.classList.contains('selected'));
 
 async function determineState() {
     state.value = 'indeterminate';
-    const flightsList = await fetchAvailableFlights(selectedDeparture.value, props.config.destination);
+    const flightsList = await fetchAvailableFlights(selectedDeparture.value, props.config.destination, preferredSearchParams.chartersOnly);
     if (preferredSearchParams.timeframe.startMoment && preferredSearchParams.timeframe.endMoment) {
         state.value = flightsList.some(flight => {
             const flightMoment = moment(Number(flight.timestamp));
