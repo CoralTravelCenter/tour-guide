@@ -38,3 +38,29 @@ export async function fetchAvailableFlights(departure, destination, charters_onl
         });
     });
 }
+
+export async function fetchAvailableNights(departure, destination, charters_only, beginDateFormatted, endDateFormatted) {
+    if (!departure?.eeID || !destination?.eeID) {
+        return Promise.reject();
+    }
+    const cacheKey = `${ departure.eeID }->${ destination.eeID }@${ beginDateFormatted }-${ endDateFormatted }`;
+    const cachedResponse = sessionStorage.getItem(cacheKey);
+    if (cachedResponse) return Promise.resolve(JSON.parse(cachedResponse));
+
+    return new Promise(resolve => {
+        $.get(apiUrl('/v1/flight/availablenights'), {
+            fromAreaId:    departure.eeID,
+            toCountryId:   destination.eeID,
+            destinationId: `Country${ destination.eeID }`,
+            // nearestAirports: destination.airports.join(',')
+            beginDate: beginDateFormatted,
+            endDate:   endDateFormatted,
+            // flightType: charters_only ? [0,2] : ''
+        }).done(response => {
+            const results = response.Result || JSON.parse(response).Result;
+            sessionStorage.setItem(cacheKey, JSON.stringify(results));
+            resolve(results);
+        });
+    });
+
+}

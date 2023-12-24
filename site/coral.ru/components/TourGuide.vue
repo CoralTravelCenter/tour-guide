@@ -232,6 +232,8 @@ onMounted(() => {
 
 :root {
     --el-font-family: 'museosans'!important;
+    --el-font-size-base: inherit!important;
+    --el-component-size: 2.5em!important;
 }
 
 .el-select-dropdown {

@@ -1,7 +1,8 @@
 <script setup>
 import { useStepBehaviour } from "./step-behaviour";
 import { computed, inject, onMounted, ref, watchEffect } from "vue";
-import { fetchAvailableFlights } from "./api-adapter";
+import { fetchAvailableFlights, fetchAvailableNights } from "./api-adapter";
+import NightsSelector from "./NightsSelector.vue";
 
 const config = useStepBehaviour();
 
@@ -76,7 +77,17 @@ watchEffect(() => {
 window.ElementPlus.dayjs().$locale().weekStart = 1;
 
 const nightsSelected = ref([]);
+const nightsAvailable = ref([]);
 
+watchEffect(() => {
+    const [beginDate, endDate] = preferDates.value;
+    if (beginDate && endDate) {
+        const [beginMoment, endMoment] = [beginDate, endDate].map(date => moment(date));
+        fetchAvailableNights(selectedDeparture.value, selectedDestination.value, preferredSearchParams.chartersOnly,
+            beginMoment.format('YYYY-MM-DD'), endMoment.format('YYYY-MM-DD'))
+            .then(list => nightsAvailable.value = list);
+    }
+});
 
 </script>
 
@@ -130,11 +141,7 @@ const nightsSelected = ref([]);
             </div>
             <div class="form-field">
                 <div class="label">Ночей</div>
-                <el-select v-model="nightsSelected" multiple :multiple-limit="7" clearable :teleported="false"
-                           collapse-tags :max-collapse-tags="0">
-                    <el-option v-for="n in [1,2,3,4,5,6,7,8,9,10]"
-                               :key="n" :label="n" :value="n"></el-option>
-                </el-select>
+                <NightsSelector/>
             </div>
         </div>
     </div>
@@ -150,7 +157,7 @@ const nightsSelected = ref([]);
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    text-align: center;
+    //text-align: center;
     padding: 1em 1.5em;
     @media screen and (max-width: @mobile-breakpoint) {
         gap: 1em;
@@ -160,6 +167,7 @@ const nightsSelected = ref([]);
         color: @coral-main-yellow;
     }
     .search-params-form {
+        font-size: (14/20em);
         width: 100%;
         display: grid;
         gap: 1em;
@@ -169,7 +177,7 @@ const nightsSelected = ref([]);
             flex-direction: column;
             align-items: flex-start;
             .label {
-                font-size: (13/20em);
+                font-size: (13/14em);
                 font-weight: bold;
                 line-height: 1;
                 margin-bottom: .25em;
@@ -177,7 +185,26 @@ const nightsSelected = ref([]);
         }
     }
 
+    :deep(.el-date-range-picker) {
+        @media screen and (max-width: @narrow-breakpoint) {
+            width: unset;
+        }
+    }
 
+    :deep(.el-date-range-picker) {
+        @media screen and (max-width: @narrow-breakpoint) {
+            .el-picker-panel__body {
+                min-width: 25em;
+                display: grid;
+                line-height: 1;
+            }
+            .el-picker-panel__content {
+                width: unset;
+                white-space: nowrap;
+            }
+        }
+
+    }
 
     :deep(.el-date-table) {
         td {
@@ -225,14 +252,17 @@ const nightsSelected = ref([]);
             }
             .flight {
                 font-family: "Material Icons";
+                width: calc(~"100% - 4px");
                 display: none;
                 &.available {
                     display: unset;
                     color: @coral-green-accent;
+                    background-color: fade(@coral-green-accent, 8%);
                 }
                 &.unavailable {
                     display: unset;
                     color: @coral-red-error;
+                    background-color: fade(@coral-red-error, 8%);
                 }
             }
         }
