@@ -234,6 +234,7 @@ onMounted(() => {
     --el-font-family: 'museosans'!important;
     --el-font-size-base: inherit!important;
     --el-component-size: 2.5em!important;
+    --el-fill-color-light: fade(@coral-main-blue, 8%)!important;
 }
 
 .el-select-dropdown {

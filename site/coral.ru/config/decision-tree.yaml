@@ -271,6 +271,132 @@ steps:
             proceedWithActions: preserveBackdropFromCurrentStep
             resetOnStepback: resetRegionFilter
 
+    regions-egypt:
+        key: regions-egypt
+        instance: StepSimpleChoice
+        progress: true
+        h2: 'Шукран!'
+        h3: 'Что для вас более заманчиво?'
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-destination-egypt-hurghada-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-destination-egypt-hurghada-mobile.jpg'
+              h2MobileColor: 'white'
+        setSolidFill: 'transparent'
+        choices:
+            - label: 'Солнце, пляж и морской бриз'
+              selected: true
+              step: must-have
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-egypt-hurghada-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-egypt-hurghada-mobile.jpg'
+                        h2MobileColor: 'white'
+                  - what: setRegionFilter
+                    predefined: [1969, 1967, 1966, 14453, 171, 174, 175, 176, 169, 173, 1968]
+            - label: 'Кораллы, ласты, акваланг'
+              step: must-have
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-egypt-sharm-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-egypt-sharm-mobile.jpg'
+                        h2MobileColor: 'white'
+                  - what: setRegionFilter
+                    predefined: [184, 183, 1771, 186, 194, 1770]
+        behaviour:
+            singleChoice:  true
+            selectOnHover: true
+            proceedWithActions: preserveBackdropFromCurrentStep
+            resetOnStepback: resetRegionFilter
+
+    regions-uae:
+        key: regions-uae
+        instance: StepSimpleChoice
+        progress: true
+        h2: 'Шукран!'
+        h3: 'Что для вас более заманчиво?'
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-destination-uae-fun-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-destination-uae-fun-mobile.jpg'
+              h2MobileColor: 'white'
+        setSolidFill: 'transparent'
+        choices:
+            - label: 'Веселье, распродажи, небоскрёбы'
+              selected: true
+              step: must-have
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-uae-fun-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-uae-fun-mobile.jpg'
+                        h2MobileColor: 'white'
+                  - what: setRegionFilter
+                    predefined: [322, 10662, 11507, 8933, 10985, 10983, 841, 11331, 11346, 10717, 842, 218, 11342, 845, 10982, 11347, 11356, 843]
+            - label: 'Море, пляжи и релакс'
+              step: must-have
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-uae-beach-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-uae-beach-mobile.jpg'
+                        h2MobileColor: 'white'
+                  - what: setRegionFilter
+                    predefined: [360, 327]
+        behaviour:
+            singleChoice:  true
+            selectOnHover: true
+            proceedWithActions: preserveBackdropFromCurrentStep
+            resetOnStepback: resetRegionFilter
+
+    regions-russia:
+        key: regions-russia
+        instance: StepSimpleChoice
+        progress: true
+        h3: 'Что для вас более заманчиво?'
+        setBackdrop:
+            - desktop: '/site/coral.ru/assets/backdrop-destination-russia-beach-desktop.jpg'
+              mobile: '/site/coral.ru/assets/backdrop-destination-russia-beach-mobile.jpg'
+              h2MobileColor: 'white'
+        setSolidFill: 'transparent'
+        choices:
+            - label: 'Море, пляж и солнце'
+              selected: true
+              step: must-have
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-russia-beach-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-russia-beach-mobile.jpg'
+                        h2MobileColor: 'white'
+                  - what: setRegionFilter
+                    predefined: [5417, 9195, 9198, 9193, 9509, 9181, 11077, 9199, 9194, 10783, 10776, 9197, 11275, 1545, 9184, 9183, 9196, 9186, 9187, 9188, 1595, 9192]
+            - label: 'Нарзан, горы, оздоровление'
+              step: must-have
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-russia-narzan-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-russia-narzan-mobile.jpg'
+                        h2MobileColor: 'white'
+                  - what: setRegionFilter
+                    predefined: [1135, 8355, 1220, 1334, 1465, 9684]
+            - label: 'Лыжи и горные вершины'
+              step: must-have
+              actions:
+                  - what: setBackdrop
+                    predefined:
+                        desktop: '/site/coral.ru/assets/backdrop-destination-russia-ski-desktop.jpg'
+                        mobile: '/site/coral.ru/assets/backdrop-destination-russia-ski-mobile.jpg'
+                        h2MobileColor: 'white'
+                  - what: setRegionFilter
+                    predefined: [9826, 9820, 9819, 9822, 9823, 9181, 9811]
+        behaviour:
+            singleChoice:  true
+            selectOnHover: true
+            proceedWithActions: preserveBackdropFromCurrentStep
+            resetOnStepback: resetRegionFilter
+
     must-have:
         key: must-have
         instance: StepSimpleChoice

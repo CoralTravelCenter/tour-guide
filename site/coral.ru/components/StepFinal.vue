@@ -3,6 +3,7 @@ import { useStepBehaviour } from "./step-behaviour";
 import { computed, inject, onMounted, ref, watchEffect } from "vue";
 import { fetchAvailableFlights, fetchAvailableNights } from "./api-adapter";
 import NightsSelector from "./NightsSelector.vue";
+import PaxSelector from "./PaxSelector.vue";
 
 const config = useStepBehaviour();
 
@@ -89,6 +90,32 @@ watchEffect(() => {
     }
 });
 
+const flightAvailableInSelectedRange = computed(() => {
+    const [beginDate, endDate] = preferDates.value;
+    const [beginMoment, endMoment] = [beginDate, endDate].map(date => moment(date));
+    return !!flightList.value.find(flight => moment(flight.timestamp).isBetween(beginMoment, endMoment.endOf('day')));
+});
+
+const searchType = computed(() => {
+    const [beginDate, endDate] = preferDates.value;
+    if (beginDate && endDate) {
+        return flightAvailableInSelectedRange.value ? 'package' : 'hotel';
+    } else {
+        return 'disabled';
+    }
+});
+
+const budgetMin = ref(preferredSearchParams.budget.min || null);
+const budgetMax = ref(preferredSearchParams.budget.max || null);
+
+function parseBudget(input) {
+    return input.replace(/\D/g, '');
+}
+
+function formatBudget(input) {
+    return input.replace(/\D/g, '').split('').reverse().join('').replace(/\d{3}(?=.)/g, "$& ").split('').reverse().join('');
+}
+
 </script>
 
 <template>
@@ -105,7 +132,8 @@ watchEffect(() => {
                            filterable
                            default-first-option
                            :filter-method="input => departureInputPattern = input"
-                           :teleported="true">
+                           :teleported="true"
+                           :style="{width: '100%'}">
                     <template #empty><div style="text-align:center; padding: 1em;">Не найден</div></template>
                     <el-option v-for="departure in matchedDepartures"
                                :size="layoutMode.value === 'mobile' ? 'small' : 'default'"
@@ -141,7 +169,27 @@ watchEffect(() => {
             </div>
             <div class="form-field">
                 <div class="label">Ночей</div>
-                <NightsSelector/>
+                <NightsSelector v-model="nightsSelected"
+                                :nights-available="nightsAvailable"
+                                :search-type="searchType"/>
+            </div>
+            <div class="form-field">
+                <div class="label">Туристы</div>
+                <PaxSelector/>
+            </div>
+            <div class="form-field">
+                <div class="label">Бюджет на поездку</div>
+                <el-input v-model="budgetMin" clearable :parser="parseBudget" :formatter="formatBudget">
+                    <template #prepend>от</template>
+                    <template #append>Р</template>
+                </el-input>
+            </div>
+            <div class="form-field">
+                <div class="label">&nbsp;</div>
+                <el-input v-model="budgetMax" clearable :parser="parseBudget" :formatter="formatBudget">
+                    <template #prepend>до</template>
+                    <template #append>Р</template>
+                </el-input>
             </div>
         </div>
     </div>
@@ -270,6 +318,10 @@ watchEffect(() => {
 
     :deep(.el-date-editor.el-input__wrapper) {
         width: unset;
+    }
+
+    :deep(.el-input-group__append), :deep(.el-input-group__prepend) {
+        padding: 0 1em;
     }
 
 }
