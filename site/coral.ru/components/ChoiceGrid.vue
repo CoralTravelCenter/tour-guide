@@ -1,5 +1,5 @@
 <script setup>
-import { inject } from "vue";
+import { inject, onMounted } from "vue";
 import ChoiceItem from "./ChoiceItem.vue";
 import { asapTimeframe, choiceLeadsToDeadEnd, in2monthsTimeframe } from "./predefined-actions";
 import { destinations } from "../config/tour-guide";
@@ -93,6 +93,13 @@ function handleChoiceSelect(choice, dont_step) {
         stepByKey(choice.step);
     }
 }
+
+onMounted(() => {
+    if (stepConfig.value.behaviour?.singleChoice && stepConfig.value.behaviour?.selectOnHover) {
+        const sel = stepConfig.value.choices.find(choice => choice.selected);
+        handleChoiceSelect(sel, 'dont-step');
+    }
+});
 
 </script>
 

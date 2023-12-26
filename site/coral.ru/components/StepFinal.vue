@@ -1,9 +1,18 @@
 <script setup>
 import { useStepBehaviour } from "./step-behaviour";
-import { computed, inject, onMounted, ref, watchEffect } from "vue";
-import { fetchAvailableFlights, fetchAvailableNights } from "./api-adapter";
+import { computed, getCurrentInstance, inject, onMounted, ref, watchEffect } from "vue";
+import {
+    fetchAvailableFlights,
+    fetchAvailableNights,
+    fetchHotelSearchLink,
+    fetchPackageSearchLink
+} from "./api-adapter";
 import NightsSelector from "./NightsSelector.vue";
 import PaxSelector from "./PaxSelector.vue";
+import { params2query, queryParam } from "./usefuls";
+
+const me = inject('fin-step-component');
+me.value = getCurrentInstance();
 
 const config = useStepBehaviour();
 
@@ -37,10 +46,20 @@ const matchedDepartures = computed(() => {
 });
 const departureInputPattern = ref();
 
+const preferDatesFormField = ref();
 const preferDates = ref([
     preferredSearchParams.timeframe.startMoment?.toDate(),
     preferredSearchParams.timeframe.endMoment?.toDate()
 ]);
+
+function validatePreferDates(popoverOpened) {
+    if (!popoverOpened) {
+        const [startDate, endDate] = preferDates.value || [];
+        const invalid = !(startDate && endDate);
+        preferDatesFormField.value.classList.toggle('invalid', invalid);
+        return !invalid;
+    }
+}
 
 const dateRangeStart = ref();
 function detectDateStartChange([start, end]) {
@@ -77,11 +96,19 @@ watchEffect(() => {
 
 window.ElementPlus.dayjs().$locale().weekStart = 1;
 
+const nightsField = ref();
 const nightsSelected = ref([]);
 const nightsAvailable = ref([]);
 
+function validateNights() {
+    validatePreferDates();
+    const valid = nightsSelected.value.length;
+    nightsField.value.classList.toggle('invalid', !valid);
+    return valid;
+}
+
 watchEffect(() => {
-    const [beginDate, endDate] = preferDates.value;
+    const [beginDate, endDate] = preferDates.value || [];
     if (beginDate && endDate) {
         const [beginMoment, endMoment] = [beginDate, endDate].map(date => moment(date));
         fetchAvailableNights(selectedDeparture.value, selectedDestination.value, preferredSearchParams.chartersOnly,
@@ -91,13 +118,13 @@ watchEffect(() => {
 });
 
 const flightAvailableInSelectedRange = computed(() => {
-    const [beginDate, endDate] = preferDates.value;
+    const [beginDate, endDate] = preferDates.value || [];
     const [beginMoment, endMoment] = [beginDate, endDate].map(date => moment(date));
     return !!flightList.value.find(flight => moment(flight.timestamp).isBetween(beginMoment, endMoment.endOf('day')));
 });
 
 const searchType = computed(() => {
-    const [beginDate, endDate] = preferDates.value;
+    const [beginDate, endDate] = preferDates.value || [];
     if (beginDate && endDate) {
         return flightAvailableInSelectedRange.value ? 'package' : 'hotel';
     } else {
@@ -107,6 +134,7 @@ const searchType = computed(() => {
 
 const budgetMin = ref(preferredSearchParams.budget.min || null);
 const budgetMax = ref(preferredSearchParams.budget.max || null);
+const { currencyCode, currencySymbol } = inject('currency');
 
 function parseBudget(input) {
     return input.replace(/\D/g, '');
@@ -115,6 +143,57 @@ function parseBudget(input) {
 function formatBudget(input) {
     return input.replace(/\D/g, '').split('').reverse().join('').replace(/\d{3}(?=.)/g, "$& ").split('').reverse().join('');
 }
+
+const guests = ref({ Adults: 2, Children: [] });
+
+function applyFilters(params) {
+    if (budgetMin.value || budgetMax.value) {
+        params.f ||= {};
+        params.f.Pr = [budgetMin.value || 0, budgetMax.value || 0];
+    }
+    if (preferredSearchParams.regionFilter?.length) {
+        params.f ||= {};
+        params.f.Rg = preferredSearchParams.regionFilter;
+    }
+    for (const [key, list] of Object.entries(preferredSearchParams.musthaveFilter)) {
+        params.f ||= {};
+        params.f[key] = JSON.parse(JSON.stringify(list));
+    }
+    return params;
+}
+
+function performSearch() {
+    if (validateNights()) {
+        const target_host = location.hostname === 'localhost' ? 'https://www.coral.ru' : '';
+        if (searchType.value === 'package') {
+            const beginDate = moment(preferDates.value[0]).format('YYYY-MM-DD');
+            const endDate = moment(preferDates.value[1]).format('YYYY-MM-DD');
+            fetchPackageSearchLink(
+                selectedDeparture.value, selectedDestination.value, preferredSearchParams.chartersOnly,
+                guests.value,
+                beginDate, endDate, beginDate,
+                nightsSelected.value)
+                .then(href => {
+                    const [url] = href.split('?');
+                    const params = applyFilters(queryParam(undefined, href));
+                    console.log('+++ params: %o', params);
+                    window.open(target_host + url + '?' + params2query(params));
+                });
+        } else if (searchType.value === 'hotel') {
+            const beginDate = moment(preferDates.value[0]).format('YYYY-MM-DD');
+            const endDate = moment(preferDates.value[0]).add({ d: nightsSelected.value[0] }).format('YYYY-MM-DD');
+            fetchHotelSearchLink(selectedDestination.value, guests.value, beginDate, endDate)
+                .then(href => {
+                    const [url] = href.split('?');
+                    const params = applyFilters(queryParam(undefined, href));
+                    console.log('+++ params: %o', params);
+                    window.open(target_host + url + '?' + params2query(params));
+                });
+
+        }
+    }
+}
+defineExpose({ performSearch });
 
 </script>
 
@@ -144,13 +223,14 @@ function formatBudget(input) {
                     </el-option>
                 </el-select>
             </div>
-            <div class="form-field">
+            <div class="form-field" ref="preferDatesFormField">
                 <div class="label">Период вылета (макс. 7 дней)</div>
                 <el-date-picker v-model="preferDates"
                                 type="daterange"
                                 :editable="false" :clearable="true"
                                 @calendar-change="detectDateStartChange"
-                                :teleported="false">
+                                :popper-options="{ placement: 'bottom-end' }"
+                                :teleported="false" @visible-change="validatePreferDates">
                     <template #default="cell">
                         <div class="cell" :class="{
                             disabled: excludeDate(cell.date),
@@ -167,28 +247,31 @@ function formatBudget(input) {
                     </template>
                 </el-date-picker>
             </div>
-            <div class="form-field">
+            <div class="form-field" ref="nightsField">
                 <div class="label">Ночей</div>
                 <NightsSelector v-model="nightsSelected"
                                 :nights-available="nightsAvailable"
-                                :search-type="searchType"/>
+                                :search-type="searchType"
+                                @should-validate="validateNights"/>
             </div>
             <div class="form-field">
                 <div class="label">Туристы</div>
-                <PaxSelector/>
+                <PaxSelector v-model="guests"/>
             </div>
             <div class="form-field">
                 <div class="label">Бюджет на поездку</div>
-                <el-input v-model="budgetMin" clearable :parser="parseBudget" :formatter="formatBudget">
+                <el-input v-model="budgetMin" clearable :parser="parseBudget" :formatter="formatBudget" :input-style="{ textAlign: 'center' }">
                     <template #prepend>от</template>
-                    <template #append>Р</template>
+                    <template #append><span :style="{ fontFamily: currencyCode === 'RUB' ? 'Material Icons' : 'inherit' }">
+                        {{ currencyCode === 'RUB' ? 'currency_ruble' : currencyCode }}</span></template>
                 </el-input>
             </div>
             <div class="form-field">
                 <div class="label">&nbsp;</div>
-                <el-input v-model="budgetMax" clearable :parser="parseBudget" :formatter="formatBudget">
+                <el-input v-model="budgetMax" clearable :parser="parseBudget" :formatter="formatBudget" :input-style="{ textAlign: 'center' }">
                     <template #prepend>до</template>
-                    <template #append>Р</template>
+                    <template #append><span :style="{ fontFamily: currencyCode === 'RUB' ? 'Material Icons' : 'inherit' }">
+                        {{ currencyCode === 'RUB' ? 'currency_ruble' : currencyCode }}</span></template>
                 </el-input>
             </div>
         </div>
@@ -229,6 +312,12 @@ function formatBudget(input) {
                 font-weight: bold;
                 line-height: 1;
                 margin-bottom: .25em;
+                .transit(color);
+            }
+            &.invalid {
+                .label {
+                    color: @coral-red-error;
+                }
             }
         }
     }

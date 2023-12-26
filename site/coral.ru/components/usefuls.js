@@ -29,6 +29,34 @@ export function observeElementProp(el, prop, callback) {
     }
 }
 
+export function queryParam(p, source) {
+    source ||= location.href;
+    const [url, query] = source.split('?');
+    const params_kv = query.split('&');
+    const params = {};
+    for (const kv of params_kv) {
+        let [k, v] = kv.split('=');
+        try {
+            v = decodeURIComponent(v);
+            v = JSON.parse(v);
+        } catch (ex) {}
+        params[k] = v;
+    }
+    if (p) {
+        return params[p];
+    } else {
+        return params;
+    }
+}
+
+export function params2query(p) {
+    const kv = [];
+    for (let [k, v] of Object.entries(p)) {
+        kv.push(`${ k }=${ encodeURIComponent(typeof v === 'object' ? JSON.stringify(v) : v) }`);
+    }
+    return kv.join('&');
+}
+
 Array.prototype.distanceFrom = function (from) {
     const f1 = this[0] * Math.PI / 180;
     const f2 = from[0] * Math.PI / 180

@@ -126,6 +126,7 @@ provide('h2-mobile-placeholder', h2MobilePlaceholder);
 const h2MobileColor = ref('inherit');
 
 const { budget, code: currencyCode, symbol: currencySymbol } = await currencyBudget();
+provide('currency', { currencySymbol, currencyCode });
 provide('lowBudgetLabelMarkup', budget.low.labelMarkup);
 provide('lowBudgetRange', { currencyCode, currencySymbol, min: budget.low.min, max: budget.low.max });
 provide('mediumBudgetLabelMarkup', budget.medium.labelMarkup);
@@ -215,6 +216,13 @@ onMounted(() => {
     layout.addEventListener('change', e => layoutMode.value = e.matches ? 'mobile' : 'desktop');
     layoutMode.value = layout.matches ? 'mobile' : 'desktop';
 });
+
+function finButtonClicked() {
+    finStepComponent.value?.exposed?.performSearch();
+}
+provide('fin-button-clicked', finButtonClicked);
+const finStepComponent = ref();
+provide('fin-step-component', finStepComponent);
 
 </script>
 

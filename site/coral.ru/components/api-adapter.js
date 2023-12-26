@@ -62,5 +62,66 @@ export async function fetchAvailableNights(departure, destination, charters_only
             resolve(results);
         });
     });
-
 }
+
+export function fetchPackageSearchLink(departure, destination, charters_only, guest, beginDate, endDate, selectedDate, nights) {
+    return new Promise(resolve => {
+        const reqData = {
+            isCharter: true,
+            isRegular: !charters_only,
+            Guest:     { ...(JSON.parse(JSON.stringify(guest))) },
+            // DateRange: 3,
+            BeginDate:    beginDate,
+            EndDate:      endDate,
+            SelectedDate: selectedDate,
+            Acc: JSON.parse(JSON.stringify(nights)),
+            Departures: [{ Id: departure.eeID, Label: departure.name }],
+            Destination: [{
+                Id:               `Country${ destination.eeID }`,
+                DataId:           destination.eeID,
+                TopDataId:        '',
+                ParentDataId:     '',
+                TitleRu:          destination.name,
+                ModelType:        1,
+                Priority:         1,
+                RecordSourceType: 2,
+                HasAirport:       false,
+                NearestAirports:  (destination.airports && JSON.parse(JSON.stringify(destination.airports))) || [],
+            }]
+        };
+        console.log('+++ fetchPackageSearchLink reqData: %o', reqData);
+        $.post(apiUrl('/v1/package/search'), reqData).done(response => {
+            resolve(response);
+        });
+    });
+}
+
+export function fetchHotelSearchLink(destination, guest, beginDate, endDate) {
+    return new Promise(resolve => {
+        const reqData = {
+            Guest:     { ...(JSON.parse(JSON.stringify(guest))) },
+            BeginDate:    beginDate,
+            EndDate:      endDate,
+            Destination: {
+                Id:               `Country${ destination.eeID }`,
+                DataId:           destination.eeID,
+                TopDataId:        '',
+                ParentDataId:     '',
+                Title:            'Turkey',
+                TitleRu:          destination.name,
+                ParentTitle:      '',
+                ParentTitleRu:    '',
+                ModelType:        1,
+                Priority:         1,
+                RecordSourceType: 2,
+                HasAirport:       false,
+                NearestAirports:  (destination.airports && JSON.parse(JSON.stringify(destination.airports))) || [],
+            }
+        };
+        console.log('+++ fetchHotelSearchLink reqData: %o', reqData);
+        $.post(apiUrl('/v1/onlyhotel/search'), reqData).done(response => {
+            resolve(response);
+        });
+    });
+}
+

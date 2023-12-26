@@ -1,10 +1,16 @@
 <script setup>
 
-import { computed, reactive } from "vue";
+import { computed, reactive, toRaw, watchEffect } from "vue";
 
-const guest = reactive({
-    Adults:   2,
-    Children: []
+const props = defineProps({
+    modelValue: Object
+});
+const emit = defineEmits(['update:modelValue']);
+
+const guest = reactive(props.modelValue);
+
+watchEffect(() => {
+    emit('update:modelValue', toRaw(guest));
 });
 
 const childCount = computed({

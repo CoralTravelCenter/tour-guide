@@ -1,12 +1,12 @@
 <script setup>
-
 import { computed, reactive, toRaw, toValue, watchEffect } from "vue";
 
 const props = defineProps({
-    modelValue: Array,
+    modelValue:      Array,
     nightsAvailable: Array,
-    searchType: String
-})
+    searchType:      String
+});
+const emit = defineEmits(['shouldValidate', 'update:modelValue']);
 
 const nightsOptions = reactive(Array.from((function* () {
     for (let idx = 1; idx <= 28; idx++) yield { value: idx };
@@ -34,6 +34,10 @@ watchEffect(() => {
             selectionSet.add(keepThis);
         }
     }
+});
+
+watchEffect(() => {
+    emit('update:modelValue', [...selectionSet].map(n => n.value));
 });
 
 const selectionReadout = computed(() => {
@@ -68,7 +72,7 @@ const selectionReadout = computed(() => {
 </script>
 
 <template>
-    <el-popover trigger="click" placement="bottom-start" width="auto" :teleported="false">
+    <el-popover trigger="click" placement="bottom-start" width="auto" :teleported="false" @hide="$emit('shouldValidate')">
         <template #reference>
             <div class="input-readout">{{ selectionReadout }}</div>
         </template>

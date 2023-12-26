@@ -42,13 +42,19 @@ watchEffect(() => {
     progressPercent.value = 100 * (1 - countStepsFurther(stepConfig.value) / countStepsFurther(tourGuideSteps['intro']));
 });
 
+const finButtonClicked = inject('fin-button-clicked');
+
 </script>
 
 <template>
     <div class="progress-navigation">
         <button class="back" @click="stepBack">Назад</button>
         <div class="progress-bar"><div class="filler" :style="{ width: progressPercent + '%' }"></div></div>
-        <button class="skip-proceed"
+        <button v-if="stepConfig.key === 'fin'"
+                class="skip-proceed skip"
+                @click="finButtonClicked">ПОДОБРАТЬ</button>
+        <button v-else
+                class="skip-proceed"
                 :class="{ [anyChoiceSelected ? 'proceed' : 'skip']: true }"
                 @click="skipProceedHandler">{{ anyChoiceSelected ? 'Продолжить' : 'Пропустить' }}</button>
     </div>

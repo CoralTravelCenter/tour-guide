@@ -414,37 +414,37 @@ steps:
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { hotelfacilities: [4] }
+                    predefined: { Hf: [4] }
             - label: 'Песчаный пляж'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { beach: [13] }
+                    predefined: { Bch: [13] }
             - label: 'VIP-отели, Элитный отдых'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { leisuretypes: [1,49] }
+                    predefined: { Lt: [1,49] }
             - label: 'Аквапарк и водные горки'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { hotelfacilities: [8] }
+                    predefined: { Hf: [8] }
             - label: 'Отель только для взрослых'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { leisuretypes: [25] }
+                    predefined: { Lt: [25] }
             - label: 'Балкон или терраса'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { roomfacilities: [14] }
+                    predefined: { Rf: [14] }
             - label: 'Дискотека'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { hotelfacilities: [3] }
+                    predefined: { Hf: [3] }
         behaviour:
             singleChoice:  true
             resetSelection: resetMusthaveFilter
