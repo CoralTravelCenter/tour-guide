@@ -1,6 +1,7 @@
 -   id: turkey
     eeID: 1
     name: "Турция"
+    title: 'Turkey'
     IANA: 'Turkey'
     ISO: 'TR'
     capitalLatLng: [39.9199, 32.8543]
@@ -21,6 +22,7 @@
 -   id: egypt
     eeID: 12
     name: "Египет"
+    title: 'Egypt'
     IANA: 'Egypt'
     ISO: 'EG'
     capitalLatLng: [30.0626, 31.2497]
@@ -41,6 +43,7 @@
 -   id: uae
     eeID: 31
     name: "ОАЭ"
+    title: 'United Arab Emirates'
     IANA: 'Asia/Dubai'
     ISO: 'AE'
     capitalLatLng: [24.4667, 54.3667]
@@ -60,6 +63,7 @@
 
 #-   id: bahrain
 #    name: "Бахрейн"
+#    title: 'Bahrain'
 #    IANA: 'Asia/Bahrain'
 #    ISO: 'BH'
 #    capitalLatLng: [26.2279, 50.5857]
@@ -78,6 +82,7 @@
 -   id: srilanka
     eeID: 40
     name: 'Шри-Ланка'
+    title: 'Sri Lanka'
     IANA: 'Asia/Kolkata'
     ISO: 'LK'
     capitalLatLng: [6.93194, 79.8478]
@@ -98,6 +103,7 @@
 -   id: thailand
     eeID: 33
     name: "Таиланд"
+    title: 'Thailand'
     IANA: 'Asia/Bangkok'
     ISO: 'TH'
     capitalLatLng: [13.754, 100.501]
@@ -118,6 +124,7 @@
 -   id: maldives
     eeID: 35
     name: "Мальдивы"
+    title: 'Maldives'
     IANA: 'Indian/Maldives'
     ISO: 'MV'
     capitalLatLng: [4.17521, 73.5092]
@@ -138,6 +145,7 @@
 -   id: cuba
     eeID: 48
     name: "Куба"
+    title: 'Cuba'
     IANA: 'America/Havana'
     ISO: 'CU'
     capitalLatLng: [23.133, -82.383]
@@ -159,6 +167,7 @@
 -   id: russia
     eeID: 3
     name: "Россия"
+    title: 'Russia'
     visa: { required: false }
     flightDuration: 6
     budgetLevel: { RUB: 50000, EUR: 500, USD: 550 }
@@ -174,6 +183,7 @@
 -   id: az
     eeID: 7
     name: "Азербайджан"
+    title: 'Azerbaijan'
     IANA: 'Asia/Baku'
     ISO: 'AZ'
     capitalLatLng: [40.3777, 49.892]
@@ -194,6 +204,7 @@
 -   id: uz
     eeID: 49
     name: "Узбекистан"
+    title: 'Uzbekistan'
     IANA: 'Asia/Tashkent'
     ISO: 'UZ'
     capitalLatLng: [41.2646, 69.2163]
@@ -214,6 +225,7 @@
 -   id: belarus
     eeID: 8
     name: "Беларусь"
+    title: 'Belarus'
     IANA: 'Europe/Minsk'
     ISO: 'BY'
     capitalLatLng: [53.9, 27.5667]
@@ -234,6 +246,7 @@
 -   id: armenia
     eeID: 5
     name: "Армения"
+    title: 'Armenia'
     IANA: 'Asia/Yerevan'
     ISO: 'AM'
     capitalLatLng: [40.1811, 44.5136]

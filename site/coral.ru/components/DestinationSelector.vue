@@ -135,6 +135,9 @@ const mapPlaceholderEl = inject('map-placeholder-el');
         h3 {
             grid-area: name;
             align-self: end;
+            @media screen and (max-width: @mobile-breakpoint) {
+                margin-top: 1em;
+            }
         }
         .info-sheet {
             grid-area: sheet;

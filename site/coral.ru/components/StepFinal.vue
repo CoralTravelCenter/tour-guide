@@ -149,7 +149,8 @@ const guests = ref({ Adults: 2, Children: [] });
 function applyFilters(params) {
     if (budgetMin.value || budgetMax.value) {
         params.f ||= {};
-        params.f.Pr = [budgetMin.value || 0, budgetMax.value || 0];
+        params.f.Pr = [(Number(budgetMin.value) || 0.0), (Number(budgetMax.value === Infinity ? 0.0 : budgetMax.value) || 0.0)];
+        debugger;
     }
     if (preferredSearchParams.regionFilter?.length) {
         params.f ||= {};
@@ -263,7 +264,7 @@ defineExpose({ performSearch });
                 <el-input v-model="budgetMin" clearable :parser="parseBudget" :formatter="formatBudget" :input-style="{ textAlign: 'center' }">
                     <template #prepend>от</template>
                     <template #append><span :style="{ fontFamily: currencyCode === 'RUB' ? 'Material Icons' : 'inherit' }">
-                        {{ currencyCode === 'RUB' ? 'currency_ruble' : currencyCode }}</span></template>
+                        {{ currencyCode === 'RUB' ? 'currency_ruble' : currencySymbol }}</span></template>
                 </el-input>
             </div>
             <div class="form-field">
@@ -271,7 +272,7 @@ defineExpose({ performSearch });
                 <el-input v-model="budgetMax" clearable :parser="parseBudget" :formatter="formatBudget" :input-style="{ textAlign: 'center' }">
                     <template #prepend>до</template>
                     <template #append><span :style="{ fontFamily: currencyCode === 'RUB' ? 'Material Icons' : 'inherit' }">
-                        {{ currencyCode === 'RUB' ? 'currency_ruble' : currencyCode }}</span></template>
+                        {{ currencyCode === 'RUB' ? 'currency_ruble' : currencySymbol }}</span></template>
                 </el-input>
             </div>
         </div>
