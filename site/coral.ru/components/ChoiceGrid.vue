@@ -113,7 +113,7 @@ onMounted(() => {
                     disabled: choice.disabled || choiceLeadsToDeadEnd(choice, destinations, preferredSearchParams)
                 }"
                 @mouseenter="handleChoiceHover(choice)"
-                @selected="(dont_step) => handleChoiceSelect(choice, dont_step)">{{ choice.label }}</ChoiceItem>
+                @selected="(dont_step) => handleChoiceSelect(choice, dont_step)"/>
     </div>
 </template>
 
