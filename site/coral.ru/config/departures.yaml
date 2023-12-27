@@ -10,6 +10,11 @@
   pathname: /spb/
   latlng: [59.94, 30.31]
   GMT: +3
+- name: Архангельск
+  fromForm: Архангельска
+  eeID: 2349
+  latlng: [64.5401, 40.5433]
+  GMT: +3
 - name: Барнаул
   fromForm: Барнаула
   eeID: 2370
@@ -142,6 +147,11 @@
   eeID: 2897
   latlng: [61.25, 73.42]
   GMT: +5
+- name: Сыктывкар
+  fromForm: Сыктывкара
+  eeID: 2861
+  latlng: [61.6764, 50.8099]
+  GMT: +3
 - name: Тюмень
   fromForm: Тюмени
   eeID: 2927
