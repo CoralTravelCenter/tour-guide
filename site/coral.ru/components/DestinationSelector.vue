@@ -3,7 +3,7 @@ import ChoiceGrid from "./ChoiceGrid.vue";
 import ModeSwitch from "./ModeSwitch.vue";
 import DestinationInfoSheet from "./DestinationInfoSheet.vue";
 import { useStepBehaviour } from "./step-behaviour";
-import { computed, inject, ref } from "vue";
+import { computed, inject, provide, ref } from "vue";
 import DestinationVisual from "./DestinationVisual.vue";
 import InteractiveMap from "./InteractiveMap.vue";
 
@@ -43,6 +43,11 @@ const departureInputPattern = ref();
 
 const mapPlaceholderEl = inject('map-placeholder-el');
 
+const tooltipRef = ref();
+const tooltipVisible = ref(false);
+const tooltipButtonRef = ref();
+provide('tooltip', { tooltipRef, tooltipVisible, tooltipButtonRef });
+
 </script>
 
 <template>
@@ -70,6 +75,17 @@ const mapPlaceholderEl = inject('map-placeholder-el');
                 <div v-if="destinationSelectorMode === 'list'" class="list-view">
                     <h3 v-if="config.h3">{{ config.h3 }}</h3>
                     <ChoiceGrid trait="ramp" layout="destinations-grid"/>
+                    <el-tooltip ref="tooltipRef" :visible="tooltipVisible"
+                                placement="top"
+                                effect="light"
+                                virtual-triggering
+                                :virtual-ref="tooltipButtonRef"
+                                popper-class="singleton-tooltip"
+                                :popper-options="{ modifiers: [ { name: 'computeStyles', options: { adaptive: false, enabled: false, } } ] }">
+                        <template #content>
+                            Без перелета, <strong>только проживание</strong>
+                        </template>
+                    </el-tooltip>
                     <DestinationInfoSheet/>
                 </div>
                 <div v-else class="map-view">
@@ -142,6 +158,23 @@ const mapPlaceholderEl = inject('map-placeholder-el');
         .info-sheet {
             grid-area: sheet;
         }
+    }
+}
+</style>
+
+<style lang="less">
+.singleton-tooltip {
+    font-family: museosans;
+    font-size: 11px;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: center;
+    transition: transform 0.3s var(--el-transition-function-fast-bezier);
+    margin-top: .5em!important;
+    filter: drop-shadow(0 2px 4px fade(black,15%));
+    strong {
+        display: block;
+        line-height: inherit;
     }
 }
 </style>

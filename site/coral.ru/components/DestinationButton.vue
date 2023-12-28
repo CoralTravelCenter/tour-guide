@@ -43,13 +43,17 @@ onMounted(async () => {
     }
 });
 
+const { tooltipButtonRef, tooltipVisible, tooltipRef } = inject('tooltip');
+
 </script>
 
 <template>
     <button ref="$el" v-if="config.label"
             class="destination-button"
             :class="{ [state]: true }"
-            @click="$emit('selected')">
+            @click="$emit('selected')"
+            @mouseenter="(e) => { tooltipButtonRef = e.currentTarget; tooltipVisible = state === 'unavailable' }"
+            @mouseleave="(e) => { tooltipButtonRef = null; tooltipVisible = false }">
         <span class="state-icon">
             <span v-if="state === 'indeterminate'" class="indeterminate"></span>
             <span v-else-if="state === 'available'" class="available">airplanemode_on</span>
