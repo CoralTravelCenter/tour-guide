@@ -319,7 +319,7 @@ export default class YandexMap {
         const midPoint = p.pointAt(p.length() / 2);
         this.draw.foreignObject(300,100)
             .move(midPoint.x, midPoint.y)
-            .add(SVG(`<div class="flight-info" style="color: ${ fill }; font-size: ${ fontSize }px;"><p>${ line1 }</p>${ line2 }</div>`))
+            .add(SVG(`<div xmlns="http://www.w3.org/1999/xhtml" class="flight-info" style="color: ${ fill }; font-size: ${ fontSize }px;"><p xmlns="http://www.w3.org/1999/xhtml">${ line1 }</p>${ line2 }</div>`))
 
     }
 
