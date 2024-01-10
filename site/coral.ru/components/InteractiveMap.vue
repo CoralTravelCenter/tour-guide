@@ -89,12 +89,20 @@ watchEffect(() => {
 
 <style lang="less">
 @import (inline) "../config/destination-flags.css";
+@import "../common/css/layout";
+
+svg g.g-hint {
+    transform: translate(-5%,-3%);
+    @media screen and (max-width: @narrow-breakpoint) {
+        transform: translate(-25%,-3%);
+    }
+}
 
 svg foreignObject {
     overflow: visible;
     .flight-info {
         width: fit-content;
-        transform: translate(-50%, -50%);
+        //transform: translate(-50%, -50%);
         display: flex;
         flex-direction: column;
         align-items: center;

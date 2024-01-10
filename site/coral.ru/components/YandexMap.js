@@ -312,14 +312,14 @@ export default class YandexMap {
         const line1 = flightAvailable ? `Прямой рейс около ${ approxFlightDuration(departure, destination) } ч` : 'Прямых рейсов нет';
         const line2 = flightAvailable ? '' : "\nТОЛЬКО ПРОЖИВАНИЕ";
         const fontSize = [10, 10, 11, 12, 13, 14, 15][this.ymap.getZoom()];
-        let p =this.draw
+        let p = this.draw
             .path(d)
             .fill('none')
             .stroke({ width: 4, color: fill });
         const midPoint = p.pointAt(p.length() / 2);
-        this.draw.foreignObject(300,100)
+        this.draw.group().addClass('g-hint').foreignObject(300,100)
             .move(midPoint.x, midPoint.y)
-            .add(SVG(`<div xmlns="http://www.w3.org/1999/xhtml" class="flight-info" style="color: ${ fill }; font-size: ${ fontSize }px;"><p xmlns="http://www.w3.org/1999/xhtml">${ line1 }</p>${ line2 }</div>`))
+            .add(SVG(`<div class="flight-info" style="color: ${ fill }; font-size: ${ fontSize }px;"><p>${ line1 }</p>${ line2 }</div>`))
 
     }
 
