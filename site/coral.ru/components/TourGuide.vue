@@ -254,6 +254,7 @@ provide('fin-step-component', finStepComponent);
 
 .tour-guide-module {
     .el-select {
+        --el-select-width: unset;
         --el-select-border-color-hover: @coral-main-blue;
         .el-input__wrapper {
             --el-input-border-color: @coral-page-bg;
