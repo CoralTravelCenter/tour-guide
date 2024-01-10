@@ -24,6 +24,7 @@ const stepConfig = inject('current-step-config');
     z-index: 1;
     grid-area: 1 / 2 / span 3 / span 2;
     filter: drop-shadow(0 8px 16px fade(black, 20%));
+    transform: translateZ(0);
     border-radius: 1em;
     @media screen and (max-width: @mobile-breakpoint) {
         grid-area: 2 / 1 / span 2 / span 1;
