@@ -52,7 +52,7 @@ const finButtonClicked = inject('fin-button-clicked');
         <div class="progress-bar"><div class="filler" :style="{ width: progressPercent + '%' }"></div></div>
         <button v-if="stepConfig.key === 'fin'"
                 class="skip-proceed skip"
-                @click="finButtonClicked">ПОДОБРАТЬ</button>
+                @click="finButtonClicked">Подобрать</button>
         <button v-else
                 class="skip-proceed"
                 :class="{ [anyChoiceSelected ? 'proceed' : 'skip']: true }"
@@ -111,6 +111,8 @@ const finButtonClicked = inject('fin-button-clicked');
             }
         }
         &.skip-proceed {
+            min-width: 9.5em;
+            justify-content: center;
             padding-left: 1em;
             &:after {
                 content: 'keyboard_arrow_right';
