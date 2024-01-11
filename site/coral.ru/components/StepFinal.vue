@@ -165,6 +165,7 @@ function applyFilters(params) {
 
 function performSearch() {
     if (validateNights()) {
+        const resultsWindow = window.open('about:blank', '_blank');
         const target_host = location.hostname === 'localhost' ? 'https://www.coral.ru' : '';
         if (searchType.value === 'package') {
             const beginDate = moment(preferDates.value[0]).format('YYYY-MM-DD');
@@ -178,7 +179,7 @@ function performSearch() {
                     const [url] = href.split('?');
                     const params = applyFilters(queryParam(undefined, href));
                     console.log('+++ params: %o', params);
-                    window.open(target_host + url + '?' + params2query(params));
+                    resultsWindow.location.href = target_host + url + '?' + params2query(params);
                 });
         } else if (searchType.value === 'hotel') {
             const beginDate = moment(preferDates.value[0]).format('YYYY-MM-DD');
@@ -188,7 +189,7 @@ function performSearch() {
                     const [url] = href.split('?');
                     const params = applyFilters(queryParam(undefined, href));
                     console.log('+++ params: %o', params);
-                    window.open(target_host + url + '?' + params2query(params));
+                    resultsWindow.location.href = target_host + url + '?' + params2query(params);
                 });
 
         }
