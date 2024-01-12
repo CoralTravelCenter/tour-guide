@@ -118,10 +118,14 @@ provide('tooltip', { tooltipRef, tooltipVisible, tooltipButtonRef });
         padding: .7em 1em;
         .controls {
             display: flex;
+            gap: 2em;
             width: 100%;
             justify-content: space-between;
             align-items: center;
-            font-size: (14/20em);
+            font-size: (14/20em)!important;
+            > * {
+                flex: 1;
+            }
         }
     }
     .view-mode {

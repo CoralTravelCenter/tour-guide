@@ -240,7 +240,8 @@ provide('fin-step-component', finStepComponent);
 
 :root {
     --el-font-family: 'museosans'!important;
-    --el-font-size-base: inherit!important;
+    //--el-font-size-base: inherit!important;
+    --el-font-size-base: 1em!important;
     --el-component-size: 2.5em!important;
     --el-fill-color-light: fade(@coral-main-blue, 8%)!important;
 }
@@ -259,6 +260,9 @@ provide('fin-step-component', finStepComponent);
         .el-input__wrapper {
             --el-input-border-color: @coral-page-bg;
             box-shadow: inset 0 0 0 2px var(--el-input-border-color);
+        }
+        .el-select__wrapper {
+            font-size: unset;
         }
     }
 }

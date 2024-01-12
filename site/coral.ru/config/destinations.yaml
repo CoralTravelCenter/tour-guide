@@ -201,26 +201,26 @@
             color: white
     knowWhereStep: must-have
 
--   id: uz
-    eeID: 49
-    name: "Узбекистан"
-    title: 'Uzbekistan'
-    IANA: 'Asia/Tashkent'
-    ISO: 'UZ'
-    capitalLatLng: [41.2646, 69.2163]
-    visa: { required: false, href: 'https://www.coral.ru/uzbekistan/viza-v-uzbekistan/' }
-    airports: [6277,6278,3410]
-    flightDuration: 4
-    budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
-    avgTemperature: [ 1.7, 3.6, 10.3, 16.7, 23.4, 28.1, 30, 26.8, 21.6, 13.5, 5.7, 2.4 ]
-    leisureKinds: [ 'sightseeing' ]
-    backdropVisual:
-        desktop: "/site/coral.ru/assets/backdrop-destination-uz-desktop.jpg"
-        mobile: "/site/coral.ru/assets/backdrop-destination-uz-mobile.jpg"
-        marker:
-            text: 'Шахрисабз, Мечеть Кок Гумбаз'
-            color: white
-    knowWhereStep: must-have
+#-   id: uz
+#    eeID: 49
+#    name: "Узбекистан"
+#    title: 'Uzbekistan'
+#    IANA: 'Asia/Tashkent'
+#    ISO: 'UZ'
+#    capitalLatLng: [41.2646, 69.2163]
+#    visa: { required: false, href: 'https://www.coral.ru/uzbekistan/viza-v-uzbekistan/' }
+#    airports: [6277,6278,3410]
+#    flightDuration: 4
+#    budgetLevel: { RUB: 80000, EUR: 800, USD: 900 }
+#    avgTemperature: [ 1.7, 3.6, 10.3, 16.7, 23.4, 28.1, 30, 26.8, 21.6, 13.5, 5.7, 2.4 ]
+#    leisureKinds: [ 'sightseeing' ]
+#    backdropVisual:
+#        desktop: "/site/coral.ru/assets/backdrop-destination-uz-desktop.jpg"
+#        mobile: "/site/coral.ru/assets/backdrop-destination-uz-mobile.jpg"
+#        marker:
+#            text: 'Шахрисабз, Мечеть Кок Гумбаз'
+#            color: white
+#    knowWhereStep: must-have
 
 -   id: belarus
     eeID: 8

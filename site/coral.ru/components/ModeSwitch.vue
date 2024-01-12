@@ -42,12 +42,13 @@ const { destinationRussia } = inject('destination-selector');
         background: @coral-page-bg;
         border-radius: 5px;
         padding: 2px;
-        >* {
+        > * {
             .interactive();
             display: flex;
             justify-content: center;
             align-items: center;
             line-height: 1;
+            white-space: nowrap;
             height: 2.1em;
             padding: 0 1.2em;
             border-radius: 3px;
