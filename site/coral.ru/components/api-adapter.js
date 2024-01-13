@@ -65,6 +65,7 @@ export async function fetchAvailableNights(departure, destination, charters_only
 }
 
 export function fetchPackageSearchLink(departure, destination, charters_only, guest, beginDate, endDate, selectedDate, nights) {
+    const nights_normalized = JSON.parse(JSON.stringify(nights)).sort((a, b) => Number(a) - Number(b));
     return new Promise(resolve => {
         const reqData = {
             isCharter: true,
@@ -74,7 +75,7 @@ export function fetchPackageSearchLink(departure, destination, charters_only, gu
             BeginDate:    beginDate,
             EndDate:      endDate,
             SelectedDate: selectedDate,
-            Acc: JSON.parse(JSON.stringify(nights)),
+            Acc: nights_normalized,
             Departures: [{ Id: departure.eeID, Label: departure.name }],
             Destination: [{
                 Id:               `Country${ destination.eeID }`,

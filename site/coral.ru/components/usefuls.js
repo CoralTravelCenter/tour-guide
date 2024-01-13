@@ -17,7 +17,7 @@ export function observeElementProp(el, prop, callback) {
         const descr = Object.getOwnPropertyDescriptor(proto, prop);
         Object.defineProperty(el, prop, {
             get() {
-                descr.get.apply(this, arguments);
+                return descr.get.apply(this, arguments);
             },
             set(v) {
                 const oldv = this[prop];
