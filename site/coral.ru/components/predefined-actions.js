@@ -4,15 +4,16 @@ export function asapTimeframe() {
     const base = moment().add({ d: 2 * 7 });
     return {
         startMoment:    moment(base),
-        endMoment:      moment(base).add({ d: 6 }),
+        // endMoment:      moment(base).add({ d: 6 }),
+        endMoment:      moment(base).add({ d: 3 }),
         selectedMoment: moment(base)
     };
 }
 export function in2monthsTimeframe() {
     const base = moment().add({ d: 60});
     return {
-        startMoment:    moment(base).subtract({ d: 3 }),
-        endMoment:      moment(base).add({ d: 3 }),
+        startMoment:    moment(base).subtract({ d: 1 }),
+        endMoment:      moment(base).add({ d: 2 }),
         selectedMoment: moment(base)
     };
 }

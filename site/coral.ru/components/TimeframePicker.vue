@@ -88,7 +88,7 @@ onUnmounted(() => {
                            :min-date="tomorrow.toDate()"
                            :max-date="maxDate.toDate()"
                            :prevent-min-max-navigation="true"
-                           max-range="6"
+                           max-range="3"
                            select-text="Выбрать"
                            @internal-model-change="updateTimeframe">
                 <template #action-preview></template>

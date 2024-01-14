@@ -77,7 +77,8 @@ function excludeDate(date) {
     let outOfWeek = false;
     if (dateRangeStart.value) {
         const timespan_days = Math.abs(moment.duration(moment(date).diff(moment(dateRangeStart.value))).asDays());
-        outOfWeek = timespan_days > 6;
+        // outOfWeek = timespan_days > 6;
+        outOfWeek = timespan_days > 3;
     }
 
     return isPast || isYearAfter || outOfWeek;
