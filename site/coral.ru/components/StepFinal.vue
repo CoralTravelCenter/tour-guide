@@ -320,6 +320,9 @@ defineExpose({ performSearch });
             &.invalid {
                 .label {
                     color: @coral-red-error;
+                    & + :deep(*) {
+                        box-shadow: 0 0 1px 1px @coral-red-error;
+                    }
                 }
             }
         }
