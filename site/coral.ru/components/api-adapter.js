@@ -13,6 +13,36 @@ export async function fetchAvailableFlights(departure, destination, charters_onl
     if (cachedResponse) return Promise.resolve(JSON.parse(cachedResponse));
 
     return new Promise(resolve => {
+        // POST
+        // /PackageTourHotelProduct/ListAvailableDates
+
+        // {
+        //     "departureLocations": [
+        //     {
+        //         "id": "2671-5",
+        //         "name": "Москва",
+        //         "isCurrent": true,
+        //         "type": 5,
+        //         "friendlyUrl": "moskva"
+        //     }
+        // ],
+        //     "arrivalLocations": [
+        //     {
+        //         "id": "1-0",
+        //         "type": 0,
+        //         "name": "Турция",
+        //         "friendlyUrl": "turtsiya"
+        //     }
+        // ]
+        // }
+
+        // RESPONSE
+        // result.dates
+        // {
+        //     "date": "2024-05-04",
+        //     "flightType": 1
+        // }
+
         $.get(apiUrl('/v1/flight/availablealldatev2'), {
             fromAreaId: departure.eeID,
             toCountryId: destination.eeID,

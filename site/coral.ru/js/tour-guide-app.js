@@ -6,21 +6,20 @@ import StepSimpleChoice from "../components/StepSimpleChoice.vue";
 import StepMultipleChoice from "../components/StepMultipleChoice.vue";
 import DestinationSelector from "../components/DestinationSelector.vue";
 import StepFinal from "../components/StepFinal.vue";
+import { hostReactAppReady } from "../components/usefuls";
 
-const elId = 'tour-guide-app';
+hostReactAppReady().then(() => {
+    const elId = 'tour-guide-app';
+    createApp({
+        components: { TourGuide },
+        template:   '<Suspense><TourGuide/></Suspense>'
+    })
+        .component('StepIntro', StepIntro)
+        .component('StepSimpleChoice', StepSimpleChoice)
+        .component('StepMultipleChoice', StepMultipleChoice)
+        .component('DestinationSelector', DestinationSelector)
+        .component('StepFinal', StepFinal)
+        .use(ElementPlus, { locale: ElementPlusLocaleRu })
+        .mount(document.getElementById(elId));
+});
 
-document.getElementById(elId)
-    .closest('.oti-content-typography')
-    .classList.remove('oti-content-typography');
-
-createApp({
-    components: { TourGuide },
-    template:   '<Suspense><TourGuide/></Suspense>'
-})
-    .component('StepIntro', StepIntro)
-    .component('StepSimpleChoice', StepSimpleChoice)
-    .component('StepMultipleChoice', StepMultipleChoice)
-    .component('DestinationSelector', DestinationSelector)
-    .component('StepFinal', StepFinal)
-    .use(ElementPlus, { locale: ElementPlusLocaleRu })
-    .mount(`#${ elId }`);

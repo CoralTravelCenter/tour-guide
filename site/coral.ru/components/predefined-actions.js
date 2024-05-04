@@ -1,4 +1,5 @@
 import { cloneDeep } from "lodash";
+import { __NEXT_DATA__, hostReactAppReady } from "./usefuls";
 
 export function asapTimeframe() {
     const base = moment().add({ d: 2 * 7 });
@@ -20,25 +21,22 @@ export function in2monthsTimeframe() {
 
 function currencyFromDOM() {
     return {
-        name:  document.querySelector('.headerCurrency .currency-list .selected .currency-name').textContent,
-        value: document.querySelector('.headerCurrency .currency-list .selected').dataset.currencyid,
+        name:  __NEXT_DATA__().props.pageProps.initialState.Currency.selectedCurrency.code,
+        // value: document.querySelector('.headerCurrency .currency-list .selected').dataset.currencyid,
+        value: '???',
     };
 }
 async function getActiveCurrency() {
-    return new Promise(resolve => {
-        if (['complete','interactive'].includes(document.readyState)) {
-            resolve(currencyFromDOM());
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                resolve(currencyFromDOM());
-            });
-        }
+    return new Promise(async resolve => {
+        await hostReactAppReady();
+        resolve(currencyFromDOM());
     });
 }
 export async function currencyBudget() {
     const { name: code } = await getActiveCurrency();
     let rate = 1.0;
     let symbol = '₽';
+    // TODO: exchange rates must be determined with API call(s)
     const [usd_rate, eur_rate] = $('.flexbox-exchange').eq(0).find('img').next().map((idx, el) => parseFloat(el.textContent.replace(',', '.'))).toArray();
     if (code === 'USD') {
         rate = usd_rate;

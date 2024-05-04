@@ -11,6 +11,80 @@ export async function preloadScript(url, cb) {
     });
 }
 
+export function preloadCSS(url) {
+    return new Promise(resolve => {
+        const link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        link.onload = resolve;
+        link.href = url;
+        document.head.append(link);
+    });
+}
+
+export async function hostReactAppReady(selector = '#__next > div', timeout = 500, cb) {
+    return new Promise(resolve => {
+        const waiter = () => {
+            const host_el = document.querySelector(selector);
+            if (host_el?.getBoundingClientRect().height) {
+                resolve();
+            } else {
+                setTimeout(waiter, timeout);
+            }
+        };
+        waiter();
+    });
+}
+
+export function __NEXT_DATA__() {
+    let next_data;
+    try {
+        next_data = JSON.parse(document.getElementById('__NEXT_DATA__').textContent);
+    } catch (ex) {
+        next_data = window.__NEXT_DATA__;
+    }
+    return next_data;
+}
+
+export async function globalDependency(globalPropName, libUrlOrList, parallel = true, cb) {
+    if (window[globalPropName]) {
+        cb && cb();
+        return Promise.resolve()
+    } else {
+        const urlsList = Array.isArray(libUrlOrList) ? libUrlOrList : [libUrlOrList];
+        if (parallel) {
+            const promises = [];
+            for (const url of urlsList) {
+                promises.push(~url.indexOf('.css') ? preloadCSS(url) : preloadScript(url));
+            }
+            return new Promise(async resolve => {
+                await Promise.all(promises);
+                cb && cb();
+                resolve();
+            });
+        } else {
+            return new Promise(async resolve => {
+                for (const url of urlsList) {
+                    ~url.indexOf('.css') ? await preloadCSS(url) : await preloadScript(url);
+                }
+                resolve();
+            });
+        }
+    }
+}
+
+export async function asap(cb) {
+    if (['complete', 'interactive'].includes(document.readyState)) {
+        cb && cb();
+        return Promise.resolve();
+    }
+    return new Promise(resolve => {
+        document.addEventListener('DOMContentLoaded', () => {
+            cb && cb();
+            resolve();
+        });
+    });
+}
 export function observeElementProp(el, prop, callback) {
     const proto = Object.getPrototypeOf(el);
     if (proto.hasOwnProperty(prop)) {

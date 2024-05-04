@@ -5,7 +5,7 @@ import { computed, onMounted, provide, reactive, ref, watch, watchEffect } from 
 
 import { tourGuideConfig, destinations, departures } from '../config/tour-guide.js'
 import { currencyBudget } from "./predefined-actions.js";
-import { observeElementProp } from "./usefuls";
+import { __NEXT_DATA__, hostReactAppReady } from "./usefuls";
 
 const predefinedActions = {
     resetPreferredSearchParams() {
@@ -199,16 +199,16 @@ watchEffect(() => {
     step_config.setBackdrop = [backdrop];
 });
 
-const { value: departureCityId } = window.global.getActiveDeparture();
-const selectedDeparture = ref(
-    departures.find(dep=>Number(dep.eeID) === Number(departureCityId)) ?? departures[0]
-);
-observeElementProp(document.querySelector('input.packageSearch__departureInput'), 'value', (new_departure_name) => {
-    if (new_departure_name) {
-        const found_departure = departures.find(dep => dep.name === new_departure_name);
-        if (found_departure) selectedDeparture.value = found_departure;
-    }
+await hostReactAppReady();
+const __next_data__ = __NEXT_DATA__();
+departures.forEach(departure => {
+    const b2c_departure = __next_data__.props.pageProps.meta.departures.find(d => d.name === departure.name);
+    if (b2c_departure) Object.assign(departure, b2c_departure);
 });
+
+const currentDeparture = departures.find(d => !!d.isCurrent);
+const selectedDeparture = ref(currentDeparture ?? departures[0]);
+
 provide('departures', { departures, selectedDeparture });
 
 onMounted(() => {
@@ -237,23 +237,32 @@ provide('fin-step-component', finStepComponent);
 <style lang="less">
 @import "../common/css/coral-fonts";
 @import "../common/css/coral-colors";
+@import "../common/css/layout";
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/materialicons/v142/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+}
 
 :root {
-    --el-font-family: 'museosans'!important;
-    //--el-font-size-base: inherit!important;
+    //--el-font-family: 'museosans'!important;
     --el-font-size-base: 1em!important;
     --el-component-size: 2.5em!important;
     --el-fill-color-light: fade(@coral-main-blue, 8%)!important;
 }
 
 .el-select-dropdown {
-    font-family: museosans;
+    //font-family: museosans;
     font-weight: 400;
     --el-color-primary: @coral-main-blue;
     //--el-text-color-regular: black;
 }
 
 .tour-guide-module {
+    .bbox();
     .el-select {
         --el-select-width: unset;
         --el-select-border-color-hover: @coral-main-blue;
@@ -272,10 +281,10 @@ provide('fin-step-component', finStepComponent);
 <style scoped lang="less">
 @import "../common/css/layout";
 .tour-guide-module {
-    .bbox();
+    //.bbox();
     .silly-b2c-font-size();
 
-    font-family: museosans;
+    //font-family: museosans;
     font-weight: normal;
 
     display: grid;

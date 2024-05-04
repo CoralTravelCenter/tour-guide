@@ -168,7 +168,7 @@ provide('tooltip', { tooltipRef, tooltipVisible, tooltipButtonRef });
 
 <style lang="less">
 .singleton-tooltip {
-    font-family: museosans;
+    //font-family: museosans;
     font-size: 11px;
     line-height: 1.2;
     letter-spacing: normal;
