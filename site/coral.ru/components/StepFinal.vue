@@ -265,16 +265,14 @@ defineExpose({ performSearch });
                 <div class="label">Бюджет на поездку</div>
                 <el-input v-model="budgetMin" clearable :parser="parseBudget" :formatter="formatBudget" :input-style="{ textAlign: 'center' }">
                     <template #prepend>от</template>
-                    <template #append><span :style="{ fontFamily: currencyCode === 'RUB' ? 'Material Icons' : 'inherit' }">
-                        {{ currencyCode === 'RUB' ? 'currency_ruble' : currencySymbol }}</span></template>
+                    <template #append><span>{{ currencySymbol }}</span></template>
                 </el-input>
             </div>
             <div class="form-field">
                 <div class="label">&nbsp;</div>
                 <el-input v-model="budgetMax" clearable :parser="parseBudget" :formatter="formatBudget" :input-style="{ textAlign: 'center' }">
                     <template #prepend>до</template>
-                    <template #append><span :style="{ fontFamily: currencyCode === 'RUB' ? 'Material Icons' : 'inherit' }">
-                        {{ currencyCode === 'RUB' ? 'currency_ruble' : currencySymbol }}</span></template>
+                    <template #append><span>{{ currencySymbol }}</span></template>
                 </el-input>
             </div>
         </div>

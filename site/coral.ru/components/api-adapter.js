@@ -40,32 +40,57 @@ export async function fetchAvailableFlights(departure, destination, charters_onl
         // result.dates
         // {
         //     "date": "2024-05-04",
-        //     "flightType": 1
+        //     "flightType": // 0 -- charter only; 1 -- regular only; 2 -- both
         // }
 
-        $.get(apiUrl('/v1/flight/availablealldatev2'), {
-            fromAreaId: departure.eeID,
-            toCountryId: destination.eeID,
-            destinationId: `Country${ destination.eeID }`,
-            // nearestAirports: destination.airports.join(',')
-        }).done(response => {
-            const results = response.Result || JSON.parse(response).Result;
+        fetch(apiUrl('/PackageTourHotelProduct/ListAvailableDates'), {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                departureLocations: [{ id: departure.id, type: departure.type }],
+                arrivalLocations:   [{ id: `${ destination.eeID }-0`, type: 0 }]
+            })
+        }).then(response => response.json()).then(json => {
             const conformedFlightsList = Array.from((function* (results) {
-                for (const result of results) {
+                for (const date_descriptor of results) {
                     const mapped = {
-                        timestamp: Number(result.FlightDate.match(/\d+/)[0]),
-                        type:      result.FlightType
+                        timestamp: moment(date_descriptor.date).valueOf(),
+                        type:      date_descriptor.flightType
                     };
                     if (charters_only) {
-                        if (result.FlightType !== 1) yield mapped;
+                        if (date_descriptor.flightType !== 1) yield mapped;
                     } else {
                         yield mapped;
                     }
                 }
-            })(results));
+            })(json.result.dates));
             sessionStorage.setItem(cacheKey, JSON.stringify(conformedFlightsList));
             resolve(conformedFlightsList);
         });
+
+        // $.get(apiUrl('/v1/flight/availablealldatev2'), {
+        //     fromAreaId: departure.eeID,
+        //     toCountryId: destination.eeID,
+        //     destinationId: `Country${ destination.eeID }`,
+        //     // nearestAirports: destination.airports.join(',')
+        // }).done(response => {
+        //     const results = response.Result || JSON.parse(response).Result;
+        //     const conformedFlightsList = Array.from((function* (results) {
+        //         for (const result of results) {
+        //             const mapped = {
+        //                 timestamp: Number(result.FlightDate.match(/\d+/)[0]),
+        //                 type:      result.FlightType
+        //             };
+        //             if (charters_only) {
+        //                 if (result.FlightType !== 1) yield mapped;
+        //             } else {
+        //                 yield mapped;
+        //             }
+        //         }
+        //     })(results));
+        //     sessionStorage.setItem(cacheKey, JSON.stringify(conformedFlightsList));
+        //     resolve(conformedFlightsList);
+        // });
     });
 }
 
@@ -77,20 +102,71 @@ export async function fetchAvailableNights(departure, destination, charters_only
     const cachedResponse = sessionStorage.getItem(cacheKey);
     if (cachedResponse) return Promise.resolve(JSON.parse(cachedResponse));
 
+    // POST
+    // /PackageTourHotelProduct/ListAvailableNights
+    // let p = {
+    //     "flightType": 2,
+    //     "beginDates": [
+    //         "2024-06-03",
+    //         "2024-06-07"
+    //     ],
+    //     "calculateAvailableNightRanges": true,
+    //     "departureLocations":            [
+    //         {
+    //             "id":          "2671-5",
+    //             "name":        "Москва",
+    //             "isCurrent":   true,
+    //             "type":        5,
+    //             "friendlyUrl": "moskva"
+    //         }
+    //     ],
+    //     "arrivalLocations":              [
+    //         {
+    //             "id":          "1-0",
+    //             "type":        0,
+    //             "name":        "Турция",
+    //             "friendlyUrl": "turtsiya"
+    //         }
+    //     ]
+    // }
+
+    // RESPONSE
+    // result.nights
+    // {
+    //     "label": "1",
+    //     "value": 1
+    // }
+
     return new Promise(resolve => {
-        $.get(apiUrl('/v1/flight/availablenights'), {
-            fromAreaId:    departure.eeID,
-            toCountryId:   destination.eeID,
-            destinationId: `Country${ destination.eeID }`,
-            // nearestAirports: destination.airports.join(',')
-            beginDate: beginDateFormatted,
-            endDate:   endDateFormatted,
-            // flightType: charters_only ? [0,2] : ''
-        }).done(response => {
-            const results = response.Result || JSON.parse(response).Result;
+
+        fetch(apiUrl('/PackageTourHotelProduct/ListAvailableNights'), {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                flightType: charters_only ? 0 : 2,
+                beginDates: [beginDateFormatted, endDateFormatted],
+                departureLocations: [{ id: departure.id, type: departure.type }],
+                arrivalLocations:   [{ id: `${ destination.eeID }-0`, type: 0 }]
+            })
+        }).then(response => response.json()).then(json => {
+            const results = json.result.nights.map(n => n.value);
             sessionStorage.setItem(cacheKey, JSON.stringify(results));
             resolve(results);
         });
+
+        // $.get(apiUrl('/v1/flight/availablenights'), {
+        //     fromAreaId:    departure.eeID,
+        //     toCountryId:   destination.eeID,
+        //     destinationId: `Country${ destination.eeID }`,
+        //     // nearestAirports: destination.airports.join(',')
+        //     beginDate: beginDateFormatted,
+        //     endDate:   endDateFormatted,
+        //     // flightType: charters_only ? [0,2] : ''
+        // }).done(response => {
+        //     const results = response.Result || JSON.parse(response).Result;
+        //     sessionStorage.setItem(cacheKey, JSON.stringify(results));
+        //     resolve(results);
+        // });
     });
 }
 

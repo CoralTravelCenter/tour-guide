@@ -49,7 +49,7 @@ export async function currencyBudget() {
     const budget = {
         low: {
             labelMarkup: {
-                RUB: 'до 100 000 <span style="font-family: \'Material Icons\'; margin-left: .1em;">currency_ruble</span>',
+                RUB: 'до 100 000 ₽',
                 EUR: 'до €1,000',
                 USD: 'до $1,000'
             }[code],
@@ -58,7 +58,7 @@ export async function currencyBudget() {
         },
         medium: {
             labelMarkup: {
-                RUB: 'от 100 000 <span style="font-family: \'Material Icons\'; margin-left: .1em;">currency_ruble</span> до 200 000 <span style="font-family: \'Material Icons\'; margin-left: .1em;">currency_ruble</span>',
+                RUB: 'от 100 000 ₽ до 200 000 ₽',
                 EUR: 'от €1,000 до €2,000',
                 USD: 'от $1,000 до $2,000',
             }[code],
@@ -67,7 +67,7 @@ export async function currencyBudget() {
         },
         high: {
             labelMarkup: {
-                RUB: 'от 200 000 <span style="font-family: \'Material Icons\'; margin-left: .1em;">currency_ruble</span>',
+                RUB: 'от 200 000 ₽',
                 EUR: 'от €2,000',
                 USD: 'от $2,000'
             }[code],
