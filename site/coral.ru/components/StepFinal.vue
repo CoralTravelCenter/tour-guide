@@ -121,7 +121,7 @@ watchEffect(() => {
 const flightAvailableInSelectedRange = computed(() => {
     const [beginDate, endDate] = preferDates.value || [];
     const [beginMoment, endMoment] = [beginDate, endDate].map(date => moment(date));
-    return !!flightList.value.find(flight => moment(flight.timestamp).isBetween(beginMoment, endMoment.endOf('day')));
+    return !!flightList.value.find(flight => moment(flight.timestamp + 1).isBetween(beginMoment, endMoment.endOf('day')));
 });
 
 const searchType = computed(() => {

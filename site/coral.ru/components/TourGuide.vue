@@ -42,7 +42,7 @@ const predefinedActions = {
 const tourGuideSteps = reactive(tourGuideConfig.steps);
 
 const preferredSearchParams = reactive({
-    chartersOnly:      true,
+    chartersOnly:      false,
     timeframe:         {
         startMoment:    null,
         endMoment:      null,
