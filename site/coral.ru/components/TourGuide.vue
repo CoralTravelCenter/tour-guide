@@ -13,7 +13,7 @@ const predefinedActions = {
         Object.assign(preferredSearchParams.budget, { currencyCode: '', currencySymbol: '', min: null, max: null });
         preferredSearchParams.maxFlightDuration = Infinity;
         preferredSearchParams.leisureKinds = [];
-        preferredSearchParams.regionFilter = [];
+        preferredSearchParams.regionFilter = null;
         preferredSearchParams.musthaveFilter = {};
     },
     resetPreferredTimeframe() {
@@ -26,7 +26,7 @@ const predefinedActions = {
         preferredSearchParams.maxFlightDuration = Infinity;
     },
     resetRegionFilter() {
-        preferredSearchParams.regionFilter = []
+        preferredSearchParams.regionFilter = null;
     },
     resetMusthaveFilter() {
         preferredSearchParams.musthaveFilter = {};

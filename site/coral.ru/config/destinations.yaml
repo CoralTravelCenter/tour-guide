@@ -4,6 +4,7 @@
     title: 'Turkey'
     IANA: 'Turkey'
     ISO: 'TR'
+    friendlyUrl: 'turtsiya'
     capitalLatLng: [39.9199, 32.8543]
     visa: { required: false, href: 'https://www.coral.ru/main/turkey/infoaboutvisaturkey/' }
     airports: [10,3,6719,1,147,2,22,9,6,5,6778,11,37]
@@ -25,6 +26,7 @@
     title: 'Egypt'
     IANA: 'Egypt'
     ISO: 'EG'
+    friendlyUrl: 'egipet'
     capitalLatLng: [30.0626, 31.2497]
     visa: { required: true, href: 'https://www.coral.ru/main/egypt/egypvisa/' }
     airports: [142,22,21,23]
@@ -46,6 +48,7 @@
     title: 'United Arab Emirates'
     IANA: 'Asia/Dubai'
     ISO: 'AE'
+    friendlyUrl: 'oae'
     capitalLatLng: [24.4667, 54.3667]
     visa: { required: false, href: 'https://www.coral.ru/main/uae/uaevisa/' }
     airports: [83,139,6650,144,87]
@@ -66,6 +69,7 @@
 #    title: 'Bahrain'
 #    IANA: 'Asia/Bahrain'
 #    ISO: 'BH'
+#    friendlyUrl: 'bahreyn'
 #    capitalLatLng: [26.2279, 50.5857]
 #    visa: { required: true, href: 'https://www.coral.ru/main/bahrein/bahreinvisa/' }
 #    flightDuration: 5
@@ -85,6 +89,7 @@
     title: 'Sri Lanka'
     IANA: 'Asia/Kolkata'
     ISO: 'LK'
+    friendlyUrl: 'shrilanka'
     capitalLatLng: [6.93194, 79.8478]
     visa: { required: true, href: 'https://www.coral.ru/main/srilanka/srilankavisa/' }
     airports: [32]
@@ -106,6 +111,7 @@
     title: 'Thailand'
     IANA: 'Asia/Bangkok'
     ISO: 'TH'
+    friendlyUrl: 'tailand'
     capitalLatLng: [13.754, 100.501]
     visa: { required: false, href: 'https://www.coral.ru/main/thailand/visathai/' }
     airports: [67,68,84,134,6646,131,6615]
@@ -127,6 +133,7 @@
     title: 'Maldives'
     IANA: 'Indian/Maldives'
     ISO: 'MV'
+    friendlyUrl: 'malydivy'
     capitalLatLng: [4.17521, 73.5092]
     visa: { required: true, href: 'https://www.coral.ru/main/maldives/maldivesvisa/' }
     airports: [64]
@@ -148,6 +155,7 @@
     title: 'Cuba'
     IANA: 'America/Havana'
     ISO: 'CU'
+    friendlyUrl: 'kuba'
     capitalLatLng: [23.133, -82.383]
     visa: { required: false, href: 'https://www.coral.ru/main/cuba/visacuba/' }
     airports: [70,69,3892,6647,6786]
@@ -168,6 +176,7 @@
     eeID: 3
     name: "Россия"
     title: 'Russia'
+    friendlyUrl: 'rossiya'
     visa: { required: false }
     flightDuration: 6
     budgetLevel: { RUB: 50000, EUR: 500, USD: 550 }
@@ -186,6 +195,7 @@
     title: 'Azerbaijan'
     IANA: 'Asia/Baku'
     ISO: 'AZ'
+    friendlyUrl: 'azerbaydzhan'
     capitalLatLng: [40.3777, 49.892]
     visa: { required: false }
     airports: [3350,3349]
@@ -207,6 +217,7 @@
 #    title: 'Uzbekistan'
 #    IANA: 'Asia/Tashkent'
 #    ISO: 'UZ'
+#    friendlyUrl: 'uzbekistan'
 #    capitalLatLng: [41.2646, 69.2163]
 #    visa: { required: false, href: 'https://www.coral.ru/uzbekistan/viza-v-uzbekistan/' }
 #    airports: [6277,6278,3410]
@@ -228,6 +239,7 @@
     title: 'Belarus'
     IANA: 'Europe/Minsk'
     ISO: 'BY'
+    friendlyUrl: 'belarus'
     capitalLatLng: [53.9, 27.5667]
     visa: { required: false }
     airports: [132,6776]
@@ -249,6 +261,7 @@
     title: 'Armenia'
     IANA: 'Asia/Yerevan'
     ISO: 'AM'
+    friendlyUrl: 'armeniya'
     capitalLatLng: [40.1811, 44.5136]
     visa: { required: false }
     airports: [5823]

@@ -28,8 +28,8 @@ const childCount = computed({
     <el-popover trigger="click" placement="bottom-end" width="auto" :teleported="false">
         <template #reference>
             <div class="input-readout">
-                <span class="adult" v-for="adult in guest.Adults"></span>
-                <span class="child" v-for="child in guest.Children.length"></span>
+                <span class="adult" v-for="adult in guest.Adults">man</span>
+                <span class="child" v-for="child in guest.Children.length">man</span>
             </div>
         </template>
         <div class="pax-grid">
@@ -45,7 +45,7 @@ const childCount = computed({
                 <div class="label">Возраст детей на момент окончания поездки</div>
             </div>
             <div v-for="(child, idx) in guest.Children" class="pax-field age">
-                <el-input-number v-model="guest.Children[idx]" :min="0" :max="18"/>
+                <el-input-number v-model="guest.Children[idx]" :min="1" :max="18"/>
             </div>
         </div>
     </el-popover>
@@ -59,7 +59,7 @@ const childCount = computed({
     display: flex;
     justify-content: left;
     align-items: center;
-    font-family: "Header Fontello";
+    font-family: "Material Symbols Outlined";
     height: 2.5em;
     text-align: center;
     border-radius: 4px;
@@ -71,7 +71,7 @@ const childCount = computed({
         box-shadow: inset 0 0 0 1px @coral-main-blue;
     }
     >span {
-        margin: 0 3px;
+        margin: 0 -.2em;
         &.adult {
             font-size: 1.5em;
         }

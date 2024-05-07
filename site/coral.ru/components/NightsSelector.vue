@@ -18,6 +18,7 @@ function handleNightClick(night) {
         selectionSet.delete(night);
     } else {
         selectionSet.add(night);
+        // TODO: allow multiple nights options selection for onlyhotel
         if (selectionSet.size > (props.searchType === 'package' ? 8 : 1)) {
             selectionSet.delete([...selectionSet][0]);
         }
@@ -28,6 +29,7 @@ watchEffect(() => {
     for (const night of nightsOptions) {
         night.disabled = (props.searchType === 'disabled') || (props.searchType === 'package' && !props.nightsAvailable.includes(night.value));
         night.disabled && selectionSet.delete(night);
+        // TODO: allow multiple nights options selection for onlyhotel
         if (props.searchType === 'hotel' && selectionSet.size > 1) {
             const keepThis = [...selectionSet][0];
             selectionSet.clear();

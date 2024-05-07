@@ -1,3 +1,5 @@
+import { pick } from "lodash";
+
 export function apiUrl(endpoint) {
     const apiHost = location.hostname === 'localhost' ? 'http://localhost:8010/proxy' : '';
     // const apiHost = location.hostname === 'localhost' ? 'http://localhost:8888' : '';
@@ -13,35 +15,6 @@ export async function fetchAvailableFlights(departure, destination, charters_onl
     if (cachedResponse) return Promise.resolve(JSON.parse(cachedResponse));
 
     return new Promise(resolve => {
-        // POST
-        // /PackageTourHotelProduct/ListAvailableDates
-
-        // {
-        //     "departureLocations": [
-        //     {
-        //         "id": "2671-5",
-        //         "name": "Москва",
-        //         "isCurrent": true,
-        //         "type": 5,
-        //         "friendlyUrl": "moskva"
-        //     }
-        // ],
-        //     "arrivalLocations": [
-        //     {
-        //         "id": "1-0",
-        //         "type": 0,
-        //         "name": "Турция",
-        //         "friendlyUrl": "turtsiya"
-        //     }
-        // ]
-        // }
-
-        // RESPONSE
-        // result.dates
-        // {
-        //     "date": "2024-05-04",
-        //     "flightType": // 0 -- charter only; 1 -- regular only; 2 -- both
-        // }
 
         fetch(apiUrl('/PackageTourHotelProduct/ListAvailableDates'), {
             method:  'POST',
@@ -68,29 +41,6 @@ export async function fetchAvailableFlights(departure, destination, charters_onl
             resolve(conformedFlightsList);
         });
 
-        // $.get(apiUrl('/v1/flight/availablealldatev2'), {
-        //     fromAreaId: departure.eeID,
-        //     toCountryId: destination.eeID,
-        //     destinationId: `Country${ destination.eeID }`,
-        //     // nearestAirports: destination.airports.join(',')
-        // }).done(response => {
-        //     const results = response.Result || JSON.parse(response).Result;
-        //     const conformedFlightsList = Array.from((function* (results) {
-        //         for (const result of results) {
-        //             const mapped = {
-        //                 timestamp: Number(result.FlightDate.match(/\d+/)[0]),
-        //                 type:      result.FlightType
-        //             };
-        //             if (charters_only) {
-        //                 if (result.FlightType !== 1) yield mapped;
-        //             } else {
-        //                 yield mapped;
-        //             }
-        //         }
-        //     })(results));
-        //     sessionStorage.setItem(cacheKey, JSON.stringify(conformedFlightsList));
-        //     resolve(conformedFlightsList);
-        // });
     });
 }
 
@@ -101,41 +51,6 @@ export async function fetchAvailableNights(departure, destination, charters_only
     const cacheKey = `${ departure.eeID }->${ destination.eeID }@${ beginDateFormatted }-${ endDateFormatted }`;
     const cachedResponse = sessionStorage.getItem(cacheKey);
     if (cachedResponse) return Promise.resolve(JSON.parse(cachedResponse));
-
-    // POST
-    // /PackageTourHotelProduct/ListAvailableNights
-    // let p = {
-    //     "flightType": 2,
-    //     "beginDates": [
-    //         "2024-06-03",
-    //         "2024-06-07"
-    //     ],
-    //     "calculateAvailableNightRanges": true,
-    //     "departureLocations":            [
-    //         {
-    //             "id":          "2671-5",
-    //             "name":        "Москва",
-    //             "isCurrent":   true,
-    //             "type":        5,
-    //             "friendlyUrl": "moskva"
-    //         }
-    //     ],
-    //     "arrivalLocations":              [
-    //         {
-    //             "id":          "1-0",
-    //             "type":        0,
-    //             "name":        "Турция",
-    //             "friendlyUrl": "turtsiya"
-    //         }
-    //     ]
-    // }
-
-    // RESPONSE
-    // result.nights
-    // {
-    //     "label": "1",
-    //     "value": 1
-    // }
 
     return new Promise(resolve => {
 
@@ -154,81 +69,96 @@ export async function fetchAvailableNights(departure, destination, charters_only
             resolve(results);
         });
 
-        // $.get(apiUrl('/v1/flight/availablenights'), {
-        //     fromAreaId:    departure.eeID,
-        //     toCountryId:   destination.eeID,
-        //     destinationId: `Country${ destination.eeID }`,
-        //     // nearestAirports: destination.airports.join(',')
-        //     beginDate: beginDateFormatted,
-        //     endDate:   endDateFormatted,
-        //     // flightType: charters_only ? [0,2] : ''
-        // }).done(response => {
-        //     const results = response.Result || JSON.parse(response).Result;
-        //     sessionStorage.setItem(cacheKey, JSON.stringify(results));
-        //     resolve(results);
-        // });
     });
 }
 
-export function fetchPackageSearchLink(departure, destination, charters_only, guest, beginDate, endDate, selectedDate, nights) {
+export function fetchPackageSearchLink(departure, destination, charters_only, guest, beginDate, endDate, selectedDate, nights, filters) {
     const nights_normalized = JSON.parse(JSON.stringify(nights)).sort((a, b) => Number(a) - Number(b));
     return new Promise(resolve => {
-        const reqData = {
-            isCharter: true,
-            isRegular: !charters_only,
-            Guest:     { ...(JSON.parse(JSON.stringify(guest))) },
-            // DateRange: 3,
-            BeginDate:    beginDate,
-            EndDate:      endDate,
-            SelectedDate: selectedDate,
-            Acc: nights_normalized,
-            Departures: [{ Id: departure.eeID, Label: departure.name }],
-            Destination: [{
-                Id:               `Country${ destination.eeID }`,
-                DataId:           destination.eeID,
-                TopDataId:        '',
-                ParentDataId:     '',
-                TitleRu:          destination.name,
-                ModelType:        1,
-                Priority:         1,
-                RecordSourceType: 2,
-                HasAirport:       false,
-                NearestAirports:  (destination.airports && JSON.parse(JSON.stringify(destination.airports))) || [],
-            }]
+        const departure_location = pick(departure, ['id', 'name', 'isCurrent', 'type', 'friendlyUrl']);
+        departure_location.id = departure_location.id.replace(/-+$/, '');
+        const queryParams = {
+            reservationType: 1,
+            flightType: charters_only ? 0 : 2,
+            beginDates: [beginDate, endDate],
+            departureLocations: [departure_location],
+            arrivalLocations: [{
+                id: `${ destination.eeID }-0`,
+                type: 0,
+                name: destination.name,
+                friendlyUrl: destination.friendlyUrl
+            }],
+            nights: nights_normalized.map(n => ({ value: n })),
+            datePickerMode: 0,
+            roomCriterias: [{
+                passengers: [...(function* () {
+                    let number_of_adults = guest.Adults;
+                    while (number_of_adults--) yield { passengerType: 0, age: 20 }
+                    if (guest.Children?.length) {
+                        for (let child_age of guest.Children) yield { passengerType: 1, age: child_age, birthDate: null };
+                    }
+                })(guest)],
+            }],
+            paging: { pageNumber: 1, pageSize: 20, sortType: 0 },
+            additionalFilters: filters || [],
+            imageSizes: [0]
         };
-        console.log('+++ fetchPackageSearchLink reqData: %o', reqData);
-        $.post(apiUrl('/v1/package/search'), reqData).done(response => {
-            resolve(response);
+
+        console.log('+++ fetchPackageSearchLink queryParams: %o', queryParams);
+
+        fetch(apiUrl('/PackageTourHotelProduct/PriceSearchEncrypt'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(queryParams)
+        }).then(response => response.json()).then(json => {
+            resolve(json.result);
         });
+
     });
 }
 
-export function fetchHotelSearchLink(destination, guest, beginDate, endDate) {
+export function fetchHotelSearchLink(destination, guest, beginDate, endDate, nights) {
+    const nights_normalized = JSON.parse(JSON.stringify(nights)).sort((a, b) => Number(a) - Number(b));
     return new Promise(resolve => {
-        const reqData = {
-            Guest:     { ...(JSON.parse(JSON.stringify(guest))) },
-            BeginDate:    beginDate,
-            EndDate:      endDate,
-            Destination: {
-                Id:               `Country${ destination.eeID }`,
-                DataId:           destination.eeID,
-                TopDataId:        '',
-                ParentDataId:     '',
-                Title:            destination.title,
-                TitleRu:          destination.name,
-                ParentTitle:      '',
-                ParentTitleRu:    '',
-                ModelType:        1,
-                Priority:         1,
-                RecordSourceType: 2,
-                HasAirport:       false,
-                NearestAirports:  (destination.airports && JSON.parse(JSON.stringify(destination.airports))) || [],
-            }
+
+        const queryParams = {
+            reservationType: 2,
+            beginDates: [beginDate, endDate],
+            arrivalLocations: [{
+                id: `${ destination.eeID }-0`,
+                type: 0,
+                name: destination.name,
+                friendlyUrl: destination.friendlyUrl
+            }],
+            nights: nights_normalized.map(n => ({ value: n })),
+            roomCriterias: [{
+                passengers: [...(function* () {
+                    let number_of_adults = guest.Adults;
+                    while (number_of_adults--) yield { passengerType: 0, age: 20 }
+                    if (guest.Children?.length) {
+                        for (let child_age of guest.Children) yield { passengerType: 1, age: child_age, birthDate: null };
+                    }
+                })(guest)],
+            }],
+            paging: { pageNumber: 1, pageSize: 20, sortType: 0 },
+            additionalFilters: [],
+            imageSizes: [0]
         };
-        console.log('+++ fetchHotelSearchLink reqData: %o', reqData);
-        $.post(apiUrl('/v1/onlyhotel/search'), reqData).done(response => {
-            resolve(response);
+
+
+        console.log('+++ fetchHotelSearchLink queryParams: %o', queryParams);
+
+        fetch(apiUrl('/OnlyHotelProduct/PriceSearchEncrypt'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(queryParams)
+        }).then(response => response.json()).then(json => {
+            resolve(json.result);
         });
+
+        // $.post(apiUrl('/v1/onlyhotel/search'), reqData).done(response => {
+        //     resolve(response);
+        // });
     });
 }
 

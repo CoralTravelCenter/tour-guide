@@ -147,22 +147,22 @@ function formatBudget(input) {
 
 const guests = ref({ Adults: 2, Children: [] });
 
-function applyFilters(params) {
-    if (budgetMin.value || budgetMax.value) {
-        params.f ||= {};
-        params.f.Pr = [(Number(budgetMin.value) || 0.0), (Number(budgetMax.value === Infinity ? 0.0 : budgetMax.value) || 0.0)];
-        debugger;
-    }
-    if (preferredSearchParams.regionFilter?.length) {
-        params.f ||= {};
-        params.f.Rg = preferredSearchParams.regionFilter;
-    }
-    for (const [key, list] of Object.entries(preferredSearchParams.musthaveFilter)) {
-        params.f ||= {};
-        params.f[key] = JSON.parse(JSON.stringify(list));
-    }
-    return params;
-}
+// function applyFilters(params) {
+//     if (budgetMin.value || budgetMax.value) {
+//         params.f ||= {};
+//         params.f.Pr = [(Number(budgetMin.value) || 0.0), (Number(budgetMax.value === Infinity ? 0.0 : budgetMax.value) || 0.0)];
+//         debugger;
+//     }
+//     if (preferredSearchParams.regionFilter?.length) {
+//         params.f ||= {};
+//         params.f.Rg = preferredSearchParams.regionFilter;
+//     }
+//     for (const [key, list] of Object.entries(preferredSearchParams.musthaveFilter)) {
+//         params.f ||= {};
+//         params.f[key] = JSON.parse(JSON.stringify(list));
+//     }
+//     return params;
+// }
 
 function performSearch() {
     if (validateNights()) {
@@ -171,26 +171,54 @@ function performSearch() {
         if (searchType.value === 'package') {
             const beginDate = moment(preferDates.value[0]).format('YYYY-MM-DD');
             const endDate = moment(preferDates.value[1]).format('YYYY-MM-DD');
+            const additionalFilters = [{ "type": 21, "values": [{ "id": "2", "value": "2", "parent": null }], "providers": null }];
+            if (preferredSearchParams.regionFilter) additionalFilters.push(preferredSearchParams.regionFilter);
+
+            // prices filter struct
+            // {
+            //     "type": 15,
+            //     "values": [
+            //     {
+            //         "id": "",
+            //         "value": "2000000-10000000"
+            //     }
+            // ],
+            //     "providers": []
+            // }
+
             fetchPackageSearchLink(
                 selectedDeparture.value, selectedDestination.value, preferredSearchParams.chartersOnly,
                 guests.value,
                 beginDate, endDate, beginDate,
-                nightsSelected.value)
-                .then(href => {
-                    const [url] = href.split('?');
-                    const params = applyFilters(queryParam(undefined, href));
-                    console.log('+++ params: %o', params);
-                    resultsWindow.location.href = target_host + url + '?' + params2query(params);
+                nightsSelected.value,
+                additionalFilters)
+                .then(response_json => {
+                    // {
+                    //     "redirectionUrl": "/packagetours/moskva-to-turtsiya-tours/",
+                    //     "queryParam": "lWOJw1XDa14WeujkN6zDTiGrYCEmdQj88dauBl7t05gkskKfKw5FNf9jrpPntUcPRwvo8GpVo7kIpnWucdarZfK6Fpckj9TBlOcTrbZhu57rbFabRJaoJrcmoUpYtWCrcHGycY2ZsU1pRXVMc%2f6wMKhqjCsWZemSMe5G2yV7yKe9m2M1IJUHlAxroS9PjwD0JnGFGu4Qe2ajVt%2fJYpK6UmH7cE6sJmCNAnN0QgIFCWkMaKeXrKQ6UAfVHTGV3rNQxNQmwSj%2bXXYeXtonfnOcvA%3d%3d"
+                    // }
+
+                    // const [url] = href.split('?');
+                    // const params = applyFilters(queryParam(undefined, href));
+                    // console.log('+++ params: %o', params);
+                    // resultsWindow.location.href = target_host + url + '?' + params2query(params);
+
+                    resultsWindow.location.href = `${ target_host }${ response_json.redirectionUrl }?qp=${ response_json.queryParam }&p=1&w=0&s=0`;
+
                 });
         } else if (searchType.value === 'hotel') {
             const beginDate = moment(preferDates.value[0]).format('YYYY-MM-DD');
-            const endDate = moment(preferDates.value[0]).add({ d: nightsSelected.value[0] }).format('YYYY-MM-DD');
-            fetchHotelSearchLink(selectedDestination.value, guests.value, beginDate, endDate)
-                .then(href => {
-                    const [url] = href.split('?');
-                    const params = applyFilters(queryParam(undefined, href));
-                    console.log('+++ params: %o', params);
-                    resultsWindow.location.href = target_host + url + '?' + params2query(params);
+            // const endDate = moment(preferDates.value[0]).add({ d: nightsSelected.value[0] }).format('YYYY-MM-DD');
+            const endDate = moment(preferDates.value[1]).format('YYYY-MM-DD');
+            fetchHotelSearchLink(selectedDestination.value, guests.value, beginDate, endDate, nightsSelected.value)
+                .then(response_json => {
+                    // const [url] = href.split('?');
+                    // const params = applyFilters(queryParam(undefined, href));
+                    // console.log('+++ params: %o', params);
+                    // resultsWindow.location.href = target_host + url + '?' + params2query(params);
+
+                    resultsWindow.location.href = `${ target_host }${ response_json.redirectionUrl }?qp=${ response_json.queryParam }&p=2&s=0`;
+
                 });
 
         }
