@@ -173,6 +173,14 @@ function performSearch() {
             const endDate = moment(preferDates.value[1]).format('YYYY-MM-DD');
             const additionalFilters = [{ "type": 21, "values": [{ "id": "2", "value": "2", "parent": null }], "providers": null }];
             if (preferredSearchParams.regionFilter) additionalFilters.push(preferredSearchParams.regionFilter);
+            if (budgetMin.value || budgetMax.value) {
+                additionalFilters.push({
+                    type: 15,
+                    values: [{ id:'', value: `${ budgetMin.value || 0 }-${ (!!budgetMax.value && budgetMax.value !== Infinity) ? budgetMax.value : 10000000 }`}],
+                    providers: []
+                });
+            }
+            if (preferredSearchParams.musthaveFilter) additionalFilters.push(preferredSearchParams.musthaveFilter);
 
             // prices filter struct
             // {

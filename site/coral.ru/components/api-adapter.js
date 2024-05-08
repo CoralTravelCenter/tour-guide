@@ -1,7 +1,7 @@
 import { pick } from "lodash";
 
 export function apiUrl(endpoint) {
-    const apiHost = location.hostname === 'localhost' ? 'http://localhost:8010/proxy' : '';
+    const apiHost = location.hostname === 'localhost' ? 'http://localhost:8010/proxy' : '//b2capi.coral.ru';
     // const apiHost = location.hostname === 'localhost' ? 'http://localhost:8888' : '';
     return apiHost + endpoint;
 }

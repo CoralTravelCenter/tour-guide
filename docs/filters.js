@@ -20,3 +20,5 @@ Musthave_hotelfacilities = [8] // Аквапарк
 Musthave_leisuretypes = [25] // Только для взрослых
 Musthave_roomfacilities = [14] // балкон / терраса
 Musthave_hotelfacilities = [3] // Дискотека
+
+//NEW B2C

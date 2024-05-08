@@ -414,37 +414,44 @@ steps:
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { Hf: [4] }
+#                    predefined: { Hf: [4] }
+                    predefined: {"type":12,"values":[{"id":"4","value":"4"}],"providers":[]}
             - label: 'Песчаный пляж'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { Bch: [13] }
+#                    predefined: { Bch: [13] }
+                    predefined: {"type":6,"values":[{"id":"13","value":"13","parent":{"id":"1","value":"1","parent":null}}],"providers":[]}
             - label: 'VIP-отели, Элитный отдых'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { Lt: [1,49] }
+#                    predefined: { Lt: [1,49] }
+                    predefined: {"type":3,"values":[{"id":"1","value":"1"},{"id":"49","value":"49"}],"providers":[]}
             - label: 'Аквапарк и водные горки'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { Hf: [8] }
+#                    predefined: { Hf: [8] }
+                    predefined: {"type":12,"values":[{"id":"8","value":"8"}],"providers":[]}
             - label: 'Отель только для взрослых'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { Lt: [25] }
+#                    predefined: { Lt: [25] }
+                    predefined: {"type":3,"values":[{"id":"25","value":"25"}],"providers":[]}
             - label: 'Балкон или терраса'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { Rf: [14] }
+#                    predefined: { Rf: [14] }
+                    predefined: {"type":7,"values":[{"id":"85","value":"85"}],"providers":[]}
             - label: 'Дискотека'
               step: fin
               actions:
                   - what: setMusthaveFilter
-                    predefined: { Hf: [3] }
+#                    predefined: { Hf: [3] }
+                    predefined: {"type":8,"values":[{"id":"3","value":"3"}],"providers":[]}
         behaviour:
             singleChoice:  true
             resetSelection: resetMusthaveFilter

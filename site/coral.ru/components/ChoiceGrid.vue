@@ -130,7 +130,7 @@ onMounted(() => {
         height: (48/20em);
     }
     &.two-columns {
-        font-size: (13/20em);
+        font-size: (12/20em);
         display: grid;
         grid-template-rows: repeat(4,auto);
         grid-template-columns: repeat(2,auto);

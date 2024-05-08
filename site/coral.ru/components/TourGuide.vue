@@ -14,7 +14,7 @@ const predefinedActions = {
         preferredSearchParams.maxFlightDuration = Infinity;
         preferredSearchParams.leisureKinds = [];
         preferredSearchParams.regionFilter = null;
-        preferredSearchParams.musthaveFilter = {};
+        preferredSearchParams.musthaveFilter = null;
     },
     resetPreferredTimeframe() {
         Object.assign(preferredSearchParams.timeframe, { startMoment: null, endMoment: null, selectedMoment: null });
@@ -29,7 +29,7 @@ const predefinedActions = {
         preferredSearchParams.regionFilter = null;
     },
     resetMusthaveFilter() {
-        preferredSearchParams.musthaveFilter = {};
+        preferredSearchParams.musthaveFilter = null;
     },
     setPreferredLeisureKindsFromCurrentStep() {
         preferredSearchParams.leisureKinds = currentStepConfig.value.choices.filter(choice => choice.selected).map(choice => choice.kindKey);
@@ -287,6 +287,7 @@ provide('fin-step-component', finStepComponent);
     //font-family: museosans;
     font-weight: normal;
 
+    margin: 2em 0;
     display: grid;
     grid-template-columns: 62fr 38fr 1.5em;
     grid-template-rows: 1.5em auto 1.5em;
