@@ -117,7 +117,7 @@ export function fetchPackageSearchLink(departure, destination, charters_only, gu
     });
 }
 
-export function fetchHotelSearchLink(destination, guest, beginDate, endDate, nights) {
+export function fetchHotelSearchLink(destination, guest, beginDate, endDate, nights, filters) {
     const nights_normalized = JSON.parse(JSON.stringify(nights)).sort((a, b) => Number(a) - Number(b));
     return new Promise(resolve => {
 
@@ -141,7 +141,7 @@ export function fetchHotelSearchLink(destination, guest, beginDate, endDate, nig
                 })(guest)],
             }],
             paging: { pageNumber: 1, pageSize: 20, sortType: 0 },
-            additionalFilters: [],
+            additionalFilters: filters || [],
             imageSizes: [0]
         };
 
