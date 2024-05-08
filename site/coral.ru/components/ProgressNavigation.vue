@@ -51,7 +51,7 @@ const finButtonClicked = inject('fin-button-clicked');
         <button class="back" @click="stepBack">Назад</button>
         <div class="progress-bar"><div class="filler" :style="{ width: progressPercent + '%' }"></div></div>
         <button v-if="stepConfig.key === 'fin'"
-                class="skip-proceed skip"
+                class="skip-proceed proceed"
                 @click="finButtonClicked">Подобрать</button>
         <button v-else
                 class="skip-proceed"
