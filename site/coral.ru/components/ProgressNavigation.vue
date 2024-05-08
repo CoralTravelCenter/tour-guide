@@ -124,7 +124,8 @@ const finButtonClicked = inject('fin-button-clicked');
             }
             &.proceed {
                 color: white;
-                background: linear-gradient(46deg, #6BDCFF, #13A0F0);
+                //background: linear-gradient(46deg, #6BDCFF, #13A0F0);
+                background: linear-gradient(46deg, #0093d0, #0093d0);
             }
         }
     }

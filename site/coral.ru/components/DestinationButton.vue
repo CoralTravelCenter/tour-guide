@@ -79,7 +79,8 @@ const { tooltipButtonRef, tooltipVisible, tooltipRef } = inject('tooltip');
     }
     &.selected {
         &.unavailable {
-            background: linear-gradient(46deg, #6BDCFF, #13A0F0)!important;
+            //background: linear-gradient(46deg, #6BDCFF, #13A0F0)!important;
+            background: linear-gradient(46deg, #0093d0, #0093d0)!important;
         }
         .state-icon {
             .available, .unavailable {
