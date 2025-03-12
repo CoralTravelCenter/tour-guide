@@ -323,6 +323,7 @@ defineExpose({ performSearch });
     :deep(.el-date-range-picker) {
         @media screen and (max-width: @narrow-breakpoint) {
             width: unset;
+            max-width: 100vw;
         }
     }
 
