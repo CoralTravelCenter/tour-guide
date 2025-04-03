@@ -9,9 +9,13 @@ const timeDiff = ref(null);
 
 watchEffect(async () => {
     if (selectedDeparture.value && selectedDestination.value?.IANA) {
-        const tz = await fetch(`https://worldtimeapi.org/api/timezone/${ selectedDestination.value.IANA }`).then(tz_response => tz_response.json());
-        const [hh, mm] = tz.utc_offset.split(':').map(dd => parseInt(dd));
-        const dest_gmt = hh + mm / 60;
+        // const tz = await fetch(`https://worldtimeapi.org/api/timezone/${ selectedDestination.value.IANA }`).then(tz_response => tz_response.json());
+        timeDiff.value = null;
+        const tz = await fetch(`https://timeapi.io/api/timezone/zone?timeZone=${ encodeURIComponent(selectedDestination.value.IANA) }`).then(tz_response => tz_response.json());
+        const utc_offset_seconds = tz.currentUtcOffset.seconds;
+        // const [hh, mm] = tz.utc_offset.split(':').map(dd => parseInt(dd));
+        // const dest_gmt = hh + mm / 60;
+        const dest_gmt = Math.round(utc_offset_seconds / 3600);
         timeDiff.value = dest_gmt - selectedDeparture.value.GMT;
     } else {
         timeDiff.value = null;
@@ -31,9 +35,10 @@ const timeDiffFormatted = computed(() => {
     <div class="infosheet-item timezone">
         <img class="icon" src="/site/coral.ru/assets/icon-time-zone.png">
         <div class="info">
-            Разниц{{ timeDiff ? 'а' : 'ы' }} во времени
-            <strong v-if="timeDiff">{{ timeDiffFormatted }}</strong>
-            <strong v-else>нет</strong>
+            Разниц{{ timeDiff || timeDiff === null ? 'а' : 'ы' }} во времени
+            <strong v-if="!!timeDiff">{{ timeDiffFormatted }}</strong>
+            <strong v-else-if="timeDiff === 0">нет</strong>
+            <strong v-else>...</strong>
         </div>
     </div>
 </template>
